@@ -1,5 +1,5 @@
 import { useEffect, type JSX } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   children: string | JSX.Element | JSX.Element[]
@@ -7,31 +7,20 @@ type Props = {
 
 export default function PublicRoutes({ children }: Props) {
   const navigate = useNavigate()
-  const userRole = window.localStorage.getItem('userRole')
+  const userRole = localStorage.getItem('userRole')
 
   useEffect(() => {
-    // Event listener for storage event
-    const handleStorageEvent = (event: StorageEvent) => {
-      if (event.key === 'userRole' && event.newValue === null) {
-        // Token was removed in another tab, handle it here
-        // Maybe you want to log out the user or perform some other action
-        console.log('Token removed from localStorage in another tab')
-        navigate('/')
-      }
+    // Si l'utilisateur est déjà connecté → redirection vers /acceuil
+    if (userRole && userRole.trim() !== '') {
+      navigate('/accueil', { replace: true })
     }
+  }, [navigate, userRole])
 
-    // Add event listener on component mount
-    window.addEventListener('storage', handleStorageEvent)
-
-    // Cleanup: remove event listener on component unmount
-    return () => {
-      window.removeEventListener('storage', handleStorageEvent)
-    }
-  }, [navigate])
-
-  if (userRole) {
-    return <Navigate to="/accueil" />
+  // Si l'utilisateur n'est pas connecté → on autorise l'accès
+  if (!userRole || userRole.trim() === '') {
+    return <>{children}</>
   }
 
-  return children
+  // Ne rien afficher pendant la redirection
+  return null
 }

@@ -1,19 +1,12 @@
 import { Suspense, lazy } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import PublicRoutes from './pages/PublicRoutes/PublicRoutes'
 import PrivateRoutes from './pages/PrivateRoutes/PrivateRoutes'
+import PublicRoutes from './pages/PublicRoutes/PublicRoutes'
 
-// import DashboardProvider from './contexts/DashboardContext/DashboardProvider'
-import NotFound from './pages/NotFound/NotFound'
 import DashboardProvider from './contexts/DashboardContext/DashboardProvider'
 import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner'
 
-const SignUp = lazy(() => import('./pages/Auth/Signup/Signup'))
-const Login = lazy(() => import('./pages/Auth/Login/Login'))
-
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard'))
-
-const Release = lazy(() => import('./pages/Release/Release'))
 
 function App() {
   return (
@@ -24,26 +17,6 @@ function App() {
         </div>
       }>
       <Routes>
-        {/* Login page */}
-        <Route
-          path="/"
-          element={
-            <PublicRoutes>
-              <Login />
-            </PublicRoutes>
-          }
-        />
-
-        {/* Signup page */}
-        <Route
-          path="/sign-up/*"
-          element={
-            <PublicRoutes>
-              <SignUp />
-            </PublicRoutes>
-          }
-        />
-
         {/* Dashboard page */}
         <Route
           path="/accueil/*"
@@ -56,20 +29,23 @@ function App() {
           }
         />
 
-        <Route
-          path="/release/*"
-          element={
-            <PublicRoutes>
-              <Release />
-            </PublicRoutes>
-          }
-        />
-
+        {/* Not found page */}
         <Route
           path="*"
           element={
             <PublicRoutes>
-              <NotFound />
+              <section className="w-screen h-screen flex items-center justify-center bg-blue-400 text-black text-5xl flex-col gap-20">
+                <h1>Login</h1>
+                <button
+                  type="button"
+                  className="bg-white px-6 py-3 text-base rounded-lg hover:bg-blue-100 transition"
+                  onClick={() => {
+                    localStorage.setItem('userRole', 'employee')
+                    window.location.href = '/accueil' // rediriger manuellement après login
+                  }}>
+                  Se connecter
+                </button>
+              </section>
             </PublicRoutes>
           }
         />

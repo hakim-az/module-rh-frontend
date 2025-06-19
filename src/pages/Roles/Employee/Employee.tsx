@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
 // import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
-type UserRole = 'signed' | 'not-signed'
+type UserStatus = 'step-1' | 'step-2' | 'step-3' | 'step-4'
 
 // components
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
-import CompleteProfile from './CompleteProfile/CompleteProfile'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
+import IntegrationForm from './CompleteProfile/IntegrationSteps/IntegrationForm/IntegrationForm'
+import SignContract from './CompleteProfile/IntegrationSteps/SignContract/SignContract'
+import WaitRhResponse from './CompleteProfile/IntegrationSteps/WaitResponse/WaitRhResponse'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
@@ -22,17 +24,17 @@ const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
 function DesignerDashboard() {
-  const [userStatus, setUserStatus] = useState<UserRole | null>(null)
+  const [userStatus, setUserStatus] = useState<UserStatus | null>(null)
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      const storedRole = localStorage.getItem('userStatus') as UserRole | null
+      const storedRole = localStorage.getItem('userStatus') as UserStatus | null
 
-      const validRoles: UserRole[] = ['signed', 'not-signed']
+      const validRoles: UserStatus[] = ['step-1', 'step-2', 'step-3', 'step-4']
       if (storedRole && validRoles.includes(storedRole)) {
         setUserStatus(storedRole)
       } else {
-        setUserStatus('not-signed') // or handle fallback
+        setUserStatus('step-1') // or handle fallback
       }
     }, 100)
 
@@ -47,8 +49,16 @@ function DesignerDashboard() {
     )
   }
 
-  if (userStatus === 'not-signed') {
-    return <CompleteProfile />
+  if (userStatus === 'step-1') {
+    return <IntegrationForm />
+  }
+
+  if (userStatus === 'step-2') {
+    return <SignContract />
+  }
+
+  if (userStatus === 'step-3') {
+    return <WaitRhResponse />
   }
 
   return (

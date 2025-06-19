@@ -1,6 +1,11 @@
 import { LogOut } from 'lucide-react'
 
 export default function Header() {
+  const handleLogout = () => {
+    localStorage.removeItem('userRole')
+    window.location.href = 'http://localhost:5173/'
+  }
+
   return (
     <nav className="w-full bg-white shadow-sm mb-20">
       {/* container */}
@@ -10,6 +15,7 @@ export default function Header() {
         {/* logout */}
         <button
           type="button"
+          onClick={handleLogout}
           className="flex hover:bg-blue-500 hover:text-white ease-in-out px-6 py-3 rounded-md transition-all delay-75 items-center cursor-pointer justify-center gap-5">
           Se déconnecter
           <LogOut />

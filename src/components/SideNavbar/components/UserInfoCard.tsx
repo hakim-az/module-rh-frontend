@@ -8,7 +8,7 @@ function UserInfoCard() {
       {/* user iamge */}
       <img
         className={` rounded-full border-2  border-[#4c72fd60] object-cover shadow-sm shadow-primaryBlue ${wideNavbar ? 'size-[60px]' : 'size-12'}`}
-        src=""
+        src="#"
         alt="user-avatar"
       />
       {/* user info */}

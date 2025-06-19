@@ -1,37 +1,33 @@
 import { useEffect, type JSX } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
 
 type Props = {
   children: string | JSX.Element | JSX.Element[]
 }
 
 export default function PrivateRoutes({ children }: Props) {
-  const navigate = useNavigate()
-  const userRole = window.localStorage.getItem('userRole')
+  const userRole = localStorage.getItem('userRole')
 
   useEffect(() => {
-    // Event listener for storage event
+    // Redirection si token supprimé dans un autre onglet
     const handleStorageEvent = (event: StorageEvent) => {
       if (event.key === 'userRole' && event.newValue === null) {
-        // Token was removed in another tab, handle it here
-        // Maybe you want to log out the user or perform some other action
-        console.log('Token removed from localStorage in another tab')
-        navigate('/')
+        console.log('Token supprimé dans un autre onglet')
+        window.location.href = 'http://localhost:5173'
       }
     }
 
-    // Add event listener on component mount
     window.addEventListener('storage', handleStorageEvent)
-
-    // Cleanup: remove event listener on component unmount
     return () => {
       window.removeEventListener('storage', handleStorageEvent)
     }
-  }, [navigate])
+  }, [])
 
-  if (!userRole) {
-    return <Navigate to="/" />
+  // Si l'utilisateur n'est pas connecté → redirection vers Google
+  if (!userRole || userRole.trim() === '') {
+    window.location.href = 'http://localhost:5173'
+    return null
   }
 
-  return children
+  // Sinon, l'utilisateur est connecté → on retourne les enfants
+  return <>{children}</>
 }
