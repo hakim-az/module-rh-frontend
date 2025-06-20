@@ -1,6 +1,7 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { UploadCloud } from 'lucide-react'
+import type { FieldValues, UseFormSetValue } from 'react-hook-form'
 
 function formatFileSize(size: number) {
   if (size < 1024) return `${size} bytes`
@@ -8,28 +9,39 @@ function formatFileSize(size: number) {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`
 }
 
-export default function FileUploader({
-  file,
-  setFile,
-  title,
-}: {
-  file: File | null
-  setFile: (file: File) => void
+type FileUploaderProps = {
   title: string
-}) {
+  name: string
+  onFileSelect: (file: File) => void
+  error?: string
+  setValue: UseFormSetValue<FieldValues>
+}
+
+export default function FileUploader({
+  title,
+  name,
+  onFileSelect,
+  error,
+  setValue,
+}: FileUploaderProps) {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
-        setFile(acceptedFiles[0])
+        const file = acceptedFiles[0]
+        setSelectedFile(file)
+        setValue(name, file, { shouldValidate: true })
+        onFileSelect(file)
       }
     },
-    [setFile]
+    [onFileSelect, name, setValue]
   )
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     multiple: false,
-    maxSize: 10 * 1024 * 1024, // 10MB
+    maxSize: 10 * 1024 * 1024,
     accept: {
       'application/pdf': ['.pdf'],
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
@@ -45,6 +57,7 @@ export default function FileUploader({
         {title}
         <span className="text-red-500"> *</span>
       </label>
+
       <div
         {...getRootProps()}
         className={`border-2 border-dashed rounded-md px-6 py-20 text-center cursor-pointer transition ${
@@ -53,32 +66,34 @@ export default function FileUploader({
         <input {...getInputProps()} />
         <UploadCloud className="mx-auto mb-2 h-6 w-6 text-gray-400" />
 
-        {file ? (
+        {selectedFile ? (
           <div className="text-sm text-gray-700">
             <p>
-              <strong>Fichier:</strong> {file.name}
+              <strong>Nom:</strong> {selectedFile.name}
             </p>
             <p>
-              <strong>Type:</strong> {file.type || 'N/A'}
+              <strong>Type:</strong> {selectedFile.type || 'N/A'}
             </p>
             <p>
-              <strong>Taille:</strong> {formatFileSize(file.size)}
+              <strong>Taille:</strong> {formatFileSize(selectedFile.size)}
             </p>
             <p>
-              <strong>Derniére modification:</strong>{' '}
-              {new Date(file.lastModified).toLocaleDateString()}
+              <strong>Modifié le:</strong>{' '}
+              {new Date(selectedFile.lastModified).toLocaleDateString()}
             </p>
           </div>
         ) : (
           <div className="py-5">
             <p className="text-sm text-gray-600">
-              Drop here to attach or{' '}
-              <span className="text-blue-500 underline">upload</span>
+              Déposez un fichier ou{' '}
+              <span className="text-blue-500 underline">sélectionnez</span>
             </p>
-            <p className="text-xs text-gray-400 mt-1">Max size: 10 Mb</p>
+            <p className="text-xs text-gray-400 mt-1">Taille max: 10 Mo</p>
           </div>
         )}
       </div>
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   )
 }
