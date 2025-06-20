@@ -108,7 +108,15 @@ export default function InfosPro({
             placeholder="Lien avec le salarié "
             control={control}
             rules={{ required: true }}
-            items={[{ label: 'Frère', value: 'frere' }]}
+            items={[
+              { label: 'Conjoint(e)', value: 'conjoint' },
+              { label: 'Père', value: 'pere' },
+              { label: 'Mère', value: 'mere' },
+              { label: 'Frère', value: 'frere' },
+              { label: 'Sœur', value: 'soeur' },
+              { label: 'Enfant', value: 'enfant' },
+              { label: 'Autre membre de la famille', value: 'autre' },
+            ]}
             error={errors.lien_avec_salarie}
             selectDefaultValue={employeeProfesionalInfo.lien_avec_salarie}
           />
@@ -116,7 +124,7 @@ export default function InfosPro({
           <ControlledInput
             name="tel"
             label="Téléphone"
-            placeholder="+33 7 77 77 77 77"
+            placeholder="0 7 77 77 77 77"
             register={register}
             rules={{ required: true }}
             error={errors.tel}

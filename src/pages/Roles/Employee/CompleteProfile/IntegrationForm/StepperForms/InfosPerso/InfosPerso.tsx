@@ -7,7 +7,9 @@ import { ControlledSelect } from '@/components/FormFeilds/ControlledSelect/Contr
 import { ControlledInput } from '@/components/FormFeilds/ControlledInput/ControlledInput'
 import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
 import type { EmployeePersonalInformations } from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormContext'
+import { countriesData } from '@/components/__mock__/Countries'
 
+// types
 interface PropsType {
   currentStepIndex: number
   setActiveValidateIntegrationModal: (
@@ -26,14 +28,9 @@ export default function InfosPerso({
   // integration form context
   const { employeePersonalInfo, setEmployeePersonalInfo } =
     useIntegrationFormDataContext()
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-    watch,
-    control,
-  } = useForm<EmployeePersonalInformations>({
+
+  // react hook form
+  const methods = useForm<EmployeePersonalInformations>({
     mode: 'onBlur',
     defaultValues: {
       civilite: employeePersonalInfo.civilite,
@@ -43,8 +40,17 @@ export default function InfosPerso({
       pays: employeePersonalInfo.pays,
     },
   })
-  const methods = useForm()
 
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    watch,
+    control,
+  } = methods
+
+  // handle form submit
   const onSubmit = (data: EmployeePersonalInformations) => {
     console.log(data)
     setEmployeePersonalInfo(data)
@@ -55,12 +61,12 @@ export default function InfosPerso({
     }
   }
 
+  // handle go back
   const goBack = () => {
     if (currentStepIndex > 0) {
       setCurrentStepIndex(currentStepIndex - 1)
     }
   }
-  console.log('employeePersonalInfo', employeePersonalInfo)
 
   return (
     <FormProvider {...methods}>
@@ -126,7 +132,14 @@ export default function InfosPerso({
             placeholder="Situation familiale"
             control={control}
             rules={{ required: true }}
-            items={[{ label: 'Célibataire.', value: 'celibataire' }]}
+            items={[
+              { label: 'Célibataire', value: 'celibataire' },
+              { label: 'Marié(e)', value: 'marie' },
+              { label: 'Pacsé(e)', value: 'pacse' },
+              { label: 'Divorcé(e)', value: 'divorce' },
+              { label: 'Veuf(ve)', value: 'veuf' },
+              { label: 'Concubinage', value: 'concubinage' },
+            ]}
             error={errors.situation_familiale}
             selectDefaultValue={employeePersonalInfo.situation_familiale}
           />
@@ -165,7 +178,7 @@ export default function InfosPerso({
             placeholder="Pays de naissance"
             control={control}
             rules={{ required: true }}
-            items={[{ label: 'France', value: 'fr' }]}
+            items={countriesData}
             error={errors.pays_de_naissance}
             selectDefaultValue={employeePersonalInfo.pays_de_naissance}
           />
@@ -198,7 +211,7 @@ export default function InfosPerso({
             placeholder="Pays de nationalité"
             control={control}
             rules={{ required: true }}
-            items={[{ label: 'France', value: 'fr' }]}
+            items={countriesData}
             error={errors.pays_de_nationalite}
             selectDefaultValue={employeePersonalInfo.pays_de_nationalite}
           />
@@ -245,10 +258,16 @@ export default function InfosPerso({
           {/* Téléphone portable personnelle */}
           <ControlledInput
             name="tel_perso"
-            label="Téléphone portable personnelle "
-            placeholder="+33 7 77 77 77 77"
+            label="Téléphone portable personnelle"
+            placeholder="07 77 77 77 77"
             register={register}
-            rules={{ required: true }}
+            rules={{
+              required: 'Ce champ est requis',
+              pattern: {
+                value: /^\d{10}$/,
+                message: 'Le numéro doit contenir exactement 10 chiffres',
+              },
+            }}
             error={errors.tel_perso}
             inputType="number"
             inputDefaultValue={employeePersonalInfo.tel_perso}
@@ -257,9 +276,15 @@ export default function InfosPerso({
           <ControlledInput
             name="tel_pro"
             label="Téléphone portable personnelle "
-            placeholder="+33 7 77 77 77 77"
+            placeholder="0 7 77 77 77 77"
             register={register}
-            rules={{ required: true }}
+            rules={{
+              required: 'Ce champ est requis',
+              pattern: {
+                value: /^\d{10}$/,
+                message: 'Le numéro doit contenir exactement 10 chiffres',
+              },
+            }}
             error={errors.tel_pro}
             inputType="number"
             inputDefaultValue={employeePersonalInfo.tel_pro}
@@ -275,7 +300,7 @@ export default function InfosPerso({
             placeholder="Pays"
             control={control}
             rules={{ required: true }}
-            items={[{ label: 'France', value: 'fr' }]}
+            items={countriesData}
             error={errors.pays}
             selectDefaultValue={employeePersonalInfo.pays}
           />
@@ -285,11 +310,18 @@ export default function InfosPerso({
             label="Code postal"
             placeholder="75000"
             register={register}
-            rules={{ required: true }}
+            rules={{
+              required: 'Ce champ est requis',
+              pattern: {
+                value: /^[0-9]{1,5}$/,
+                message: 'Le code postal doit contenir jusqu’à 5 chiffres',
+              },
+            }}
             error={errors.code_postal}
             inputType="number"
             inputDefaultValue={employeePersonalInfo.code_postal}
           />
+
           {/* Ville */}
           <ControlledInput
             name="ville"
@@ -298,7 +330,7 @@ export default function InfosPerso({
             register={register}
             rules={{ required: true }}
             error={errors.ville}
-            inputType="number"
+            inputType="text"
             inputDefaultValue={employeePersonalInfo.ville}
           />
           {/* Adresse */}

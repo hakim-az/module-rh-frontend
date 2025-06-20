@@ -1,4 +1,4 @@
-import type { Step } from '../../IntegrationSteps/IntegrationForm/IntegrationForm'
+import type { Step } from '../../IntegrationForm/IntegrationForm'
 
 interface StepperProps {
   steps: Step[]

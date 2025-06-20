@@ -7,9 +7,9 @@ type UserStatus = 'step-1' | 'step-2' | 'step-3' | 'step-4'
 // components
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
-import IntegrationForm from './CompleteProfile/IntegrationSteps/IntegrationForm/IntegrationForm'
-import SignContract from './CompleteProfile/IntegrationSteps/SignContract/SignContract'
-import WaitRhResponse from './CompleteProfile/IntegrationSteps/WaitResponse/WaitRhResponse'
+import IntegrationForm from './CompleteProfile/IntegrationForm/IntegrationForm'
+import SignContract from './CompleteProfile/SignContract/SignContract'
+import WaitRhResponse from './CompleteProfile/WaitResponse/WaitRhResponse'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))

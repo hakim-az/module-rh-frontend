@@ -45,6 +45,8 @@ export const ControlledSelect = <T extends FieldValues>({
 }: ControlledSelectProps<T>) => {
   const { setValue } = useFormContext()
   const currentValue = useWatch({ name, control })
+  const { formState } = useFormContext()
+  const showError = formState.isSubmitted && error
 
   useEffect(() => {
     if (!currentValue) {
@@ -80,7 +82,7 @@ export const ControlledSelect = <T extends FieldValues>({
               ))}
             </SelectContent>
           </Select>
-          {error && (
+          {showError && (
             <p className="text-red-500 mt-2 text-sm">Ce champ est requis</p>
           )}
         </div>
