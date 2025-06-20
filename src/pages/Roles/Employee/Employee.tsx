@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
-// import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import IntegrationFormProvider from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormProvider'
 
 type UserStatus = 'step-1' | 'step-2' | 'step-3' | 'step-4'
 
@@ -50,7 +50,11 @@ function DesignerDashboard() {
   }
 
   if (userStatus === 'step-1') {
-    return <IntegrationForm />
+    return (
+      <IntegrationFormProvider>
+        <IntegrationForm />
+      </IntegrationFormProvider>
+    )
   }
 
   if (userStatus === 'step-2') {

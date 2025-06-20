@@ -1,8 +1,9 @@
 import FileUploader from '@/components/FileUploader/FileUploader'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
+import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
 
 interface PropsType {
   currentStepIndex: number
@@ -19,13 +20,17 @@ export default function Justificatifs({
   goNext,
   goBack,
 }: PropsType) {
+  const {
+    carteVitale,
+    setCarteVitale,
+    rib,
+    setRib,
+    pieceIdentite,
+    setPieceIdentite,
+    justificatifDomicile,
+    setJustificatifDomicile,
+  } = useIntegrationFormDataContext()
   // states
-  const [carteVitale, setCarteVitale] = useState<File | null>(null)
-  const [rib, setRib] = useState<File | null>(null)
-  const [pieceIdentite, setPieceIdentite] = useState<File | null>(null)
-  const [justificatifDomicile, setJustificatifDomicile] = useState<File | null>(
-    null
-  )
   const {
     register,
     setValue,
@@ -79,7 +84,19 @@ export default function Justificatifs({
             : 'Le fichier doit faire moins de 10 Mo',
       },
     })
-  }, [register])
+    if (carteVitale) setValue('carteVitale', carteVitale)
+    if (rib) setValue('rib', rib)
+    if (pieceIdentite) setValue('pieceIdentite', pieceIdentite)
+    if (justificatifDomicile)
+      setValue('justificatifDomicile', justificatifDomicile)
+  }, [
+    carteVitale,
+    justificatifDomicile,
+    pieceIdentite,
+    register,
+    rib,
+    setValue,
+  ])
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -95,6 +112,7 @@ export default function Justificatifs({
                 ? errors.carteVitale.message
                 : undefined
             }
+            defaultFile={carteVitale ?? undefined}
           />
 
           <FileUploader
@@ -107,6 +125,7 @@ export default function Justificatifs({
                 ? errors.rib.message
                 : undefined
             }
+            defaultFile={rib ?? undefined}
           />
 
           <FileUploader
@@ -119,6 +138,7 @@ export default function Justificatifs({
                 ? errors.pieceIdentite.message
                 : undefined
             }
+            defaultFile={pieceIdentite ?? undefined}
           />
 
           <FileUploader
@@ -131,6 +151,7 @@ export default function Justificatifs({
                 ? errors.justificatifDomicile.message
                 : undefined
             }
+            defaultFile={justificatifDomicile ?? undefined}
           />
         </div>
 

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { UploadCloud } from 'lucide-react'
 import type { FieldValues, UseFormSetValue } from 'react-hook-form'
@@ -15,6 +15,7 @@ type FileUploaderProps = {
   onFileSelect: (file: File) => void
   error?: string
   setValue: UseFormSetValue<FieldValues>
+  defaultFile?: File
 }
 
 export default function FileUploader({
@@ -23,14 +24,19 @@ export default function FileUploader({
   onFileSelect,
   error,
   setValue,
+  defaultFile,
 }: FileUploaderProps) {
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [selectedFile, setSelectedFile] = useState<File | null>(
+    defaultFile ?? null
+  )
+  const [dropError, setDropError] = useState<string | null>(null)
 
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0]
         setSelectedFile(file)
+        setDropError(null) // clear previous dropzone errors
         setValue(name, file, { shouldValidate: true })
         onFileSelect(file)
       }
@@ -38,8 +44,14 @@ export default function FileUploader({
     [onFileSelect, name, setValue]
   )
 
+  const onDropRejected = useCallback(() => {
+    setSelectedFile(null)
+    setDropError('Le fichier dépasse la taille maximale autorisée de 10 Mo.')
+  }, [])
+
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    onDropRejected,
     multiple: false,
     maxSize: 10 * 1024 * 1024,
     accept: {
@@ -50,6 +62,13 @@ export default function FileUploader({
       'image/png': ['.png'],
     },
   })
+
+  useEffect(() => {
+    if (defaultFile) {
+      setSelectedFile(defaultFile)
+      setValue(name, defaultFile)
+    }
+  }, [defaultFile, name, setValue])
 
   return (
     <div className="space-y-2">
@@ -93,6 +112,10 @@ export default function FileUploader({
         )}
       </div>
 
+      {/* Dropzone error (like file too big) */}
+      {dropError && <p className="text-sm text-red-500">{dropError}</p>}
+
+      {/* RHF validation error */}
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   )

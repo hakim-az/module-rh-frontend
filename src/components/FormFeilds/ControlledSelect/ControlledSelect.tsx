@@ -12,7 +12,10 @@ import {
   type FieldError,
   type FieldValues,
   type Path,
+  useWatch,
+  useFormContext,
 } from 'react-hook-form'
+import { useEffect } from 'react'
 
 interface SelectOption {
   label: string
@@ -27,6 +30,7 @@ interface ControlledSelectProps<T extends FieldValues> {
   rules?: object
   items: SelectOption[]
   error?: FieldError
+  selectDefaultValue: string
 }
 
 export const ControlledSelect = <T extends FieldValues>({
@@ -37,7 +41,21 @@ export const ControlledSelect = <T extends FieldValues>({
   rules,
   items,
   error,
+  selectDefaultValue,
 }: ControlledSelectProps<T>) => {
+  const { setValue } = useFormContext()
+  const currentValue = useWatch({ name, control })
+
+  useEffect(() => {
+    if (!currentValue) {
+      setValue(name, selectDefaultValue as T[typeof name], {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      })
+    }
+  }, [currentValue, name, selectDefaultValue, setValue])
+
   return (
     <Controller
       name={name}
@@ -48,7 +66,9 @@ export const ControlledSelect = <T extends FieldValues>({
           <Label htmlFor={name} className="mb-2">
             {label} <span className="text-red-500 text-lg">*</span>
           </Label>
-          <Select onValueChange={field.onChange} value={field.value}>
+          <Select
+            onValueChange={field.onChange}
+            value={field.value || selectDefaultValue}>
             <SelectTrigger className="w-full min-h-10 h-5 max-h-5">
               <SelectValue placeholder={placeholder} />
             </SelectTrigger>

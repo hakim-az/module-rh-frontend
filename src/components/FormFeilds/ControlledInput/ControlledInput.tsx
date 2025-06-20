@@ -17,6 +17,7 @@ interface UncontrolledInputProps<T extends FieldValues> {
   rules?: RegisterOptions<T, Path<T>>
   error?: FieldError
   inputType: string
+  inputDefaultValue: string | number | readonly string[] | undefined
 }
 
 export const ControlledInput = <T extends FieldValues>({
@@ -27,6 +28,7 @@ export const ControlledInput = <T extends FieldValues>({
   rules,
   error,
   inputType,
+  inputDefaultValue,
 }: UncontrolledInputProps<T>) => {
   return (
     <div className="grid w-full items-start">
@@ -39,6 +41,7 @@ export const ControlledInput = <T extends FieldValues>({
         id={name as string}
         type={inputType}
         placeholder={placeholder}
+        defaultValue={inputDefaultValue}
       />
       {error && (
         <p className="text-red-500 mt-2 text-sm">
