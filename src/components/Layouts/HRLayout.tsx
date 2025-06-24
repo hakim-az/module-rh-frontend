@@ -1,6 +1,14 @@
 // compoenets
 import { useLocation } from 'react-router-dom'
-import { LayoutGrid } from 'lucide-react'
+import {
+  Home,
+  Users,
+  CalendarOff,
+  Lock,
+  CreditCard,
+  FileText,
+  Briefcase,
+} from 'lucide-react'
 
 import Header from '../Headers/HeaderDesktop/HeaderDesktop'
 import HeaderMobile from '../Headers/HeaderMobile/HeaderMobile'
@@ -29,27 +37,27 @@ export default function HrLayout({ children }: IPramasHrLayout) {
     {
       name: 'Accueil',
       path: '/accueil',
-      icon: LayoutGrid,
+      icon: Home,
     },
     {
       name: 'Salariés',
       path: '/accueil/salariés',
-      icon: LayoutGrid,
+      icon: Users,
     },
     {
       name: 'Absences',
       path: '/accueil/absences',
-      icon: LayoutGrid,
+      icon: CalendarOff,
     },
     {
       name: 'Coffre fort',
       path: '/accueil/coffre-fort',
-      icon: LayoutGrid,
+      icon: Lock,
     },
     {
       name: 'Titre restaurant',
       path: '/accueil/titre-restaurant',
-      icon: LayoutGrid,
+      icon: CreditCard,
     },
   ]
 
@@ -57,12 +65,12 @@ export default function HrLayout({ children }: IPramasHrLayout) {
     {
       name: 'Informations personnelles',
       path: '/accueil/informations-personnelles',
-      icon: LayoutGrid,
+      icon: FileText,
     },
     {
       name: 'Informations Professionnelles',
       path: '/accueil/informations-professionnelles',
-      icon: LayoutGrid,
+      icon: Briefcase,
     },
   ]
   return (

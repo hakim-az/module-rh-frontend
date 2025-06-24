@@ -4,6 +4,9 @@ import { Route, Routes } from 'react-router-dom'
 
 // pages
 const Home = React.lazy(() => import('./pages/Home/Home'))
+const DetailsSalarie = React.lazy(
+  () => import('./pages/DetailsSalarie/DetailsSalarie')
+)
 
 export default function Salaries() {
   return (
@@ -12,7 +15,7 @@ export default function Salaries() {
       <Route index element={<Home />} />
 
       {/* employee contract */}
-      {/* <Route path='' index element={<Home />} /> */}
+      <Route path="details/:id" index element={<DetailsSalarie />} />
 
       {/* Not Found page */}
       <Route path="*" element={<NotFound />} />

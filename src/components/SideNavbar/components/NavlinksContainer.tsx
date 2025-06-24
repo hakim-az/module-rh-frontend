@@ -15,11 +15,12 @@ function NavlinksContainer({ navlinkSidebar, menuHeader }: PropsType) {
 
   // handle active change
   const isActiveChange = (current: string) => {
-    if (location.pathname === current) {
+    if (decodeURIComponent(location.pathname) === current) {
       return true
     }
     return false
   }
+
   return (
     <nav className="w-full px-5 mx-auto space-y-[10px]">
       <span
@@ -46,8 +47,8 @@ function NavlinksContainer({ navlinkSidebar, menuHeader }: PropsType) {
                 <navlink.icon
                   className={`w-5 group-hover:text-black ${
                     isActiveChange(`${navlink.path}`)
-                      ? 'fill-black text-black'
-                      : 'fill-white text-white'
+                      ? 'text-black'
+                      : 'text-white'
                   }`}
                 />
               )}

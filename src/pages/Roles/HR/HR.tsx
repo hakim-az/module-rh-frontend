@@ -34,7 +34,7 @@ function DesignerDashboard() {
         <Route path="absences" element={<Absences />} />
 
         {/* Home page */}
-        <Route path="salariés" element={<Salaries />} />
+        <Route path="salariés/*" element={<Salaries />} />
 
         {/* Home page */}
         <Route path="coffre-fort" element={<CoffreFort />} />

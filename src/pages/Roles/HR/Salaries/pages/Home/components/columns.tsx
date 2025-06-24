@@ -1,27 +1,15 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import { Button } from '@/components/ui/button'
-import { MoreHorizontal } from 'lucide-react'
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-} from '@/components/ui/dropdown-menu'
 
 import type { Salarie } from './SalarieTable'
+import ActionsCell from './ActionsCell'
 
 export const columns: ColumnDef<Salarie>[] = [
   // id
   {
-    id: 'id',
+    accessorKey: 'id',
     enableHiding: false,
-    cell: ({ row }) => {
-      const id = row.original
-
-      return <div className="hidden">{id.id}</div>
-    },
+    header: () => null,
+    cell: () => null,
   },
   // salarié
   {
@@ -64,7 +52,7 @@ export const columns: ColumnDef<Salarie>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize">
-          <span className="text-sm text-gray-500 lowercase">
+          <span className="text-sm capitalize text-black">
             {row.getValue('poste')}
           </span>
         </div>
@@ -78,7 +66,7 @@ export const columns: ColumnDef<Salarie>[] = [
     cell: ({ row }) => {
       return (
         <div className="capitalize">
-          <span className="text-sm text-gray-500 lowercase">
+          <span className="text-sm text-black lowercase">
             {row.getValue('tel')}
           </span>
         </div>
@@ -93,15 +81,30 @@ export const columns: ColumnDef<Salarie>[] = [
       const renderStatusBg = (status: string) => {
         switch (status) {
           case 'created':
-            return 'bg-green-500'
-          case 'processing':
-            return 'bg-yellow-500'
-          case 'failed':
-            return 'bg-red-500'
-          case 'success':
-            return 'bg-blue-500'
+            return 'bg-green-500' // Vert = nouveau, ok
+          case 'approved':
+            return 'bg-blue-500' // Bleu = validé, stable
+          case 'contract-uploaded':
+            return 'bg-yellow-500' // Jaune = en attente / envoyé
+          case 'contract-signed':
+            return 'bg-purple-500' // Violet = finalisé / signé
           default:
-            return 'bg-gray-300'
+            return 'bg-gray-300' // Gris = inconnu / neutre
+        }
+      }
+
+      const getShortStatusFR = (status: string) => {
+        switch (status) {
+          case 'created':
+            return 'Créé' // Created
+          case 'approved':
+            return 'Validé' // Approved
+          case 'contract-uploaded':
+            return 'Envoyé' // Uploaded
+          case 'contract-signed':
+            return 'Signé' // Signed
+          default:
+            return 'Inconnu' // Unknown
         }
       }
 
@@ -110,8 +113,8 @@ export const columns: ColumnDef<Salarie>[] = [
       return (
         <div className="capitalize">
           <span
-            className={`text-white px-4 py-1.5 rounded text-xs ${renderStatusBg(status)}`}>
-            {status}
+            className={`text-white w-28 inline-block text-center py-1.5 rounded text-xs ${renderStatusBg(status)}`}>
+            {getShortStatusFR(status)}
           </span>
         </div>
       )
@@ -122,30 +125,8 @@ export const columns: ColumnDef<Salarie>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
-
-      return (
-        <div className="flex items-center justify-center">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}>
-                Copy payment ID
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      )
+      const id = row.getValue('id') as string
+      return <ActionsCell id={id} />
     },
   },
 ]
