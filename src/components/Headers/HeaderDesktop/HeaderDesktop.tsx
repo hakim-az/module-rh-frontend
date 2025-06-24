@@ -76,7 +76,7 @@ function Header({ nameRoute }: PropsType) {
           <Link
             to="/"
             className="flex flex-row items-center justify-center space-x-3 lg:hidden">
-            <span className="flex text-xl font-bold">Lomina</span>
+            <span className="flex text-xl font-bold">Module RH</span>
           </Link>
         </div>
 

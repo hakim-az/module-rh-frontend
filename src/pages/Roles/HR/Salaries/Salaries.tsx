@@ -1,7 +1,21 @@
+import NotFound from '@/pages/NotFound/NotFound'
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+
+// pages
+const Home = React.lazy(() => import('./pages/Home/Home'))
+
 export default function Salaries() {
   return (
-    <section className="w-full h-[calc(100vh-80px)] font-semibold flex items-center justify-center text-6xl">
-      Salariés
-    </section>
+    <Routes>
+      {/* all employees */}
+      <Route index element={<Home />} />
+
+      {/* employee contract */}
+      {/* <Route path='' index element={<Home />} /> */}
+
+      {/* Not Found page */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }

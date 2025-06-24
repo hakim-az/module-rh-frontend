@@ -1,0 +1,212 @@
+import type { Salarie } from './SalarieTable'
+
+export const data: Salarie[] = [
+  {
+    id: '1',
+    salarie: {
+      nom: 'Durand',
+      prenom: 'Alice',
+      email: 'alice.durand@finanssor.fr',
+    },
+    poste: 'Développeur web',
+    tel: '+33 6 01 02 03 04',
+    status: 'created',
+  },
+  {
+    id: '2',
+    salarie: {
+      nom: 'Martin',
+      prenom: 'Lucas',
+      email: 'lucas.martin@finanssor.fr',
+    },
+    poste: 'Chef de projet',
+    tel: '+33 6 11 22 33 44',
+    status: 'approved',
+  },
+  {
+    id: '3',
+    salarie: {
+      nom: 'Bernard',
+      prenom: 'Emma',
+      email: 'emma.bernard@finanssor.fr',
+    },
+    poste: 'UX Designer',
+    tel: '+33 6 55 44 33 22',
+    status: 'contract-uploaded',
+  },
+  {
+    id: '4',
+    salarie: { nom: 'Petit', prenom: 'Noah', email: 'noah.petit@finanssor.fr' },
+    poste: 'DevOps',
+    tel: '+33 6 77 88 99 00',
+    status: 'contreact-signed',
+  },
+  {
+    id: '5',
+    salarie: { nom: 'Robert', prenom: 'Léa', email: 'lea.robert@finanssor.fr' },
+    poste: 'Développeur mobile',
+    tel: '+33 6 22 33 44 55',
+    status: 'created',
+  },
+  {
+    id: '6',
+    salarie: {
+      nom: 'Richard',
+      prenom: 'Tom',
+      email: 'tom.richard@finanssor.fr',
+    },
+    poste: 'Scrum Master',
+    tel: '+33 6 99 88 77 66',
+    status: 'approved',
+  },
+  {
+    id: '7',
+    salarie: {
+      nom: 'Durant',
+      prenom: 'Inès',
+      email: 'ines.durant@finanssor.fr',
+    },
+    poste: 'Data Analyst',
+    tel: '+33 6 10 20 30 40',
+    status: 'created',
+  },
+  {
+    id: '8',
+    salarie: {
+      nom: 'Moreau',
+      prenom: 'Antoine',
+      email: 'antoine.moreau@finanssor.fr',
+    },
+    poste: 'Développeur front-end',
+    tel: '+33 6 98 76 54 32',
+    status: 'contract-uploaded',
+  },
+  {
+    id: '9',
+    salarie: {
+      nom: 'Simon',
+      prenom: 'Camille',
+      email: 'camille.simon@finanssor.fr',
+    },
+    poste: 'Product Owner',
+    tel: '+33 6 21 43 65 87',
+    status: 'contreact-signed',
+  },
+  {
+    id: '10',
+    salarie: {
+      nom: 'Michel',
+      prenom: 'Paul',
+      email: 'paul.michel@finanssor.fr',
+    },
+    poste: 'CTO',
+    tel: '+33 6 31 41 51 61',
+    status: 'created',
+  },
+  {
+    id: '11',
+    salarie: {
+      nom: 'Lemoine',
+      prenom: 'Sophie',
+      email: 'sophie.lemoine@finanssor.fr',
+    },
+    poste: 'QA Engineer',
+    tel: '+33 6 91 82 73 64',
+    status: 'approved',
+  },
+  {
+    id: '12',
+    salarie: {
+      nom: 'Garcia',
+      prenom: 'Julien',
+      email: 'julien.garcia@finanssor.fr',
+    },
+    poste: 'Développeur backend',
+    tel: '+33 6 81 72 63 54',
+    status: 'contract-uploaded',
+  },
+  {
+    id: '13',
+    salarie: {
+      nom: 'Faure',
+      prenom: 'Manon',
+      email: 'manon.faure@finanssor.fr',
+    },
+    poste: 'Product Manager',
+    tel: '+33 6 71 62 53 44',
+    status: 'created',
+  },
+  {
+    id: '14',
+    salarie: {
+      nom: 'Renard',
+      prenom: 'Hugo',
+      email: 'hugo.renard@finanssor.fr',
+    },
+    poste: 'Développeur fullstack',
+    tel: '+33 6 61 52 43 34',
+    status: 'contreact-signed',
+  },
+  {
+    id: '15',
+    salarie: {
+      nom: 'Barbier',
+      prenom: 'Laura',
+      email: 'laura.barbier@finanssor.fr',
+    },
+    poste: 'UX Researcher',
+    tel: '+33 6 51 42 33 24',
+    status: 'approved',
+  },
+  {
+    id: '16',
+    salarie: {
+      nom: 'Colin',
+      prenom: 'Nathan',
+      email: 'nathan.colin@finanssor.fr',
+    },
+    poste: 'Data Scientist',
+    tel: '+33 6 41 32 23 14',
+    status: 'contract-uploaded',
+  },
+  {
+    id: '17',
+    salarie: {
+      nom: 'Masson',
+      prenom: 'Élodie',
+      email: 'elodie.masson@finanssor.fr',
+    },
+    poste: 'Développeur web',
+    tel: '+33 6 31 22 13 04',
+    status: 'created',
+  },
+  {
+    id: '18',
+    salarie: {
+      nom: 'Robin',
+      prenom: 'Matthieu',
+      email: 'matthieu.robin@finanssor.fr',
+    },
+    poste: 'DevOps',
+    tel: '+33 6 21 12 03 94',
+    status: 'approved',
+  },
+  {
+    id: '19',
+    salarie: {
+      nom: 'Perrot',
+      prenom: 'Julie',
+      email: 'julie.perrot@finanssor.fr',
+    },
+    poste: 'Business Analyst',
+    tel: '+33 6 11 02 93 84',
+    status: 'contreact-signed',
+  },
+  {
+    id: '20',
+    salarie: { nom: 'Meyer', prenom: 'Axel', email: 'axel.meyer@finanssor.fr' },
+    poste: 'Développeur mobile',
+    tel: '+33 6 01 92 83 74',
+    status: 'created',
+  },
+]
