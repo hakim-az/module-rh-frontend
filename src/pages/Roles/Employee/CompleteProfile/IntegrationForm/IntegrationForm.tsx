@@ -106,24 +106,22 @@ export default function IntegrationForm() {
     <section className="w-full flex-col flex items-center justify-center ">
       <Header />
       <Banner
-        title="Lorem ipsum dolor sit amet."
+        title="01 - Formulaire d'intégration"
         description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vel repellendus aspernatur minus quo odit sunt consequatur porro soluta tenetur molestiae necessitatibus consequuntur in dicta maxime voluptatibus, autem debitis dolore explicabo harum expedita! Consectetur alias nam accusantium numquam doloribus minus nihil incidunt dolores quis id repudiandae iusto quidem facere quam est cum atque repellat et tempora nostrum, quae voluptatum! Ex, porro inventore! Totam atque id, accusamus libero fugit quo distinctio sapiente!"
       />
       <div className="p-4 w-11/12 mx-auto pb-20 max-w-[1200px] ">
-        <CustomModal
-          openModal={activeValidateIntegrationModal}
-          setOpenModal={setActiveValidateIntegrationModal}>
-          <ValidateIntegrationModal
-            setActiveValidateIntegrationModal={
-              setActiveValidateIntegrationModal
-            }
-          />
-        </CustomModal>
         <Stepper steps={steps} />
 
         {/* ⬇️ Form */}
         <div className="w-full mx-auto py-20">{renderForm()}</div>
       </div>
+      <CustomModal
+        openModal={activeValidateIntegrationModal}
+        setOpenModal={setActiveValidateIntegrationModal}>
+        <ValidateIntegrationModal
+          setActiveValidateIntegrationModal={setActiveValidateIntegrationModal}
+        />
+      </CustomModal>
     </section>
   )
 }

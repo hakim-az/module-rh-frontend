@@ -16,7 +16,7 @@ export default function Header() {
         <button
           type="button"
           onClick={handleLogout}
-          className="flex hover:bg-blue-500 hover:text-white ease-in-out px-6 py-3 rounded-md transition-all delay-75 items-center cursor-pointer justify-center gap-5">
+          className="flex border hover:border-blue-500 border-black text-sm hover:bg-blue-500 hover:text-white ease-in-out px-6 py-3 rounded-md transition-all delay-75 items-center cursor-pointer justify-center gap-5">
           Se déconnecter
           <LogOut />
         </button>
