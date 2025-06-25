@@ -23,7 +23,7 @@ export interface Step {
   status: 'done' | 'current' | 'upcoming'
 }
 
-export default function IntegrationForm() {
+export default function DetailsSalarie() {
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
