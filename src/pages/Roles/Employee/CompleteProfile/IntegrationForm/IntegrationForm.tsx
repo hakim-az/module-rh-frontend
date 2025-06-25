@@ -25,7 +25,7 @@ export interface Step {
 
 export default function IntegrationForm() {
   // states
-  const [currentStepIndex, setCurrentStepIndex] = useState(0)
+  const [currentStepIndex, setCurrentStepIndex] = useState(2)
   const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
     useState<boolean>(false)
 

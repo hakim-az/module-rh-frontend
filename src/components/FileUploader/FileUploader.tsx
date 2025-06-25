@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { UploadCloud } from 'lucide-react'
-import type { FieldValues, UseFormSetValue } from 'react-hook-form'
+import type {
+  FieldValues,
+  Path,
+  PathValue,
+  UseFormSetValue,
+} from 'react-hook-form'
 
 function formatFileSize(size: number) {
   if (size < 1024) return `${size} bytes`
@@ -9,23 +14,23 @@ function formatFileSize(size: number) {
   return `${(size / (1024 * 1024)).toFixed(1)} MB`
 }
 
-type FileUploaderProps = {
+type FileUploaderProps<T extends FieldValues> = {
   title: string
-  name: string
+  name: Path<T>
   onFileSelect: (file: File) => void
   error?: string
-  setValue: UseFormSetValue<FieldValues>
+  setValue: UseFormSetValue<T>
   defaultFile?: File
 }
 
-export default function FileUploader({
+export default function FileUploader<T extends FieldValues>({
   title,
   name,
   onFileSelect,
   error,
   setValue,
   defaultFile,
-}: FileUploaderProps) {
+}: FileUploaderProps<T>) {
   const [selectedFile, setSelectedFile] = useState<File | null>(
     defaultFile ?? null
   )
@@ -36,8 +41,8 @@ export default function FileUploader({
       if (acceptedFiles.length > 0) {
         const file = acceptedFiles[0]
         setSelectedFile(file)
-        setDropError(null) // clear previous dropzone errors
-        setValue(name, file, { shouldValidate: true })
+        setDropError(null)
+        setValue(name, file as PathValue<T, Path<T>>, { shouldValidate: true })
         onFileSelect(file)
       }
     },
@@ -66,12 +71,12 @@ export default function FileUploader({
   useEffect(() => {
     if (defaultFile) {
       setSelectedFile(defaultFile)
-      setValue(name, defaultFile)
+      setValue(name, defaultFile as PathValue<T, Path<T>>)
     }
   }, [defaultFile, name, setValue])
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 bg-white">
       <label className="font-medium mb-3 inline-block text-black">
         {title}
         <span className="text-red-500"> *</span>
@@ -112,10 +117,7 @@ export default function FileUploader({
         )}
       </div>
 
-      {/* Dropzone error (like file too big) */}
       {dropError && <p className="text-sm text-red-500">{dropError}</p>}
-
-      {/* RHF validation error */}
       {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   )

@@ -16,13 +16,13 @@ export default function ValidateIntegrationModal({
       {/* content */}
       <div className="w-full h-full section-title ">
         <h2 className="my-4 text-xl text-center font-semibold sm:text-2xl lg:text-4xl text-primaryblack">
-          Valider le formulaire d'intégration
+          Approuver formulaire d'intégration ajouter et contrat
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          En validant ce formulaire, vos informations personnelles,
-          professionnelles et les documents justificatifs seront envoyés au
-          service RH.Veuillez vous assurer que toutes les données sont
-          correctes. Aucune modification ne sera possible après l'envoi.
+          Vous êtes sur le point de valider les informations du salarié.Une fois
+          confirmé, vous pourrez ajouter et envoyer le contrat de travail.
+          Veillez à ce que toutes les données soient exactes avant de
+          poursuivre.
         </p>
       </div>
       {/* buttons */}

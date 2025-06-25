@@ -1,3 +1,4 @@
+import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
@@ -39,35 +40,20 @@ export default function InfosPerso({
           Identité :
         </span>
         {/* civilité */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Civilité" value="M" />
         {/* Prénom */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Prénom" value="Abdelhakim" />
         {/* Nom de naissance */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Nome de naissance" value="AZZAZ" />
         {/* Nom usuel */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Nom usuel" value="AZZAZ" />
         {/* Situation familiale */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Situation familiale" value="Célibataire" />
         {/* Numéro de sécurité sociale */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput
+          label="Numéro de sécurité sociale"
+          value="234365983667738"
+        />
       </div>
       {/* Naissance et nationalité : */}
       <div className="grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
@@ -75,30 +61,15 @@ export default function InfosPerso({
           Naissance et nationalité :
         </span>
         {/* Date de naissance */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Date de naissance" value="19/08/2001" />
         {/* Pays de naissance */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Pays de naissance" value="Algérie" />
         {/* Départmemnt de naissance */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Départmemnt de naissance" value="Alger" />
         {/* commune de naissance */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="commune de naissance" value="Alger" />
         {/* Pays de nationalité */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Pays de nationalité" value="Algérie" />
       </div>
       {/* coordonnées & adresse */}
       <div className="grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
@@ -106,60 +77,44 @@ export default function InfosPerso({
           Coordonnées :
         </span>
         {/* E-mail personnelle */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput
+          label="E-mail personnelle"
+          value="azzaz.abdelhakim@gmail.com"
+        />
         {/* E-mail professionnel */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput
+          label="E-mail professionnel"
+          value="a.azzaz@finanssor.fr"
+        />
         {/* Téléphone portable personnelle */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput
+          label="Téléphone portable personnelle"
+          value="+33 7 77 77 77 77"
+        />
         {/* Téléphone portable professionnel */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput
+          label="Téléphone portable professionnel"
+          value="+33 7 77 77 77 77"
+        />
         {/* adresse */}
         <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
           Adresse :
         </span>
         {/* Pays */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Pays" value="France" />
         {/* Code postal */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
-
+        <DisplayInput label="Code postal" value="92240" />
         {/* Ville */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Ville" value="Malakoff" />
         {/* Adresse */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Adresse" value="20 rue pierre valette" />
         {/* Complément d'adresse */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        <DisplayInput label="Complément d'adresse" value="Appartement 306" />
         {/* Domicilié fiscalement hors de France */}
-        <div>
-          <span>Civilité</span>
-          <span>M</span>
-        </div>
+        {/* <DisplayInput
+          label="E-mail personnelle"
+          value="azzaz.abdelhakim@gmail.com"
+        /> */}
       </div>
       <div className="w-full flex gap-16 justify-center">
         {/* revenir */}
