@@ -10,10 +10,10 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import IntegrationForm from './CompleteProfile/IntegrationForm/IntegrationForm'
 import SignContract from './CompleteProfile/SignContract/SignContract'
 import WaitRhResponse from './CompleteProfile/WaitResponse/WaitRhResponse'
+import WaitContract from './CompleteProfile/WaitContract/WaitContract'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
-
 const Accueil = React.lazy(() => import('./Accueil/Accueil'))
 const Absences = React.lazy(() => import('./Absences/Absences'))
 const CoffreFort = React.lazy(() => import('./CoffreFort/CoffreFort'))
@@ -23,7 +23,7 @@ const TitreRestaurant = React.lazy(
 const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
-function DesignerDashboard() {
+export default function Employee() {
   const [userStatus, setUserStatus] = useState<UserStatus | null>(null)
 
   useEffect(() => {
@@ -58,43 +58,48 @@ function DesignerDashboard() {
   }
 
   if (userStatus === 'step-2') {
-    return <SignContract />
+    return <WaitContract />
   }
 
   if (userStatus === 'step-3') {
+    return <SignContract />
+  }
+
+  if (userStatus === 'step-4') {
     return <WaitRhResponse />
   }
 
-  return (
-    <Routes>
-      <Route
-        element={
-          <EmployeeLayout>
-            <Outlet />
-          </EmployeeLayout>
-        }>
-        {/* Home page */}
-        <Route index element={<Accueil />} />
+  if (userStatus === 'step-5') {
+    return (
+      <Routes>
+        <Route
+          element={
+            <EmployeeLayout>
+              <Outlet />
+            </EmployeeLayout>
+          }>
+          {/* Home page */}
+          <Route index element={<Accueil />} />
 
-        {/* Home page */}
-        <Route path="absences" element={<Absences />} />
+          {/* Home page */}
+          <Route path="absences" element={<Absences />} />
 
-        {/* Home page */}
-        <Route path="coffre-fort" element={<CoffreFort />} />
+          {/* Home page */}
+          <Route path="coffre-fort" element={<CoffreFort />} />
 
-        {/* Home page */}
-        <Route path="titre-restaurant" element={<TitreRestaurant />} />
+          {/* Home page */}
+          <Route path="titre-restaurant" element={<TitreRestaurant />} />
 
-        {/* Home page */}
-        <Route path="informations-personnelles" element={<InfoPerso />} />
+          {/* Home page */}
+          <Route path="informations-personnelles" element={<InfoPerso />} />
 
-        {/* Home page */}
-        <Route path="informations-professionnelles" element={<InfosPro />} />
+          {/* Home page */}
+          <Route path="informations-professionnelles" element={<InfosPro />} />
 
-        {/* Not Found page */}
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
-  )
+          {/* Not Found page */}
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    )
+  }
 }
-export default DesignerDashboard

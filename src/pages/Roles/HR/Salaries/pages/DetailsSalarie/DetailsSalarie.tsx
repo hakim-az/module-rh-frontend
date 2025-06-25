@@ -4,18 +4,11 @@ import { useState } from 'react'
 import Stepper from './components/Stepper/Stepper'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import ValidateIntegrationModal from './components/Modals/ValidateIntegrationModal'
-import React from 'react'
 import PagePath from '@/components/PagePath/PagePath'
-
-// forms
-const InfosPerso = React.lazy(
-  () => import('./StepperForms/InfosPerso/InfosPerso')
-)
-const InfosPro = React.lazy(() => import('./StepperForms/InfosPro/InfosPro'))
-const Justificatifs = React.lazy(
-  () => import('./StepperForms/Justificatifs/Justificatifs')
-)
-const Contrat = React.lazy(() => import('./StepperForms/Contrat/Contrat'))
+import InfosPerso from './StepperForms/InfosPerso/InfosPerso'
+import InfosPro from './StepperForms/InfosPro/InfosPro'
+import Justificatifs from './StepperForms/Justificatifs/Justificatifs'
+import Contrat from './StepperForms/Contrat/Contrat'
 
 // types
 export interface Step {

@@ -36,7 +36,7 @@ export default function ValidateIntegrationModal({
         <button
           type="button"
           onClick={() => {
-            localStorage.setItem('userStatus', 'step-4')
+            localStorage.setItem('userStatus', 'step-2')
             setActiveValidateIntegrationModal(false)
             window.location.reload()
           }}

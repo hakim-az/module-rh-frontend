@@ -18,7 +18,7 @@ const TitreRestaurant = React.lazy(
 const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
-function DesignerDashboard() {
+export default function Admin() {
   return (
     <Routes>
       <Route
@@ -54,4 +54,3 @@ function DesignerDashboard() {
     </Routes>
   )
 }
-export default DesignerDashboard

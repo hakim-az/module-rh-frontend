@@ -6,16 +6,9 @@ import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import Header from '../components/Header/Header'
 import Banner from '../components/Banner/Banner'
 import ValidateIntegrationModal from '../components/Modals/ValidateIntegrationModal'
-import React from 'react'
-
-// forms
-const InfosPerso = React.lazy(
-  () => import('./StepperForms/InfosPerso/InfosPerso')
-)
-const InfosPro = React.lazy(() => import('./StepperForms/InfosPro/InfosPro'))
-const Justificatifs = React.lazy(
-  () => import('./StepperForms/Justificatifs/Justificatifs')
-)
+import InfosPerso from './StepperForms/InfosPerso/InfosPerso'
+import InfosPro from './StepperForms/InfosPro/InfosPro'
+import Justificatifs from './StepperForms/Justificatifs/Justificatifs'
 
 // types
 export interface Step {
