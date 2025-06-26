@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, Route, Routes } from 'react-router-dom'
+import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
@@ -60,13 +60,13 @@ export default function Employee() {
           index
           element={
             <CompleteProfileLayout>
-              <CompleteProfile userStatus={userStatus} />{' '}
+              <CompleteProfile userStatus={userStatus} />
             </CompleteProfileLayout>
           }
         />
 
-        {/* Not Found page */}
-        <Route path="*" element={<NotFound />} />
+        {/* Redirect any other route to index */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     )
   }
