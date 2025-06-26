@@ -4,9 +4,11 @@ export default function Step1() {
   return (
     <>
       <PagePath />
-      <section className="h-96 text-4xl w-full flex items-center justify-center ">
-        <h2>Waiting employee integration form</h2>
-      </section>
+      <div className="p-4 w-11/12 mx-auto pb-20 max-w-[1200px]">
+        <span className="inline-block text-center w-full mb-10 text-xl font-semibold">
+          01 - Formulaire d'integration en cours
+        </span>
+      </div>
     </>
   )
 }

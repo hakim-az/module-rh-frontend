@@ -1,11 +1,15 @@
 import { useState } from 'react'
 
+// components
+import CustomModal from '@/components/Headers/CustomModal/CustomModal'
+import IntegrateSalarieModel from '../components/Modals/IntegrateSalarieModel/IntegrateSalarieModel'
+
 import PagePath from '@/components/PagePath/PagePath'
 import InfosPerso from './InfosPerso/InfosPerso'
 import InfosPro from './InfosPro/InfosPro'
 import Justificatifs from './Justificatifs/Justificatifs'
 import Contrat from './Contrat/Contrat'
-import StepperDispaly from '../components/StepperDisplay/StepperDisplay'
+import StepperDisplay from '../components/StepperDisplay/StepperDisplay'
 
 // types
 export interface Step {
@@ -16,6 +20,8 @@ export interface Step {
 export default function Step4() {
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
+  const [activeValidateSalarieModal, setActiveValidateSalarieModal] =
+    useState<boolean>(false)
 
   // consts
   const labels = [
@@ -43,7 +49,11 @@ export default function Step4() {
       case 2:
         return <Justificatifs />
       case 3:
-        return <Contrat />
+        return (
+          <Contrat
+            setActiveValidateSalarieModal={setActiveValidateSalarieModal}
+          />
+        )
       default:
         return null
     }
@@ -53,15 +63,25 @@ export default function Step4() {
     <>
       <PagePath />
       <div className="p-4 w-11/12 mx-auto pb-20 max-w-[1200px]">
-        <StepperDispaly
+        <span className="inline-block text-center w-full mb-10 text-xl font-semibold">
+          04 - Attendre validation de l'employer
+        </span>
+
+        <StepperDisplay
           steps={steps}
           setCurrentStepIndex={setCurrentStepIndex}
           currentStepIndex={currentStepIndex}
         />
 
-        {/* ⬇️ Form */}
         <div className="w-full mx-auto py-20">{renderForm()}</div>
       </div>
+      <CustomModal
+        openModal={activeValidateSalarieModal}
+        setOpenModal={setActiveValidateSalarieModal}>
+        <IntegrateSalarieModel
+          setActiveValidateSalarieModal={setActiveValidateSalarieModal}
+        />
+      </CustomModal>
     </>
   )
 }

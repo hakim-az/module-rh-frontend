@@ -1,7 +1,11 @@
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import FileViewer from './FileViewer/FileViewer'
 
-export default function Contrat() {
+interface IProps {
+  setActiveValidateSalarieModal: (activeValidateSalarieModal: boolean) => void
+}
+
+export default function Contrat({ setActiveValidateSalarieModal }: IProps) {
   return (
     <section className="w-full mx-auto gap-10 flex flex-col ">
       <div className="grid grid-cols-1  bg-white lg:grid-cols-2 p-7 gap-10 rounded-md border border-gray-200 shadow-md w-full">
@@ -36,6 +40,15 @@ export default function Contrat() {
           Contrat d'intégration :
         </span>
         <FileViewer />
+      </div>
+      {/* validation button */}
+      <div className="flex items-center justify-center">
+        <button
+          type="button"
+          onClick={() => setActiveValidateSalarieModal(true)}
+          className="mb-5 mr-5 flex items-center justify-center gap-3 hover:scale-110 transition-all ease delay-75 cursor-pointer bg-green-500 text-white px-8 py-2 rounded">
+          Approuver le salarié
+        </button>
       </div>
     </section>
   )

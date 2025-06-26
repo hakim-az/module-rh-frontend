@@ -111,21 +111,19 @@ export default function Step2() {
     <>
       <PagePath />
       <div className="p-4 w-11/12 mx-auto pb-20 max-w-[1200px]">
-        <CustomModal
-          openModal={activeValidateIntegrationModal}
-          setOpenModal={setActiveValidateIntegrationModal}>
-          <ValidateIntegrationModal
-            setActiveValidateIntegrationModal={
-              setActiveValidateIntegrationModal
-            }
-          />
-        </CustomModal>
-
+        <span className="inline-block text-center w-full mb-10 text-xl font-semibold">
+          02 - Ajouter Contrat
+        </span>
         <Stepper steps={steps} />
-
-        {/* ⬇️ Form */}
         <div className="w-full mx-auto py-20">{renderForm()}</div>
       </div>
+      <CustomModal
+        openModal={activeValidateIntegrationModal}
+        setOpenModal={setActiveValidateIntegrationModal}>
+        <ValidateIntegrationModal
+          setActiveValidateIntegrationModal={setActiveValidateIntegrationModal}
+        />
+      </CustomModal>
     </>
   )
 }

@@ -24,7 +24,7 @@ function NavlinksContainer({ navlinkSidebar, menuHeader }: PropsType) {
   return (
     <nav className="w-full px-5 mx-auto space-y-[10px]">
       <span
-        className={`text-white font-semibold text-xl mb-3  ${wideNavbar ? 'inline-block' : 'hidden'}`}>
+        className={`text-white font-semibold text-xl mb-3.5  ${wideNavbar ? 'inline-block' : 'hidden'}`}>
         {menuHeader}
       </span>
       {navlinkSidebar.map((navlink) => (
@@ -34,11 +34,11 @@ function NavlinksContainer({ navlinkSidebar, menuHeader }: PropsType) {
           <NavLink
             to={`${navlink.path}`}
             title={navlink.name}
-            className={` h-10 w-11/12 group ${
+            className={` h-11 w-[95%] group ${
               isActiveChange(`${navlink.path}`) && ' bg-white'
             } rounded flex items-center ${
               wideNavbar ? 'justify-start w-10/12' : 'justify-center w-14'
-            } gap-2 mt-1 hover:text-primaryBlue hover:bg-white hover:font-bold `}>
+            } hover:text-primaryBlue hover:bg-white hover:font-bold `}>
             <div
               className={`Icon w-7 h-7 ${
                 isActiveChange(`${navlink.path}`) ? ' bg-white ' : ''

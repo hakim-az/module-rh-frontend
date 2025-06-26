@@ -5,7 +5,7 @@ import InfosPerso from './InfosPerso/InfosPerso'
 import InfosPro from './InfosPro/InfosPro'
 import Justificatifs from './Justificatifs/Justificatifs'
 import Contrat from './Contrat/Contrat'
-import StepperDisplay from '../components/StepperDisplay/StepperDisplay'
+import StepperDispaly from '../components/StepperDisplay/StepperDisplay'
 
 // types
 export interface Step {
@@ -13,7 +13,7 @@ export interface Step {
   status: 'done' | 'current' | 'upcoming'
 }
 
-export default function Step3() {
+export default function Step5() {
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
 
@@ -54,15 +54,15 @@ export default function Step3() {
       <PagePath />
       <div className="p-4 w-11/12 mx-auto pb-20 max-w-[1200px]">
         <span className="inline-block text-center w-full mb-10 text-xl font-semibold">
-          03 - Attendre signature du Contrat
+          05 - Employer valider
         </span>
-
-        <StepperDisplay
+        <StepperDispaly
           steps={steps}
           setCurrentStepIndex={setCurrentStepIndex}
           currentStepIndex={currentStepIndex}
         />
 
+        {/* ⬇️ Form */}
         <div className="w-full mx-auto py-20">{renderForm()}</div>
       </div>
     </>
