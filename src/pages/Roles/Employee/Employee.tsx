@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
-import IntegrationFormProvider from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormProvider'
 
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 
-// integration steps
-import Step1 from './CompleteProfile/Step1/Step1'
-import Step2 from './CompleteProfile/Step2/Step2'
-import Step3 from './CompleteProfile/Step3/Step3'
-import Step4 from './CompleteProfile/Step4/Step4'
 import CompleteProfileLayout from '@/components/Layouts/CompleteProfileLayout/CompleteProfileLayout'
+import CompleteProfile from './CompleteProfile/CompleteProfile'
 
-type UserStatus = 'step-1' | 'step-2' | 'step-3' | 'step-4' | 'step-5'
+export type UserStatus = 'step-1' | 'step-2' | 'step-3' | 'step-4' | 'step-5'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
@@ -57,39 +52,25 @@ export default function Employee() {
     )
   }
 
-  if (userStatus === 'step-1') {
+  if (userStatus !== 'step-5') {
     return (
-      <CompleteProfileLayout>
-        <IntegrationFormProvider>
-          <Step1 />
-        </IntegrationFormProvider>
-      </CompleteProfileLayout>
+      <Routes>
+        {/* Home page */}
+        <Route
+          index
+          element={
+            <CompleteProfileLayout>
+              <CompleteProfile userStatus={userStatus} />{' '}
+            </CompleteProfileLayout>
+          }
+        />
+
+        {/* Not Found page */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     )
   }
 
-  if (userStatus === 'step-2') {
-    return (
-      <CompleteProfileLayout>
-        <Step2 />
-      </CompleteProfileLayout>
-    )
-  }
-
-  if (userStatus === 'step-3') {
-    return (
-      <CompleteProfileLayout>
-        <Step3 />
-      </CompleteProfileLayout>
-    )
-  }
-
-  if (userStatus === 'step-4') {
-    return (
-      <CompleteProfileLayout>
-        <Step4 />
-      </CompleteProfileLayout>
-    )
-  }
   if (userStatus === 'step-5') {
     return (
       <Routes>
