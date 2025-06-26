@@ -14,7 +14,7 @@ export default function Salaries() {
         <Route index element={<Home />} />
 
         {/* employee contract */}
-        <Route path="details/:id" element={<Details />} />
+        <Route path="details/:step" element={<Details />} />
 
         {/* Not Found page */}
         <Route path="*" element={<NotFound />} />

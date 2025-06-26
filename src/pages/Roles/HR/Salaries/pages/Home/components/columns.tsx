@@ -80,31 +80,35 @@ export const columns: ColumnDef<Salarie>[] = [
     cell: ({ row }) => {
       const renderStatusBg = (status: string) => {
         switch (status) {
-          case 'created':
-            return 'bg-green-500' // Vert = nouveau, ok
-          case 'approved':
-            return 'bg-blue-500' // Bleu = validé, stable
-          case 'contract-uploaded':
-            return 'bg-yellow-500' // Jaune = en attente / envoyé
-          case 'contract-signed':
-            return 'bg-purple-500' // Violet = finalisé / signé
+          case 'step-1':
+            return '#9CA3AF'
+          case 'step-2':
+            return '#3B82F6'
+          case 'step-3':
+            return '#FBBF24'
+          case 'step-4':
+            return '#EC4899'
+          case 'step-5':
+            return '#10B981'
           default:
-            return 'bg-gray-300' // Gris = inconnu / neutre
+            return '#000000'
         }
       }
 
       const getShortStatusFR = (status: string) => {
         switch (status) {
-          case 'created':
-            return 'Créé' // Created
-          case 'approved':
-            return 'Validé' // Approved
-          case 'contract-uploaded':
-            return 'Envoyé' // Uploaded
-          case 'contract-signed':
-            return 'Signé' // Signed
+          case 'step-1':
+            return 'Compte créé'
+          case 'step-2':
+            return 'Formulaire reçu'
+          case 'step-3':
+            return 'Contrat prêt'
+          case 'step-4':
+            return 'Contrat signé'
+          case 'step-5':
+            return 'Accès validé'
           default:
-            return 'Inconnu' // Unknown
+            return '-'
         }
       }
 
@@ -113,7 +117,8 @@ export const columns: ColumnDef<Salarie>[] = [
       return (
         <div className="capitalize">
           <span
-            className={`text-white w-28 inline-block text-center py-1.5 rounded text-xs ${renderStatusBg(status)}`}>
+            style={{ backgroundColor: renderStatusBg(status) }}
+            className="text-white w-28 inline-block text-center py-1.5 rounded text-xs">
             {getShortStatusFR(status)}
           </span>
         </div>
@@ -126,7 +131,12 @@ export const columns: ColumnDef<Salarie>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const id = row.getValue('id') as string
-      return <ActionsCell id={id} />
+      const status = row.getValue('status') as string
+
+      // Extract step number from "step-1" to "step-5"
+      const stepNumber = parseInt(status.replace('step-', ''), 10)
+
+      return <ActionsCell id={id} step={stepNumber} />
     },
   },
 ]

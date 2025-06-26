@@ -10,7 +10,7 @@ export const data: Salarie[] = [
     },
     poste: 'Développeur web',
     tel: '+33 6 01 02 03 04',
-    status: 'created',
+    status: 'step-1',
   },
   {
     id: '2',
@@ -21,7 +21,7 @@ export const data: Salarie[] = [
     },
     poste: 'Chef de projet',
     tel: '+33 6 11 22 33 44',
-    status: 'approved',
+    status: 'step-5',
   },
   {
     id: '3',
@@ -32,21 +32,21 @@ export const data: Salarie[] = [
     },
     poste: 'UX Designer',
     tel: '+33 6 55 44 33 22',
-    status: 'contract-uploaded',
+    status: 'step-3',
   },
   {
     id: '4',
     salarie: { nom: 'Petit', prenom: 'Noah', email: 'noah.petit@finanssor.fr' },
     poste: 'DevOps',
     tel: '+33 6 77 88 99 00',
-    status: 'contreact-signed',
+    status: 'step-4',
   },
   {
     id: '5',
     salarie: { nom: 'Robert', prenom: 'Léa', email: 'lea.robert@finanssor.fr' },
     poste: 'Développeur mobile',
     tel: '+33 6 22 33 44 55',
-    status: 'created',
+    status: 'step-1',
   },
   {
     id: '6',
@@ -57,7 +57,7 @@ export const data: Salarie[] = [
     },
     poste: 'Scrum Master',
     tel: '+33 6 99 88 77 66',
-    status: 'approved',
+    status: 'step-2',
   },
   {
     id: '7',
@@ -68,7 +68,7 @@ export const data: Salarie[] = [
     },
     poste: 'Data Analyst',
     tel: '+33 6 10 20 30 40',
-    status: 'created',
+    status: 'step-1',
   },
   {
     id: '8',
@@ -79,7 +79,7 @@ export const data: Salarie[] = [
     },
     poste: 'Développeur front-end',
     tel: '+33 6 98 76 54 32',
-    status: 'contract-uploaded',
+    status: 'step-3',
   },
   {
     id: '9',
@@ -90,7 +90,7 @@ export const data: Salarie[] = [
     },
     poste: 'Product Owner',
     tel: '+33 6 21 43 65 87',
-    status: 'contreact-signed',
+    status: 'step-4',
   },
   {
     id: '10',
@@ -101,7 +101,7 @@ export const data: Salarie[] = [
     },
     poste: 'CTO',
     tel: '+33 6 31 41 51 61',
-    status: 'created',
+    status: 'step-1',
   },
   {
     id: '11',
@@ -112,7 +112,7 @@ export const data: Salarie[] = [
     },
     poste: 'QA Engineer',
     tel: '+33 6 91 82 73 64',
-    status: 'approved',
+    status: 'step-2',
   },
   {
     id: '12',
@@ -123,7 +123,7 @@ export const data: Salarie[] = [
     },
     poste: 'Développeur backend',
     tel: '+33 6 81 72 63 54',
-    status: 'contract-uploaded',
+    status: 'step-3',
   },
   {
     id: '13',
@@ -134,7 +134,7 @@ export const data: Salarie[] = [
     },
     poste: 'Product Manager',
     tel: '+33 6 71 62 53 44',
-    status: 'created',
+    status: 'step-1',
   },
   {
     id: '14',
@@ -145,7 +145,7 @@ export const data: Salarie[] = [
     },
     poste: 'Développeur fullstack',
     tel: '+33 6 61 52 43 34',
-    status: 'contreact-signed',
+    status: 'step-4',
   },
   {
     id: '15',
@@ -156,7 +156,7 @@ export const data: Salarie[] = [
     },
     poste: 'UX Researcher',
     tel: '+33 6 51 42 33 24',
-    status: 'approved',
+    status: 'step-2',
   },
   {
     id: '16',
@@ -167,7 +167,7 @@ export const data: Salarie[] = [
     },
     poste: 'Data Scientist',
     tel: '+33 6 41 32 23 14',
-    status: 'contract-uploaded',
+    status: 'step-3',
   },
   {
     id: '17',
@@ -178,7 +178,7 @@ export const data: Salarie[] = [
     },
     poste: 'Développeur web',
     tel: '+33 6 31 22 13 04',
-    status: 'created',
+    status: 'step-1',
   },
   {
     id: '18',
@@ -189,7 +189,7 @@ export const data: Salarie[] = [
     },
     poste: 'DevOps',
     tel: '+33 6 21 12 03 94',
-    status: 'approved',
+    status: 'step-2',
   },
   {
     id: '19',
@@ -200,13 +200,13 @@ export const data: Salarie[] = [
     },
     poste: 'Business Analyst',
     tel: '+33 6 11 02 93 84',
-    status: 'contreact-signed',
+    status: 'step-4',
   },
   {
     id: '20',
     salarie: { nom: 'Meyer', prenom: 'Axel', email: 'axel.meyer@finanssor.fr' },
     poste: 'Développeur mobile',
     tel: '+33 6 01 92 83 74',
-    status: 'created',
+    status: 'step-1',
   },
 ]
