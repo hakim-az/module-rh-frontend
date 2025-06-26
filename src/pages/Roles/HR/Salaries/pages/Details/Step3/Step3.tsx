@@ -1,15 +1,15 @@
 import { useState } from 'react'
 
 // components
-import Stepper from './components/Stepper/Stepper'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
-import IntegrateSalarieModel from './components/Modals/IntegrateSalarieModel'
+import IntegrateSalarieModel from '../components/Modals/IntegrateSalarieModel/IntegrateSalarieModel'
 
 import PagePath from '@/components/PagePath/PagePath'
-import InfosPerso from './StepperForms/InfosPerso/InfosPerso'
-import InfosPro from './StepperForms/InfosPro/InfosPro'
-import Justificatifs from './StepperForms/Justificatifs/Justificatifs'
-import Contrat from './StepperForms/Contrat/Contrat'
+import InfosPerso from './InfosPerso/InfosPerso'
+import InfosPro from './InfosPro/InfosPro'
+import Justificatifs from './Justificatifs/Justificatifs'
+import Contrat from './Contrat/Contrat'
+import StepperDisplay from '../components/StepperDisplay/StepperDisplay'
 
 // types
 export interface Step {
@@ -17,7 +17,7 @@ export interface Step {
   status: 'done' | 'current' | 'upcoming'
 }
 
-export default function ValidateSalarie() {
+export default function Step3() {
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   const [activeValidateSalarieModal, setActiveValidateSalarieModal] =
@@ -71,7 +71,7 @@ export default function ValidateSalarie() {
           />
         </CustomModal>
 
-        <Stepper
+        <StepperDisplay
           steps={steps}
           setCurrentStepIndex={setCurrentStepIndex}
           currentStepIndex={currentStepIndex}

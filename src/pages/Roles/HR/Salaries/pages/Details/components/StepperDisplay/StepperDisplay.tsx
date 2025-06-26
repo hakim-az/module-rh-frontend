@@ -1,4 +1,7 @@
-import type { Step } from '../../ValidateSalarie'
+interface Step {
+  label: string
+  status: 'done' | 'current' | 'upcoming'
+}
 
 interface StepperProps {
   steps: Step[]
@@ -6,7 +9,7 @@ interface StepperProps {
   currentStepIndex: number
 }
 
-export default function Stepper({
+export default function StepperDispaly({
   steps,
   setCurrentStepIndex,
   currentStepIndex,
@@ -31,7 +34,6 @@ export default function Stepper({
             <div className="flex flex-col h-full gap-3 items-center justify-center">
               <div
                 className={`flex items-center justify-center border-2 w-9 h-9 rounded-full font-medium ${circleStyle}`}>
-                {/* {index + 1} */}
                 <span
                   className={`inline-block ${pointStyle} w-3 h-3 rounded-full`}></span>
               </div>

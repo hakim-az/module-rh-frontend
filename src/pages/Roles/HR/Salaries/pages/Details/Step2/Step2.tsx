@@ -1,14 +1,14 @@
 import { useState } from 'react'
 
 // components
-import Stepper from './components/Stepper/Stepper'
+import Stepper from '../components/Stepper/Stepper'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
-import ValidateIntegrationModal from './components/Modals/ValidateIntegrationModal'
+import ValidateIntegrationModal from '../components/Modals/ValidateIntegrationModal/ValidateIntegrationModal'
 import PagePath from '@/components/PagePath/PagePath'
-import InfosPerso from './StepperForms/InfosPerso/InfosPerso'
-import InfosPro from './StepperForms/InfosPro/InfosPro'
-import Justificatifs from './StepperForms/Justificatifs/Justificatifs'
-import Contrat from './StepperForms/Contrat/Contrat'
+import InfosPerso from './InfosPerso/InfosPerso'
+import InfosPro from './InfosPro/InfosPro'
+import Justificatifs from './Justificatifs/Justificatifs'
+import Contrat from './Contrat/Contrat'
 
 // types
 export interface Step {
@@ -16,7 +16,7 @@ export interface Step {
   status: 'done' | 'current' | 'upcoming'
 }
 
-export default function DetailsSalarie() {
+export default function Step2() {
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
@@ -27,7 +27,7 @@ export default function DetailsSalarie() {
     'Informations personnelles',
     'Informations professionnelles',
     'Pièces justificatives',
-    'Contrat',
+    'Informations contrat',
   ]
 
   const steps: Step[] = labels.map((label, index) => {
@@ -51,8 +51,6 @@ export default function DetailsSalarie() {
       setCurrentStepIndex(currentStepIndex - 1)
     }
   }
-
-  console.log(currentStepIndex)
 
   // Form Component Selector
   const renderForm = () => {

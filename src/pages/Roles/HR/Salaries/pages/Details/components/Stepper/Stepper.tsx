@@ -1,4 +1,7 @@
-import type { Step } from '../../DetailsSalarie'
+interface Step {
+  label: string
+  status: 'done' | 'current' | 'upcoming'
+}
 
 interface StepperProps {
   steps: Step[]
@@ -49,11 +52,9 @@ export default function Stepper({ steps }: StepperProps) {
         const { circle, content, icon } = getStepStyle()
 
         return (
-          <div
-            className="flex items-stretch min-h-[90px] justify-start"
-            key={step.label}>
+          <div className="flex items-start" key={step.label}>
             {/* number and title */}
-            <div className="flex flex-col h-full gap-3 items-center justify-center">
+            <div className="flex flex-col gap-3 items-center justify-center">
               <div
                 className={`flex items-center justify-center border-2 w-9 h-9 rounded-full font-medium ${circle}`}>
                 {icon}
