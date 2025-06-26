@@ -1,4 +1,7 @@
-import type { Step } from '../../IntegrationForm/IntegrationForm'
+interface Step {
+  label: string
+  status: 'done' | 'current' | 'upcoming'
+}
 
 interface StepperProps {
   steps: Step[]

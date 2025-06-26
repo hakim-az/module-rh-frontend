@@ -3,8 +3,6 @@ import { useState } from 'react'
 // components
 import Stepper from '../components/Stepper/Stepper'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
-import Header from '../components/Header/Header'
-import Banner from '../components/Banner/Banner'
 import ValidateIntegrationModal from '../components/Modals/ValidateIntegrationModal'
 import InfosPerso from './StepperForms/InfosPerso/InfosPerso'
 import InfosPro from './StepperForms/InfosPro/InfosPro'
@@ -16,7 +14,7 @@ export interface Step {
   status: 'done' | 'current' | 'upcoming'
 }
 
-export default function IntegrationForm() {
+export default function Step1() {
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
@@ -96,18 +94,9 @@ export default function IntegrationForm() {
   }
 
   return (
-    <section className="w-full flex-col flex items-center justify-center ">
-      <Header />
-      <Banner
-        title="01 - Formulaire d'intégration"
-        description="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vel repellendus aspernatur minus quo odit sunt consequatur porro soluta tenetur molestiae necessitatibus consequuntur in dicta maxime voluptatibus, autem debitis dolore explicabo harum expedita! Consectetur alias nam accusantium numquam doloribus minus nihil incidunt dolores quis id repudiandae iusto quidem facere quam est cum atque repellat et tempora nostrum, quae voluptatum! Ex, porro inventore! Totam atque id, accusamus libero fugit quo distinctio sapiente!"
-      />
-      <div className="p-4 w-11/12 mx-auto pb-20 max-w-[1200px] ">
-        <Stepper steps={steps} />
-
-        {/* ⬇️ Form */}
-        <div className="w-full mx-auto py-20">{renderForm()}</div>
-      </div>
+    <>
+      <Stepper steps={steps} />
+      <div className="w-11/12 max-w-[1280px] mx-auto py-20">{renderForm()}</div>
       <CustomModal
         openModal={activeValidateIntegrationModal}
         setOpenModal={setActiveValidateIntegrationModal}>
@@ -115,6 +104,6 @@ export default function IntegrationForm() {
           setActiveValidateIntegrationModal={setActiveValidateIntegrationModal}
         />
       </CustomModal>
-    </section>
+    </>
   )
 }
