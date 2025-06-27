@@ -57,10 +57,10 @@ export default function InfosPro({
       <form
         className="w-full mx-auto gap-10 flex flex-col "
         onSubmit={handleSubmit(onSubmit)}>
-        {/* Paiement */}
+        {/* Informations bancaire : */}
         <div className="grid grid-cols-1 items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
           <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
-            Paiement :
+            Informations bancaire :
           </span>
           {/* IBAN */}
           <ControlledInput
