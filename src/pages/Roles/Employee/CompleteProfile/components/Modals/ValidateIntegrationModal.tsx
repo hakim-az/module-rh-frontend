@@ -1,4 +1,8 @@
+import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
+import axios from 'axios'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface PropsType {
   setActiveValidateIntegrationModal: (
@@ -9,6 +13,75 @@ interface PropsType {
 export default function ValidateIntegrationModal({
   setActiveValidateIntegrationModal,
 }: PropsType) {
+  // integration form context
+  const {
+    employeePersonalInfo,
+    employeeProfesionalInfo,
+    // justificatifDomicile,
+    // carteVitale,
+    // pieceIdentite,
+    // rib,
+  } = useIntegrationFormDataContext()
+
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+
+  const submiConfirmation = async () => {
+    setIsLoading(true)
+    try {
+      const payload = {
+        prenom: employeePersonalInfo.prenom,
+        nomDeNaissance: employeePersonalInfo.nom_de_naissance,
+        nomUsuel: employeePersonalInfo.nom_usuel,
+        status: 'step-2',
+        situationFamiliale: employeePersonalInfo.situation_familiale,
+        emailPerso: employeePersonalInfo.email_perso,
+        emailPro: employeePersonalInfo.email_pro,
+        telPerso: Number(employeePersonalInfo.tel_perso),
+        telPro: Number(employeePersonalInfo.tel_pro),
+        dateDeNaissance: employeePersonalInfo.date_de_naissance,
+        paysDeNaissance: employeePersonalInfo.pays_de_naissance,
+        departmentDeNaissance: employeePersonalInfo.departement_de_naissance,
+        communeDeNaissance: employeePersonalInfo.commune_de_naissance,
+        paysDeNationalite: employeePersonalInfo.pays_de_nationalite,
+        pays: employeePersonalInfo.pays,
+        codePostal: Number(employeePersonalInfo.code_postal),
+        ville: employeePersonalInfo.ville,
+        adresse: employeePersonalInfo.adresse,
+        complementAdresse: employeePersonalInfo.complement_adresse,
+        iban: employeeProfesionalInfo.iban,
+        bic: employeeProfesionalInfo.bic,
+        tel: Number(employeeProfesionalInfo.tel),
+        nomComplet: employeeProfesionalInfo.nom_complet,
+        lienAvecSalarie: employeeProfesionalInfo.lien_avec_salarie,
+        carteVitale: 'carte-vitale.pdf',
+        rib: 'rib.pdf',
+        pieceIdentite: 'pieceIdentite.pdf',
+        justificatifDeDomicile: 'justificatifDeDomicile.pdf',
+      }
+
+      const response = await axios.post(
+        'http://localhost:3000/salaries',
+        payload,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      )
+
+      console.log(response.data)
+
+      setTimeout(() => {
+        navigate(0)
+        setIsLoading(false)
+      }, 5000)
+    } catch (error) {
+      console.error(error)
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full section-email">
       {/* Hero icon */}
@@ -35,13 +108,15 @@ export default function ValidateIntegrationModal({
         </button>
         <button
           type="button"
+          disabled={isLoading}
           onClick={() => {
-            localStorage.setItem('userStatus', 'step-2')
-            setActiveValidateIntegrationModal(false)
-            window.location.reload()
+            // localStorage.setItem('userStatus', 'step-2')
+            // setActiveValidateIntegrationModal(false)
+            submiConfirmation()
+            // window.location.reload()
           }}
-          className="w-2/3 py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
-          Valider
+          className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
+          {isLoading ? 'Loading...' : 'Valider'}
         </button>
       </div>
     </div>
