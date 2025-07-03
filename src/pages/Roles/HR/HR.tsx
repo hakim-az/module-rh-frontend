@@ -31,7 +31,7 @@ export default function HR() {
         <Route index element={<Accueil />} />
 
         {/* Home page */}
-        <Route path="absences" element={<Absences />} />
+        <Route path="absences/*" element={<Absences />} />
 
         {/* Home page */}
         <Route path="salariés/*" element={<Salaries />} />

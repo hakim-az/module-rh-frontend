@@ -39,7 +39,7 @@ export const ControlledTextarea = <T extends FieldValues>({
         placeholder={placeholder}
         rows={rows}
         defaultValue={defaultValue}
-        {...register(name, rules)}
+        {...(rules ? register(name, rules) : register(name))}
         className="h-40 p-4"
       />
       {error && (
