@@ -1,9 +1,9 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
-import type { Salarie } from './SalarieTable'
+import type { ISalarie } from './SalarieTable'
 import ActionsCell from './ActionsCell'
 
-export const columns: ColumnDef<Salarie>[] = [
+export const columns: ColumnDef<ISalarie>[] = [
   // id
   {
     accessorKey: 'id',
@@ -13,37 +13,30 @@ export const columns: ColumnDef<Salarie>[] = [
   },
   // salarié
   {
-    accessorKey: 'salarie',
+    id: 'salarie',
     header: 'Salarié',
+    accessorFn: (row) => `${row.nomDeNaissance} ${row.prenom} ${row.emailPro}`,
     filterFn: (row, columnId, filterValue) => {
-      const salarie = row.getValue(columnId) as Salarie['salarie']
-      const fullName = `${salarie.nom} ${salarie.prenom}`
+      const fullName = (row.getValue(columnId) as string)
         .toLowerCase()
         .replace(/\s+/g, ' ')
       return fullName.includes(filterValue.toLowerCase().trim())
     },
-    cell: ({ row }) => {
-      const salarie = row.getValue('salarie') as Salarie['salarie']
-      return (
-        <div className="flex items-center gap-3 justify-start">
-          {/* avatar */}
-          <img
-            src="#"
-            alt="user-avatar"
-            className="size-10 min-w-10 min-h-10 rounded bg-gray-400"
-          />
-          {/* content */}
-          <div className="flex flex-col">
-            {/* full name */}
-            <span className="text-sm font-bold">
-              {salarie.nom} {salarie.prenom}
-            </span>
-            {/* email */}
-            <span className="text-xs">{salarie.email}</span>
-          </div>
+    cell: ({ row }) => (
+      <div className="flex items-center gap-3 justify-start">
+        <img
+          src="#"
+          alt="user-avatar"
+          className="size-10 min-w-10 min-h-10 rounded bg-gray-400"
+        />
+        <div className="flex flex-col">
+          <span className="text-sm font-bold">
+            {row.original.nomDeNaissance} {row.original.prenom}
+          </span>
+          <span className="text-xs">{row.original.emailPerso}</span>
         </div>
-      )
-    },
+      </div>
+    ),
   },
   // poste
   {
@@ -53,7 +46,7 @@ export const columns: ColumnDef<Salarie>[] = [
       return (
         <div className="capitalize">
           <span className="text-sm capitalize text-black">
-            {row.getValue('poste')}
+            {row.getValue('poste') ? row.getValue('poste') : '-'}
           </span>
         </div>
       )
@@ -61,13 +54,13 @@ export const columns: ColumnDef<Salarie>[] = [
   },
   // tel
   {
-    accessorKey: 'tel',
+    accessorKey: 'telPerso',
     header: 'Téléphone',
     cell: ({ row }) => {
       return (
         <div className="capitalize">
           <span className="text-sm text-black lowercase">
-            {row.getValue('tel')}
+            {row.getValue('telPerso')}
           </span>
         </div>
       )
@@ -131,12 +124,8 @@ export const columns: ColumnDef<Salarie>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const id = row.getValue('id') as string
-      const status = row.getValue('status') as string
 
-      // Extract step number from "step-1" to "step-5"
-      const stepNumber = parseInt(status.replace('step-', ''), 10)
-
-      return <ActionsCell id={id} step={stepNumber} />
+      return <ActionsCell id={id} />
     },
   },
 ]

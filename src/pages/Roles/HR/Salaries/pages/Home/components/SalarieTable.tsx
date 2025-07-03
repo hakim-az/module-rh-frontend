@@ -29,18 +29,60 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { data } from './data'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
-export type Salarie = {
+// export type Salarie = {
+//   id: string
+//   salarie: {
+//     nom: string
+//     prenom: string
+//     email: string
+//   }
+//   poste: string
+//   tel: string
+//   status: 'step-1' | 'step-2' | 'step-3' | 'step-4' | 'step-5'
+// }
+
+// Define the TypeScript interface for a Salarie item
+export interface ISalarie {
   id: string
-  salarie: {
-    nom: string
-    prenom: string
-    email: string
-  }
+  prenom: string
+  nomDeNaissance: string
+  status: number
+  nomUsuel: string
+  situationFamiliale: string
+  emailPerso: string
+  emailPro: string
+  telPerso: string
+  telPro: string
+  dateDeNaissance: string
+  paysDeNaissance: string
+  departmentDeNaissance: string
+  communeDeNaissance: string
+  paysDeNationalite: string
+  codePostal: string
+  ville: string
+  adresse: string
+  complementAdresse: string
+  iban: string
+  bic: string
+  nomCompletContactUrgence: string
+  lienAvecSalarieContactUrgence: string
+  telContactUrgence: string
+  carteVitale: string
+  rib: string
+  pieceIdentite: string
+  justificatifDeDomicile: string
   poste: string
-  tel: string
-  status: 'step-1' | 'step-2' | 'step-3' | 'step-4' | 'step-5'
+  typeContrat: string
+  dateDebut: string
+  dateFin: string | null
+  etablissemnetSante: string
+  serviceSante: string
+  salaire: number
+  urlPdfNonSigner: string | null
+  urlPdfSigner: string | null
 }
 
 export default function SalarieTable() {
@@ -51,9 +93,30 @@ export default function SalarieTable() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
+  const [salaries, setSalaries] = useState<ISalarie[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+
+  useEffect(() => {
+    const fetchSalaries = async () => {
+      setLoading(true)
+
+      try {
+        const response = await axios.get<ISalarie[]>(
+          'http://localhost:3000/salaries'
+        )
+        setSalaries(response.data)
+      } catch (err) {
+        console.log(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchSalaries()
+  }, [])
 
   const table = useReactTable({
-    data,
+    data: salaries,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -115,139 +178,143 @@ export default function SalarieTable() {
         </DropdownMenu>
       </div>
       {/* table */}
-      <div className="rounded-md border bg-white">
-        <Table>
-          {/* Header */}
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id} className="py-5 lg:px-">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          {/* Data */}
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="py-4">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-80 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-        {/* Pagination */}
-        {table.getRowModel().rows?.length ? (
-          <div className="flex items-center justify-center py-8">
-            <nav className="flex items-center space-x-1 text-sm">
-              {/* Previous */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
-                <span className="sr-only">Previous</span>
-                <span className="text-gray-500">{'<'}</span>
-              </Button>
-
-              {/* Page Numbers with Ellipses */}
-              {(() => {
-                const pageCount = table.getPageCount()
-                const currentPage = table.getState().pagination.pageIndex
-                const pages: (number | 'dots')[] = []
-
-                if (pageCount <= 4) {
-                  for (let i = 0; i < pageCount; i++) pages.push(i)
-                } else {
-                  if (currentPage <= 1) {
-                    pages.push(0, 1, 2, 'dots', pageCount - 1)
-                  } else if (currentPage >= pageCount - 2) {
-                    pages.push(
-                      0,
-                      'dots',
-                      pageCount - 3,
-                      pageCount - 2,
-                      pageCount - 1
-                    )
-                  } else {
-                    pages.push(
-                      0,
-                      'dots',
-                      currentPage,
-                      currentPage + 1,
-                      'dots',
-                      pageCount - 1
-                    )
-                  }
-                }
-
-                return pages.map((page) => {
-                  if (page === 'dots') {
+      {loading ? (
+        <>Loading....</>
+      ) : (
+        <div className="rounded-md border bg-white">
+          <Table>
+            {/* Header */}
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
                     return (
-                      <span
-                        key={`dots-${Math.random()}`}
-                        className="px-2 text-gray-500">
-                        ...
-                      </span>
+                      <TableHead key={header.id} className="py-5 lg:px-">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
                     )
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            {/* Data */}
+            <TableBody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="py-4">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-80 text-center">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          {/* Pagination */}
+          {table.getRowModel().rows?.length ? (
+            <div className="flex items-center justify-center py-8">
+              <nav className="flex items-center space-x-1 text-sm">
+                {/* Previous */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}>
+                  <span className="sr-only">Previous</span>
+                  <span className="text-gray-500">{'<'}</span>
+                </Button>
+
+                {/* Page Numbers with Ellipses */}
+                {(() => {
+                  const pageCount = table.getPageCount()
+                  const currentPage = table.getState().pagination.pageIndex
+                  const pages: (number | 'dots')[] = []
+
+                  if (pageCount <= 4) {
+                    for (let i = 0; i < pageCount; i++) pages.push(i)
+                  } else {
+                    if (currentPage <= 1) {
+                      pages.push(0, 1, 2, 'dots', pageCount - 1)
+                    } else if (currentPage >= pageCount - 2) {
+                      pages.push(
+                        0,
+                        'dots',
+                        pageCount - 3,
+                        pageCount - 2,
+                        pageCount - 1
+                      )
+                    } else {
+                      pages.push(
+                        0,
+                        'dots',
+                        currentPage,
+                        currentPage + 1,
+                        'dots',
+                        pageCount - 1
+                      )
+                    }
                   }
 
-                  const isActive = page === currentPage
-                  return (
-                    <Button
-                      key={page}
-                      variant={isActive ? 'outline' : 'ghost'}
-                      className={`h-8 w-8 p-0 ${isActive ? 'font-bold' : ''}`}
-                      onClick={() => table.setPageIndex(page)}>
-                      {page + 1}
-                    </Button>
-                  )
-                })
-              })()}
+                  return pages.map((page) => {
+                    if (page === 'dots') {
+                      return (
+                        <span
+                          key={`dots-${Math.random()}`}
+                          className="px-2 text-gray-500">
+                          ...
+                        </span>
+                      )
+                    }
 
-              {/* Next */}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
-                <span className="sr-only">Next</span>
-                <span className="text-gray-500">{'>'}</span>
-              </Button>
-            </nav>
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
+                    const isActive = page === currentPage
+                    return (
+                      <Button
+                        key={page}
+                        variant={isActive ? 'outline' : 'ghost'}
+                        className={`h-8 w-8 p-0 ${isActive ? 'font-bold' : ''}`}
+                        onClick={() => table.setPageIndex(page)}>
+                        {page + 1}
+                      </Button>
+                    )
+                  })
+                })()}
+
+                {/* Next */}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}>
+                  <span className="sr-only">Next</span>
+                  <span className="text-gray-500">{'>'}</span>
+                </Button>
+              </nav>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
     </div>
   )
 }

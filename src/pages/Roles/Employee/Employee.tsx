@@ -84,19 +84,19 @@ export default function Employee() {
           <Route index element={<Accueil />} />
 
           {/* Home page */}
-          <Route path="absences" element={<Absences />} />
+          <Route path="absences/*" element={<Absences />} />
 
           {/* Home page */}
-          <Route path="coffre-fort" element={<CoffreFort />} />
+          <Route path="coffre-fort/*" element={<CoffreFort />} />
 
           {/* Home page */}
-          <Route path="titre-restaurant" element={<TitreRestaurant />} />
+          <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
 
           {/* Home page */}
-          <Route path="informations-personnelles" element={<InfoPerso />} />
+          <Route path="informations-personnelles/*" element={<InfoPerso />} />
 
           {/* Home page */}
-          <Route path="informations-professionnelles" element={<InfosPro />} />
+          <Route path="informations-professionnelle/*" element={<InfosPro />} />
 
           {/* Not Found page */}
           <Route path="*" element={<NotFound />} />

@@ -11,10 +11,12 @@ import { useNavigate } from 'react-router-dom'
 
 interface ActionsCellProps {
   id: string
+  statut: string
 }
 
-export default function ActionsCell({ id }: ActionsCellProps) {
+export default function ActionsCell({ id, statut }: ActionsCellProps) {
   const navigate = useNavigate()
+  console.log(id)
 
   return (
     <div className="flex items-center justify-center">
@@ -27,8 +29,8 @@ export default function ActionsCell({ id }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => navigate(`details/${id}`)}>
-            Détails absence
+          <DropdownMenuItem onClick={() => navigate(`details/${statut}/${id}`)}>
+            Détails salarié
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
