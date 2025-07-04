@@ -1,7 +1,11 @@
+import Banner from './components/Banner'
+import CoffreFortTable from './components/CoffreFortTable'
+
 export default function CoffreFort() {
   return (
-    <section className="w-full h-[calc(100vh-80px)] font-semibold flex items-center justify-center text-6xl">
-      Coffre fort
-    </section>
+    <>
+      <Banner />
+      <CoffreFortTable />
+    </>
   )
 }
