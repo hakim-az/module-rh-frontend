@@ -1,0 +1,277 @@
+import * as React from 'react'
+import {
+  type ColumnFiltersState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type SortingState,
+  useReactTable,
+  type VisibilityState,
+} from '@tanstack/react-table'
+
+import { columns } from './columns'
+
+import { Button } from '@/components/ui/button'
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { data } from './data'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
+export type ITitreRestau = {
+  id: string
+  annee: number
+  mois: string
+  nbr_jr: number
+  note: string
+}
+
+export default function TitreRestaurantTable() {
+  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  )
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({})
+  const [rowSelection, setRowSelection] = React.useState({})
+
+  const table = useReactTable({
+    data,
+    columns,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      columnFilters,
+      columnVisibility,
+      rowSelection,
+    },
+    initialState: {
+      pagination: {
+        pageSize: 8,
+      },
+    },
+  })
+
+  return (
+    <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
+      {/* search */}
+      <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
+        {/* Filtrer par année */}
+        <Select
+          onValueChange={(value) => {
+            table
+              .getColumn('annee')
+              ?.setFilterValue(value === 'all' ? undefined : Number(value))
+          }}
+          value={
+            table.getColumn('annee')?.getFilterValue() !== undefined
+              ? String(table.getColumn('annee')?.getFilterValue())
+              : 'all'
+          }>
+          <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectValue placeholder="Filtrer par année" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Toutes</SelectItem>
+            <SelectItem value="2025">2025</SelectItem>
+            <SelectItem value="2024">2024</SelectItem>
+            <SelectItem value="2023">2023</SelectItem>
+            <SelectItem value="2022">2022</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Filtrer par mois */}
+        <Select
+          onValueChange={(value) => {
+            table
+              .getColumn('mois')
+              ?.setFilterValue(value === 'all' ? undefined : value)
+          }}
+          value={
+            (table.getColumn('mois')?.getFilterValue() as string) ?? 'all'
+          }>
+          <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectValue placeholder="Filtrer par mois" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous</SelectItem>
+            {[
+              'Janvier',
+              'Février',
+              'Mars',
+              'Avril',
+              'Mai',
+              'Juin',
+              'Juillet',
+              'Août',
+              'Septembre',
+              'Octobre',
+              'Novembre',
+              'Décembre',
+            ].map((mois) => (
+              <SelectItem key={mois} value={mois}>
+                {mois}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* table */}
+      <div className="rounded-md border bg-white">
+        <Table>
+          {/* Header */}
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id} className="py-5 lg:px-">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  )
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          {/* Data */}
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="py-4">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-80 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        {/* Pagination */}
+        {table.getRowModel().rows?.length ? (
+          <div className="flex items-center justify-center py-8">
+            <nav className="flex items-center space-x-1 text-sm">
+              {/* Previous */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}>
+                <span className="sr-only">Previous</span>
+                <span className="text-gray-500">{'<'}</span>
+              </Button>
+
+              {/* Page Numbers with Ellipses */}
+              {(() => {
+                const pageCount = table.getPageCount()
+                const currentPage = table.getState().pagination.pageIndex
+                const pages: (number | 'dots')[] = []
+
+                if (pageCount <= 4) {
+                  for (let i = 0; i < pageCount; i++) pages.push(i)
+                } else {
+                  if (currentPage <= 1) {
+                    pages.push(0, 1, 2, 'dots', pageCount - 1)
+                  } else if (currentPage >= pageCount - 2) {
+                    pages.push(
+                      0,
+                      'dots',
+                      pageCount - 3,
+                      pageCount - 2,
+                      pageCount - 1
+                    )
+                  } else {
+                    pages.push(
+                      0,
+                      'dots',
+                      currentPage,
+                      currentPage + 1,
+                      'dots',
+                      pageCount - 1
+                    )
+                  }
+                }
+
+                return pages.map((page) => {
+                  if (page === 'dots') {
+                    return (
+                      <span
+                        key={`dots-${Math.random()}`}
+                        className="px-2 text-gray-500">
+                        ...
+                      </span>
+                    )
+                  }
+
+                  const isActive = page === currentPage
+                  return (
+                    <Button
+                      key={page}
+                      variant={isActive ? 'outline' : 'ghost'}
+                      className={`h-8 w-8 p-0 ${isActive ? 'font-bold' : ''}`}
+                      onClick={() => table.setPageIndex(page)}>
+                      {page + 1}
+                    </Button>
+                  )
+                })
+              })()}
+
+              {/* Next */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}>
+                <span className="sr-only">Next</span>
+                <span className="text-gray-500">{'>'}</span>
+              </Button>
+            </nav>
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
+    </div>
+  )
+}
