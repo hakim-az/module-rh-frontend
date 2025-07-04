@@ -40,7 +40,7 @@ export default function HR() {
         <Route path="coffre-fort/*" element={<CoffreFort />} />
 
         {/* Home page */}
-        <Route path="titre-restaurant" element={<TitreRestaurant />} />
+        <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
 
         {/* Home page */}
         <Route path="informations-personnelles" element={<InfoPerso />} />
