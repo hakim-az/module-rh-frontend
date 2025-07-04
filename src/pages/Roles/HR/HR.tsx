@@ -37,7 +37,7 @@ export default function HR() {
         <Route path="salariés/*" element={<Salaries />} />
 
         {/* Home page */}
-        <Route path="coffre-fort" element={<CoffreFort />} />
+        <Route path="coffre-fort/*" element={<CoffreFort />} />
 
         {/* Home page */}
         <Route path="titre-restaurant" element={<TitreRestaurant />} />
