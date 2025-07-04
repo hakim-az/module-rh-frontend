@@ -1,8 +1,5 @@
 import React from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
-// import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
-
-// components
 import HRLayout from '@/components/Layouts/HRLayout'
 
 /* ROUTES */
@@ -27,28 +24,13 @@ export default function HR() {
             <Outlet />
           </HRLayout>
         }>
-        {/* Home page */}
         <Route index element={<Accueil />} />
-
-        {/* Home page */}
         <Route path="absences/*" element={<Absences />} />
-
-        {/* Home page */}
         <Route path="salariés/*" element={<Salaries />} />
-
-        {/* Home page */}
         <Route path="coffre-fort/*" element={<CoffreFort />} />
-
-        {/* Home page */}
         <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
-
-        {/* Home page */}
         <Route path="informations-personnelles" element={<InfoPerso />} />
-
-        {/* Home page */}
         <Route path="informations-professionnelles" element={<InfosPro />} />
-
-        {/* Not Found page */}
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

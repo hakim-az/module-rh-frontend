@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
-
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
-
 import CompleteProfileLayout from '@/components/Layouts/CompleteProfileLayout/CompleteProfileLayout'
 import CompleteProfile from './CompleteProfile/CompleteProfile'
 
@@ -80,28 +78,15 @@ export default function Employee() {
               <Outlet />
             </EmployeeLayout>
           }>
-          {/* Home page */}
           <Route index element={<Accueil />} />
-
-          {/* Home page */}
           <Route path="absences/*" element={<Absences />} />
-
-          {/* Home page */}
           <Route path="coffre-fort/*" element={<CoffreFort />} />
-
-          {/* Home page */}
           <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
-
-          {/* Home page */}
           <Route path="informations-personnelles/*" element={<InfoPerso />} />
-
-          {/* Home page */}
           <Route
             path="informations-professionnelles/*"
             element={<InfosPro />}
           />
-
-          {/* Not Found page */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

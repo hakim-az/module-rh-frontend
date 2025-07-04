@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import useScroll from '@/hooks/useScroll/useScroll'
 import { cn } from '@/lib/utils'
 import {
@@ -12,16 +12,12 @@ import {
   // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import axios from 'axios'
 
 interface PropsType {
   nameRoute: string
 }
 
 function Header({ nameRoute }: PropsType) {
-  // token
-  const userToken = window.localStorage.getItem('usertype')
-
   const scrolled = useScroll(5)
   const location = useLocation()
 
@@ -32,34 +28,10 @@ function Header({ nameRoute }: PropsType) {
     .split('-')
     .join(' ')
 
-  // handle logout
-  const navigate = useNavigate()
-
   // handleLogout
-  const handleLogout = async () => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/web/logout`,
-        {}, // Empty body for POST request
-        {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        }
-      )
-
-      // logs
-      console.log('Logged out successfully:', response.data)
-
-      // Clear token from local storage
-      localStorage.removeItem('usertype')
-
-      // navigate to login
-      navigate('/')
-    } catch (error) {
-      // logs
-      console.error('Error creating client:', error)
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('userRole')
+    window.location.href = 'http://localhost:5173/'
   }
 
   return (

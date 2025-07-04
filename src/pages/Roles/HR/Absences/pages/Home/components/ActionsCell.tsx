@@ -30,7 +30,7 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => navigate(`details/${statut}/${id}`)}>
-            Détails salarié
+            Détails absence
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
