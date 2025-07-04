@@ -96,7 +96,10 @@ export default function Employee() {
           <Route path="informations-personnelles/*" element={<InfoPerso />} />
 
           {/* Home page */}
-          <Route path="informations-professionnelle/*" element={<InfosPro />} />
+          <Route
+            path="informations-professionnelles/*"
+            element={<InfosPro />}
+          />
 
           {/* Not Found page */}
           <Route path="*" element={<NotFound />} />
