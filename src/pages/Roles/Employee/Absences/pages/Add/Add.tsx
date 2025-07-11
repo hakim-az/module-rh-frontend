@@ -10,7 +10,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import SendRequestModal from './componsnts/SendRequestModal'
 
-interface IAbsenceForm {
+export interface IAbsenceForm {
   type: string
   date_debut: Date
   date_fin: Date
@@ -23,6 +23,7 @@ export default function Add() {
   const navigate = useNavigate()
 
   // states
+  const [formData, setFormData] = useState<IAbsenceForm | undefined>()
   const [justificatif, setJustificatif] = useState<File>()
   const [activeSendRequestModal, setActiveSendRequestModal] =
     useState<boolean>(false)
@@ -42,6 +43,7 @@ export default function Add() {
 
   const onSubmit = (data: IAbsenceForm) => {
     console.log(data)
+    setFormData(data)
     setActiveSendRequestModal(true)
   }
   useEffect(() => {
@@ -160,6 +162,7 @@ export default function Add() {
         setOpenModal={setActiveSendRequestModal}>
         <SendRequestModal
           setActiveSendRequestModal={setActiveSendRequestModal}
+          data={formData}
         />
       </CustomModal>
     </>

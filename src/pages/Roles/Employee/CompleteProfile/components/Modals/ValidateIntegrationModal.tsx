@@ -16,8 +16,8 @@ export default function ValidateIntegrationModal({
   // integration form context
   const {
     employeePersonalInfo,
-    employeeProfesionalInfo,
-    // justificatifDomicile,
+    // employeeProfesionalInfo,
+    justificatifDomicile,
     // carteVitale,
     // pieceIdentite,
     // rib,
@@ -26,42 +26,57 @@ export default function ValidateIntegrationModal({
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
-  const submiConfirmation = async () => {
+  const submitConfirmation = async () => {
     setIsLoading(true)
     try {
       const payload = {
+        // user
+        role: 'employee',
+        statut: 'profile-completed',
+        civilite: employeePersonalInfo.civilite,
         prenom: employeePersonalInfo.prenom,
         nomDeNaissance: employeePersonalInfo.nom_de_naissance,
         nomUsuel: employeePersonalInfo.nom_usuel,
-        status: 'step-2',
         situationFamiliale: employeePersonalInfo.situation_familiale,
-        emailPerso: employeePersonalInfo.email_perso,
-        emailPro: employeePersonalInfo.email_pro,
-        telPerso: Number(employeePersonalInfo.tel_perso),
-        telPro: Number(employeePersonalInfo.tel_pro),
-        dateDeNaissance: employeePersonalInfo.date_de_naissance,
-        paysDeNaissance: employeePersonalInfo.pays_de_naissance,
-        departmentDeNaissance: employeePersonalInfo.departement_de_naissance,
-        communeDeNaissance: employeePersonalInfo.commune_de_naissance,
-        paysDeNationalite: employeePersonalInfo.pays_de_nationalite,
-        pays: employeePersonalInfo.pays,
-        codePostal: Number(employeePersonalInfo.code_postal),
-        ville: employeePersonalInfo.ville,
-        adresse: employeePersonalInfo.adresse,
-        complementAdresse: employeePersonalInfo.complement_adresse,
-        iban: employeeProfesionalInfo.iban,
-        bic: employeeProfesionalInfo.bic,
-        tel: Number(employeeProfesionalInfo.tel),
-        nomComplet: employeeProfesionalInfo.nom_complet,
-        lienAvecSalarie: employeeProfesionalInfo.lien_avec_salarie,
-        carteVitale: 'carte-vitale.pdf',
-        rib: 'rib.pdf',
-        pieceIdentite: 'pieceIdentite.pdf',
-        justificatifDeDomicile: 'justificatifDeDomicile.pdf',
+        numeroSecuriteSociale: employeePersonalInfo.numero_ssr,
+        emailPersonnel: employeePersonalInfo.email_perso,
+        emailProfessionnel: employeePersonalInfo.email_pro,
+        telephonePersonnel: employeePersonalInfo.tel_perso.toString(),
+        telephoneProfessionnel: employeePersonalInfo.tel_pro.toString(),
+        avatar: '',
+        // naissance
+        naissance: {
+          idUser: '123456',
+          dateDeNaissance: employeePersonalInfo.date_de_naissance,
+          paysDeNaissance: employeePersonalInfo.pays_de_naissance,
+          departementDeNaissance: employeePersonalInfo.departement_de_naissance,
+          communeDeNaissance: employeePersonalInfo.commune_de_naissance,
+          paysDeNationalite: employeePersonalInfo.commune_de_naissance,
+        },
+        //adresse
+        adresse: {
+          idUser: '123456',
+          pays: employeePersonalInfo.pays,
+          codePostal: employeePersonalInfo.code_postal,
+          ville: employeePersonalInfo.ville,
+          adresse: employeePersonalInfo.adresse,
+          complementAdresse: employeePersonalInfo.complement_adresse,
+          domiciliteHorsLaFrance: false,
+        },
+        // paiement
+
+        // justificatif
+        justificatif: {
+          idUser: '123456',
+          fichierCarteVitalePdf: 'carte-vitale',
+          fichierRibPdf: 'rib.pdf',
+          fichierPieceIdentitePdf: 'pieceIdentite.pdf',
+          fichierJustificatifDomicilePdf: justificatifDomicile,
+        },
       }
 
       const response = await axios.post(
-        'http://localhost:3000/salaries',
+        'http://localhost:3000/users',
         payload,
         {
           headers: {
@@ -112,7 +127,7 @@ export default function ValidateIntegrationModal({
           onClick={() => {
             // localStorage.setItem('userStatus', 'step-2')
             // setActiveValidateIntegrationModal(false)
-            submiConfirmation()
+            submitConfirmation()
             // window.location.reload()
           }}
           className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
