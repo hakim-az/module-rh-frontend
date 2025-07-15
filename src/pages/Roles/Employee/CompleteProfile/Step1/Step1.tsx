@@ -7,6 +7,7 @@ import ValidateIntegrationModal from '../components/Modals/ValidateIntegrationMo
 import InfosPerso from './StepperForms/InfosPerso/InfosPerso'
 import InfosPro from './StepperForms/InfosPro/InfosPro'
 import Justificatifs from './StepperForms/Justificatifs/Justificatifs'
+import type { User } from '@/types/user.types'
 
 // types
 export interface Step {
@@ -19,6 +20,7 @@ export default function Step1() {
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
   const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
     useState<boolean>(false)
+  const [createdUser, setCreatedUser] = useState<User | null>(null)
 
   // consts
   const labels = [
@@ -35,6 +37,10 @@ export default function Step1() {
     return { label, status }
   })
 
+  const handleUserCreated = (user: User) => {
+    setCreatedUser(user)
+  }
+
   // handle go next
   const goNext = () => {
     if (currentStepIndex < labels.length - 1) {
@@ -49,7 +55,8 @@ export default function Step1() {
     }
   }
 
-  console.log(currentStepIndex)
+  // console.log(currentStepIndex)
+  console.log(createdUser)
 
   // Form Component Selector
   const renderForm = () => {
@@ -102,6 +109,7 @@ export default function Step1() {
         setOpenModal={setActiveValidateIntegrationModal}>
         <ValidateIntegrationModal
           setActiveValidateIntegrationModal={setActiveValidateIntegrationModal}
+          onSuccess={handleUserCreated}
         />
       </CustomModal>
     </>

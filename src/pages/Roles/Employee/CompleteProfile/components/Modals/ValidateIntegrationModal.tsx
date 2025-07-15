@@ -1,38 +1,39 @@
 import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
+import { UserService } from '@/services/userService'
+import type { CreateUserDto, User } from '@/types/user.types'
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
-import axios from 'axios'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 interface PropsType {
   setActiveValidateIntegrationModal: (
     activeValidateIntegrationModal: boolean
   ) => void
+  onSuccess: (user: User) => void
 }
 
 export default function ValidateIntegrationModal({
   setActiveValidateIntegrationModal,
+  onSuccess,
 }: PropsType) {
   // integration form context
   const {
     employeePersonalInfo,
-    // employeeProfesionalInfo,
+    employeeProfesionalInfo,
     justificatifDomicile,
-    // carteVitale,
-    // pieceIdentite,
-    // rib,
+    carteVitale,
+    pieceIdentite,
+    rib,
   } = useIntegrationFormDataContext()
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
   const submitConfirmation = async () => {
     setIsLoading(true)
     try {
-      const payload = {
-        // user
+      const createUserDto: CreateUserDto = {
         role: 'employee',
-        statut: 'profile-completed',
+        statut: 'profile-created',
         civilite: employeePersonalInfo.civilite,
         prenom: employeePersonalInfo.prenom,
         nomDeNaissance: employeePersonalInfo.nom_de_naissance,
@@ -41,21 +42,17 @@ export default function ValidateIntegrationModal({
         numeroSecuriteSociale: employeePersonalInfo.numero_ssr,
         emailPersonnel: employeePersonalInfo.email_perso,
         emailProfessionnel: employeePersonalInfo.email_pro,
-        telephonePersonnel: employeePersonalInfo.tel_perso.toString(),
-        telephoneProfessionnel: employeePersonalInfo.tel_pro.toString(),
+        telephonePersonnel: employeePersonalInfo.tel_perso,
+        telephoneProfessionnel: employeePersonalInfo.tel_pro,
         avatar: '',
-        // naissance
         naissance: {
-          idUser: '123456',
           dateDeNaissance: employeePersonalInfo.date_de_naissance,
           paysDeNaissance: employeePersonalInfo.pays_de_naissance,
           departementDeNaissance: employeePersonalInfo.departement_de_naissance,
           communeDeNaissance: employeePersonalInfo.commune_de_naissance,
-          paysDeNationalite: employeePersonalInfo.commune_de_naissance,
+          paysDeNationalite: employeePersonalInfo.pays_de_nationalite,
         },
-        //adresse
         adresse: {
-          idUser: '123456',
           pays: employeePersonalInfo.pays,
           codePostal: employeePersonalInfo.code_postal,
           ville: employeePersonalInfo.ville,
@@ -63,36 +60,29 @@ export default function ValidateIntegrationModal({
           complementAdresse: employeePersonalInfo.complement_adresse,
           domiciliteHorsLaFrance: false,
         },
-        // paiement
-
-        // justificatif
+        paiement: {
+          iban: employeeProfesionalInfo.iban,
+          bic: employeeProfesionalInfo.bic,
+        },
+        urgence: {
+          nomComplet: employeeProfesionalInfo.nom_complet,
+          lienAvecLeSalarie: employeeProfesionalInfo.lien_avec_salarie,
+          telephone: employeeProfesionalInfo.tel,
+        },
         justificatif: {
-          idUser: '123456',
-          fichierCarteVitalePdf: 'carte-vitale',
-          fichierRibPdf: 'rib.pdf',
-          fichierPieceIdentitePdf: 'pieceIdentite.pdf',
-          fichierJustificatifDomicilePdf: justificatifDomicile,
+          fichierCarteVitalePdf: carteVitale ?? undefined,
+          fichierRibPdf: rib ?? undefined,
+          fichierPieceIdentitePdf: pieceIdentite ?? undefined,
+          fichierJustificatifDomicilePdf: justificatifDomicile ?? undefined,
         },
       }
 
-      const response = await axios.post(
-        'http://localhost:3000/users',
-        payload,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      )
-
-      console.log(response.data)
-
-      setTimeout(() => {
-        navigate(0)
-        setIsLoading(false)
-      }, 5000)
-    } catch (error) {
-      console.error(error)
+      const newUser = await UserService.createUser(createUserDto)
+      onSuccess(newUser)
+    } catch (err) {
+      setIsLoading(false)
+      console.log(err)
+    } finally {
       setIsLoading(false)
     }
   }
