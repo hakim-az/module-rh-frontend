@@ -13,13 +13,23 @@ export const columns: ColumnDef<IAbsence>[] = [
   },
   // type
   {
-    accessorKey: 'type',
+    accessorKey: 'typeAbsence',
     header: 'Type',
     cell: ({ row }) => {
+      const rawType = row.getValue('typeAbsence') as string | undefined
+
+      const formatType = (type?: string) => {
+        if (!type || typeof type !== 'string') return '-'
+        return type
+          .split('_')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+      }
+
       return (
-        <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('type') ? row.getValue('type') : '-'}
+        <div>
+          <span className="text-sm font-medium text-black">
+            {formatType(rawType)}
           </span>
         </div>
       )
@@ -27,32 +37,35 @@ export const columns: ColumnDef<IAbsence>[] = [
   },
   // Date début
   {
-    accessorKey: 'date_debut',
+    accessorKey: 'dateDebut',
     header: 'Date début',
     cell: ({ row }) => {
+      const raw = row.getValue('dateDebut') as string | Date | undefined
+      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
+
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('date_debut') ? row.getValue('date_debut') : '-'}
-          </span>
+          <span className="text-sm capitalize text-black">{formattedDate}</span>
         </div>
       )
     },
   },
   // Date fin
   {
-    accessorKey: 'date_fin',
+    accessorKey: 'dateFin',
     header: 'Date fin',
     cell: ({ row }) => {
+      const raw = row.getValue('dateFin') as string | Date | undefined
+      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
+
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('date_fin') ? row.getValue('date_fin') : '-'}
-          </span>
+          <span className="text-sm capitalize text-black">{formattedDate}</span>
         </div>
       )
     },
   },
+
   // statut
   {
     accessorKey: 'statut',
@@ -60,6 +73,8 @@ export const columns: ColumnDef<IAbsence>[] = [
     cell: ({ row }) => {
       const renderStatusBg = (status: string) => {
         switch (status) {
+          case 'en-attente':
+            return '#333333'
           case 'approuver':
             return '#38D9A9'
           case 'refuser':
@@ -89,10 +104,6 @@ export const columns: ColumnDef<IAbsence>[] = [
     cell: ({ row }) => {
       const id = row.getValue('id') as string
       const statut = row.getValue('statut') as string
-      // const status = row.getValue('status') as string
-
-      // Extract step number from "step-1" to "step-5"
-      // const stepNumber = parseInt(status.replace('step-', ''), 10)
 
       return <ActionsCell id={id} statut={statut} />
     },

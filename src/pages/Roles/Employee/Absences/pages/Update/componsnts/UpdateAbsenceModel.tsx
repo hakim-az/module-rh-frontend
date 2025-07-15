@@ -1,7 +1,7 @@
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import type { IAbsenceForm } from '../Add'
+import { useNavigate, useParams } from 'react-router-dom'
+import type { IAbsenceForm } from '../Update'
 import { useState } from 'react'
 import ToastNotification, { notify } from '@/lib/ToastNotification'
 
@@ -10,30 +10,28 @@ interface PropsType {
   data: IAbsenceForm | undefined
 }
 
-export default function SendRequestModal({
+export default function UpdateAbsenceModel({
   setActiveSendRequestModal,
   data,
 }: PropsType) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { absenceId } = useParams()
 
-  const AddAbsence = async () => {
+  const UpdateAbsence = async () => {
     setIsLoading(true)
     try {
       const formData = new FormData()
       if (data) {
-        formData.append('idUser', 'cmd4a8b5q0000gp9gkgmv3kvp')
         formData.append('typeAbsence', data.type)
         formData.append('dateDebut', data.date_debut.toString())
         formData.append('dateFin', data.date_fin.toString())
         formData.append('note', data.note)
-        formData.append('statut', 'en-attente')
-        formData.append('motifDeRefus', '')
         formData.append('fichierJustificatifPdf', data.justificatif)
       }
 
-      const response = await axios.post(
-        'http://localhost:3000/absences',
+      const response = await axios.patch(
+        `http://localhost:3000/absences/${absenceId}`,
         formData,
         {
           headers: {
@@ -45,7 +43,7 @@ export default function SendRequestModal({
       console.log(response)
 
       notify({
-        message: 'Demande envoyer avec success',
+        message: 'Demande modifier avec success',
         type: 'success',
       })
 
@@ -93,7 +91,7 @@ export default function SendRequestModal({
           type="button"
           disabled={isLoading}
           onClick={() => {
-            AddAbsence()
+            UpdateAbsence()
           }}
           className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
           {isLoading ? 'Loading...' : 'Valider'}

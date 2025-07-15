@@ -1,10 +1,14 @@
 import { ControlledTextarea } from '@/components/FormFeilds/ControlledTextarea/ControlledTextarea '
+import ToastNotification, { notify } from '@/lib/ToastNotification'
 import { XCircleIcon } from '@heroicons/react/16/solid'
+import axios from 'axios'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 interface PropsType {
   setActiveRefuserAbsenceModal: (activeRefuserAbsenceModal: boolean) => void
+  absenceId: string | undefined
 }
 
 interface IForm {
@@ -13,8 +17,11 @@ interface IForm {
 
 export default function RefuserAbsenceModal({
   setActiveRefuserAbsenceModal,
+  absenceId,
 }: PropsType) {
   const navigate = useNavigate()
+
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   // react hook form
   const methods = useForm<IForm>({
     mode: 'onBlur',
@@ -26,10 +33,47 @@ export default function RefuserAbsenceModal({
     formState: { errors },
   } = methods
 
-  const onSubmit = (data: IForm) => {
+  const onSubmit = async (data: IForm) => {
     console.log(data)
 
-    navigate('/accueil/absences')
+    setIsLoading(true)
+    try {
+      const formData = new FormData()
+
+      formData.append('statut', 'refuser')
+      formData.append('motifDeRefus', data.note)
+
+      const response = await axios.patch(
+        `http://localhost:3000/absences/${absenceId}`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+
+      console.log(response)
+
+      notify({
+        message: 'Demande refuser avec success',
+        type: 'success',
+      })
+
+      setTimeout(() => {
+        navigate('/accueil/absences')
+        setIsLoading(false)
+      }, 2000)
+    } catch (error) {
+      console.error(error)
+
+      notify({
+        message: 'Echec',
+        type: 'error',
+      })
+
+      setIsLoading(false)
+    }
   }
   return (
     <FormProvider {...methods}>
@@ -56,17 +100,20 @@ export default function RefuserAbsenceModal({
         <div className="flex flex-col items-center justify-around w-full gap-4 mt-10 mb-6 md:flex-row md:justify-center md:gap-10">
           <button
             type="button"
+            disabled={isLoading}
             onClick={() => setActiveRefuserAbsenceModal(false)}
             className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
             Annuler
           </button>
           <button
             type="submit"
+            disabled={isLoading}
             className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-red-500 bg-red-500">
-            Valider
+            {isLoading ? 'Loading...' : 'Valider'}
           </button>
         </div>
       </form>
+      <ToastNotification />
     </FormProvider>
   )
 }

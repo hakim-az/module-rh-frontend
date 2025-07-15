@@ -31,7 +31,7 @@ export const ControlledInput = <T extends FieldValues>({
   inputDefaultValue,
 }: UncontrolledInputProps<T>) => {
   return (
-    <div className="grid w-full items-start">
+    <div className="flex flex-col w-full items-start">
       <Label htmlFor={name as string} className="mb-2">
         {label} <span className="text-red-500 text-lg">*</span>
       </Label>

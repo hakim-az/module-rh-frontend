@@ -13,10 +13,10 @@ export const columns: ColumnDef<IAbsence>[] = [
   },
   // salarié
   {
-    id: 'salarie',
+    id: 'user',
     header: 'Salarié',
     accessorFn: (row) =>
-      `${row.salarie.nom} ${row.salarie.prenom} ${row.salarie.email}`,
+      `${row.user.nomDeNaissance} ${row.user.prenom} ${row.user.emailProfessionnel}`,
     filterFn: (row, columnId, filterValue) => {
       const fullName = (row.getValue(columnId) as string)
         .toLowerCase()
@@ -32,22 +32,34 @@ export const columns: ColumnDef<IAbsence>[] = [
         />
         <div className="flex flex-col">
           <span className="text-sm font-bold">
-            {row.original.salarie.nom} {row.original.salarie.prenom}
+            {row.original.user.nomDeNaissance} {row.original.user.prenom}
           </span>
-          <span className="text-xs">{row.original.salarie.email}</span>
+          <span className="text-xs">
+            {row.original.user.emailProfessionnel}
+          </span>
         </div>
       </div>
     ),
   },
   // type
   {
-    accessorKey: 'type',
+    accessorKey: 'typeAbsence',
     header: 'Type',
     cell: ({ row }) => {
+      const rawType = row.getValue('typeAbsence') as string | undefined
+
+      const formatType = (type?: string) => {
+        if (!type || typeof type !== 'string') return '-'
+        return type
+          .split('_')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+      }
+
       return (
-        <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('type') ? row.getValue('type') : '-'}
+        <div>
+          <span className="text-sm font-medium text-black">
+            {formatType(rawType)}
           </span>
         </div>
       )
@@ -55,32 +67,35 @@ export const columns: ColumnDef<IAbsence>[] = [
   },
   // Date début
   {
-    accessorKey: 'date_debut',
+    accessorKey: 'dateDebut',
     header: 'Date début',
     cell: ({ row }) => {
+      const raw = row.getValue('dateDebut') as string | Date | undefined
+      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
+
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('date_debut') ? row.getValue('date_debut') : '-'}
-          </span>
+          <span className="text-sm capitalize text-black">{formattedDate}</span>
         </div>
       )
     },
   },
   // Date fin
   {
-    accessorKey: 'date_fin',
+    accessorKey: 'dateFin',
     header: 'Date fin',
     cell: ({ row }) => {
+      const raw = row.getValue('dateFin') as string | Date | undefined
+      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
+
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('date_fin') ? row.getValue('date_fin') : '-'}
-          </span>
+          <span className="text-sm capitalize text-black">{formattedDate}</span>
         </div>
       )
     },
   },
+
   // statut
   {
     accessorKey: 'statut',
@@ -88,6 +103,8 @@ export const columns: ColumnDef<IAbsence>[] = [
     cell: ({ row }) => {
       const renderStatusBg = (status: string) => {
         switch (status) {
+          case 'en-attente':
+            return '#333333'
           case 'approuver':
             return '#38D9A9'
           case 'refuser':

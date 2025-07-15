@@ -21,6 +21,7 @@ type FileUploaderProps<T extends FieldValues> = {
   error?: string
   setValue: UseFormSetValue<T>
   defaultFile?: File
+  required?: boolean
 }
 
 export default function FileUploader<T extends FieldValues>({
@@ -30,6 +31,7 @@ export default function FileUploader<T extends FieldValues>({
   error,
   setValue,
   defaultFile,
+  required,
 }: FileUploaderProps<T>) {
   const [selectedFile, setSelectedFile] = useState<File | null>(
     defaultFile ?? null
@@ -79,7 +81,7 @@ export default function FileUploader<T extends FieldValues>({
     <div className="space-y-2 bg-white">
       <label className="font-medium mb-3 inline-block text-black">
         {title}
-        <span className="text-red-500"> *</span>
+        {required && <span className="text-red-500"> *</span>}
       </label>
 
       <div
