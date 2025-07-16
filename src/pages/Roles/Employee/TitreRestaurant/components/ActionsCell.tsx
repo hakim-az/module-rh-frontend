@@ -1,36 +1,43 @@
-import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Download, MoreHorizontal } from 'lucide-react'
+import { downloadFile } from '@/lib/downloadFile'
+import { Download } from 'lucide-react'
+import { useCallback, useState } from 'react'
 
 interface ActionsCellProps {
-  id: string
+  fileName: string
 }
 
-export default function ActionsCell({ id }: ActionsCellProps) {
-  console.log(id)
+export default function ActionsCell({ fileName }: ActionsCellProps) {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+
+  // donload file
+  const handleDownload = useCallback(async () => {
+    if (!fileName) return
+
+    setIsLoading(true)
+    try {
+      await downloadFile(fileName)
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [fileName])
+
+  console.log('fileName', fileName)
 
   return (
     <div className="flex items-center justify-center">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Open menu</span>
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>
-            Télécharger document <Download className="text-blue-500" />
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {isLoading ? (
+        <>Loading...</>
+      ) : (
+        <Download
+          onClick={() => {
+            console.log('hello coffre')
+            handleDownload()
+          }}
+          className="hover:text-blue-500 cursor-pointer  transition-all ease-in-out delay-75"
+        />
+      )}
     </div>
   )
 }

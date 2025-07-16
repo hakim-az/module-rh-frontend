@@ -48,13 +48,13 @@ export const columns: ColumnDef<ITitreRestau>[] = [
   },
   // Nbr de jours ouvrès
   {
-    accessorKey: 'nbr_jr',
+    accessorKey: 'nbrJours',
     header: 'Nbr de jours ouvrès',
     cell: ({ row }) => {
       return (
         <div className="capitalize">
           <span className="text-sm capitalize text-black">
-            {row.getValue('nbr_jr')}
+            {row.getValue('nbrJours')}
           </span>
         </div>
       )
@@ -80,9 +80,9 @@ export const columns: ColumnDef<ITitreRestau>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const id = row.getValue('id') as string
+      const fileName = row.original.fichierJustificatifPdf
 
-      return <ActionsCell id={id} />
+      return <ActionsCell fileName={fileName} />
     },
   },
 ]

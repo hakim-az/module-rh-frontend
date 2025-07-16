@@ -19,10 +19,10 @@ export const columns: ColumnDef<ITitreRestau>[] = [
   },
   // salarié
   {
-    id: 'salarie',
+    id: 'user',
     header: 'Salarié',
     accessorFn: (row) =>
-      `${row.salarie.nom} ${row.salarie.prenom} ${row.salarie.email}`,
+      `${row.user.nomDeNaissance} ${row.user.prenom} ${row.user.emailProfessionnel}`,
     filterFn: (row, columnId, filterValue) => {
       const fullName = (row.getValue(columnId) as string)
         .toLowerCase()
@@ -38,9 +38,11 @@ export const columns: ColumnDef<ITitreRestau>[] = [
         />
         <div className="flex flex-col">
           <span className="text-sm font-bold">
-            {row.original.salarie.nom} {row.original.salarie.prenom}
+            {row.original.user.nomDeNaissance} {row.original.user.prenom}
           </span>
-          <span className="text-xs">{row.original.salarie.email}</span>
+          <span className="text-xs">
+            {row.original.user.emailProfessionnel}
+          </span>
         </div>
       </div>
     ),
@@ -76,13 +78,13 @@ export const columns: ColumnDef<ITitreRestau>[] = [
   },
   // Nbr de jours ouvrés
   {
-    accessorKey: 'nbr_jr',
+    accessorKey: 'nbrJours',
     header: 'Nbr de jours ouvrés',
     cell: ({ row }) => {
       return (
         <div className="capitalize">
           <span className="text-sm capitalize text-black">
-            {row.getValue('nbr_jr')}
+            {row.getValue('nbrJours')}
           </span>
         </div>
       )

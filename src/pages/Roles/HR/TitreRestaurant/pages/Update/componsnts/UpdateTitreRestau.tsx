@@ -1,36 +1,38 @@
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
-import { useNavigate } from 'react-router-dom'
-import type { IRestauForm } from '../Add'
+import { useNavigate, useParams } from 'react-router-dom'
+import type { IRestauForm } from '../Update'
 import { useState } from 'react'
 import axios from 'axios'
 import ToastNotification, { notify } from '@/lib/ToastNotification'
 
 interface PropsType {
-  setActiveSendRequestModal: (activeSendRequestModal: boolean) => void
+  setActiveUpdateTitreRestau: (activeUpdateTitreRestau: boolean) => void
   data: IRestauForm | undefined
 }
 
-export default function SendRequestModal({
-  setActiveSendRequestModal,
+export default function UpdateTitreRestau({
+  setActiveUpdateTitreRestau,
   data,
 }: PropsType) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const { idTitre } = useParams()
 
-  const AddRestau = async () => {
+  const AddCoffre = async () => {
     setIsLoading(true)
     try {
       const formData = new FormData()
       if (data) {
-        formData.append('idUser', 'cmd4a8b5q0000gp9gkgmv3kvp')
         formData.append('nbrJours', data.nbr_jr)
         formData.append('mois', data.mois)
         formData.append('annee', data.annee.toString())
         formData.append('note', data.note)
-        formData.append('fichierJustificatifPdf', data.justificatif)
+        if (data.justificatif !== undefined) {
+          formData.append('fichierJustificatifPdf', data.justificatif)
+        }
       }
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/restaux`,
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_BASE_URL}/restaux/${idTitre}`,
         formData,
         {
           headers: {
@@ -42,12 +44,12 @@ export default function SendRequestModal({
       console.log(response)
 
       notify({
-        message: 'Titre restau ajouter avec success',
+        message: 'Coffre ajouter avec success',
         type: 'success',
       })
 
       setTimeout(() => {
-        navigate('/accueil/titre-restaurant')
+        navigate('/accueil/coffre-fort')
         setIsLoading(false)
       }, 2000)
     } catch (error) {
@@ -68,10 +70,10 @@ export default function SendRequestModal({
       {/* content */}
       <div className="w-full h-full section-title ">
         <h2 className="my-4 text-xl text-center font-semibold sm:text-2xl lg:text-4xl text-primaryblack">
-          Ajouter titre restaurant
+          Modifier Titre Restaurant
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          Vous êtes sur le point d'ajouter un enregistrement de
+          Vous êtes sur le point de modifier un enregistrement de
           titres-restaurant pour le salarié sélectionné. Vérifiez que le mois,
           l'année, le nombre de jours ouvrés et les justificatifs sont corrects.
           Une fois confirmé, le salarié pourra consulter cette information dans
@@ -83,15 +85,15 @@ export default function SendRequestModal({
         <button
           type="button"
           disabled={isLoading}
-          onClick={() => setActiveSendRequestModal(false)}
-          className="w-2/3 disabled:cursor-not-allowed py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
+          onClick={() => setActiveUpdateTitreRestau(false)}
+          className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
           Annuler
         </button>
         <button
           type="button"
           disabled={isLoading}
           onClick={() => {
-            AddRestau()
+            AddCoffre()
           }}
           className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
           {isLoading ? 'Loading...' : 'Valider'}
