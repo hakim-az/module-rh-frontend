@@ -1,31 +1,31 @@
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
-import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
-import type { IAbsenceForm } from '../Update'
+import type { ICoffre } from '../Update'
 import { useState } from 'react'
+import axios from 'axios'
 import ToastNotification, { notify } from '@/lib/ToastNotification'
 
 interface PropsType {
-  setActiveSendRequestModal: (activeSendRequestModal: boolean) => void
-  data: IAbsenceForm | undefined
+  setActiveUpdateCoffreModal: (activeUpdateCoffreModal: boolean) => void
+  data: ICoffre | undefined
 }
 
-export default function UpdateAbsenceModel({
-  setActiveSendRequestModal,
+export default function UpdateCoffreModal({
+  setActiveUpdateCoffreModal,
   data,
 }: PropsType) {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { absenceId } = useParams()
+  const { idCoffre } = useParams()
 
-  const UpdateAbsence = async () => {
+  const AddCoffre = async () => {
     setIsLoading(true)
     try {
       const formData = new FormData()
       if (data) {
-        formData.append('typeAbsence', data.type)
-        formData.append('dateDebut', data.date_debut.toString())
-        formData.append('dateFin', data.date_fin.toString())
+        formData.append('typeBulletin', data.type)
+        formData.append('mois', data.mois)
+        formData.append('annee', data.annee.toString())
         formData.append('note', data.note)
         if (data.justificatif !== undefined) {
           formData.append('fichierJustificatifPdf', data.justificatif)
@@ -33,7 +33,7 @@ export default function UpdateAbsenceModel({
       }
 
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/coffres/${idCoffre}`,
         formData,
         {
           headers: {
@@ -45,12 +45,12 @@ export default function UpdateAbsenceModel({
       console.log(response)
 
       notify({
-        message: 'Demande modifier avec success',
+        message: 'Coffre ajouter avec success',
         type: 'success',
       })
 
       setTimeout(() => {
-        navigate('/accueil/absences')
+        navigate('/accueil/coffre-fort')
         setIsLoading(false)
       }, 2000)
     } catch (error) {
@@ -64,7 +64,6 @@ export default function UpdateAbsenceModel({
       setIsLoading(false)
     }
   }
-
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full section-email">
       {/* Hero icon */}
@@ -72,20 +71,21 @@ export default function UpdateAbsenceModel({
       {/* content */}
       <div className="w-full h-full section-title ">
         <h2 className="my-4 text-xl text-center font-semibold sm:text-2xl lg:text-4xl text-primaryblack">
-          Valider la modification d'absence
+          Ajouter un document salarié
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          En validant cette demande, vous confirmez que toutes les informations
-          saisies sont exactes et complètes. Votre demande sera envoyée au
-          service RH pour traitement.Après envoi, vous ne pourrez plus modifier
-          cette demande.
+          Vous êtes sur le point dajouter un document au coffre-fort numérique
+          du salarié sélectionné. Vérifiez que le type de document, la période
+          et le fichier joint sont corrects. Une fois validé, le salarié sera
+          notifié et pourra le consulter depuis son espace personnel.
         </p>
       </div>
       {/* buttons */}
       <div className="flex flex-col items-center justify-around w-full gap-4 mt-10 mb-6 md:flex-row md:justify-center md:gap-10">
         <button
           type="button"
-          onClick={() => setActiveSendRequestModal(false)}
+          disabled={isLoading}
+          onClick={() => setActiveUpdateCoffreModal(false)}
           className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
           Annuler
         </button>
@@ -93,7 +93,7 @@ export default function UpdateAbsenceModel({
           type="button"
           disabled={isLoading}
           onClick={() => {
-            UpdateAbsence()
+            AddCoffre()
           }}
           className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
           {isLoading ? 'Loading...' : 'Valider'}

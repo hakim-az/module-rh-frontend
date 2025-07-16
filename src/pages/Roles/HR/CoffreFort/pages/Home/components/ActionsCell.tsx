@@ -6,14 +6,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Download, MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 interface ActionsCellProps {
   id: string
 }
 
 export default function ActionsCell({ id }: ActionsCellProps) {
-  console.log(id)
+  const navigate = useNavigate()
 
   return (
     <div className="flex items-center justify-center">
@@ -26,8 +27,12 @@ export default function ActionsCell({ id }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem>
-            Télécharger document <Download className="text-blue-500" />
+          <DropdownMenuItem onClick={() => navigate(`details/${id}`)}>
+            Détails coffre
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => navigate(`modifier-un-document/${id}`)}>
+            Modifier coffre
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

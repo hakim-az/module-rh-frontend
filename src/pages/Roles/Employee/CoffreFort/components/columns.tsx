@@ -19,13 +19,23 @@ export const columns: ColumnDef<ICoffreFort>[] = [
   },
   // type
   {
-    accessorKey: 'type',
+    accessorKey: 'typeBulletin',
     header: 'Type',
     cell: ({ row }) => {
+      const rawType = row.getValue('typeBulletin') as string | undefined
+
+      const formatType = (type?: string) => {
+        if (!type || typeof type !== 'string') return '-'
+        return type
+          .split('_')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+      }
+
       return (
-        <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('type') ? row.getValue('type') : '-'}
+        <div>
+          <span className="text-sm font-medium text-black">
+            {formatType(rawType)}
           </span>
         </div>
       )
@@ -80,9 +90,9 @@ export const columns: ColumnDef<ICoffreFort>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const id = row.getValue('id') as string
+      const fileName = row.original.fichierJustificatifPdf
 
-      return <ActionsCell id={id} />
+      return <ActionsCell fileName={fileName} />
     },
   },
 ]

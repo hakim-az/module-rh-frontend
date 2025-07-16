@@ -102,7 +102,7 @@ export default function SalarieTable() {
 
       try {
         const response = await axios.get<ISalarie[]>(
-          'http://localhost:3000/salaries'
+          `${import.meta.env.VITE_API_BASE_URL}/salaries`
         )
         setSalaries(response.data)
       } catch (err) {

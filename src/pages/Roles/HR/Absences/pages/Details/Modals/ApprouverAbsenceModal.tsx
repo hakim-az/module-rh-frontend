@@ -25,7 +25,7 @@ export default function ApprouverAbsenceModal({
       formData.append('statut', 'approuver')
 
       const response = await axios.patch(
-        `http://localhost:3000/absences/${absenceId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`,
         formData,
         {
           headers: {

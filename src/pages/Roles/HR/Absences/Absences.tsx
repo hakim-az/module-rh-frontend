@@ -7,7 +7,7 @@ export default function Absences() {
   return (
     <Routes>
       <Route index element={<Home />} />
-      <Route path="details/:statut/:absenceId" element={<Details />} />
+      <Route path="details/:absenceId" element={<Details />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )

@@ -1,10 +1,8 @@
 import axios, { type AxiosResponse } from 'axios'
 import type { CreateUserDto, User, ApiResponse } from '@/types/user.types'
 
-const API_BASE_URL = 'http://localhost:3000'
-
 const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
     'Content-Type': 'multipart/form-data',
   },

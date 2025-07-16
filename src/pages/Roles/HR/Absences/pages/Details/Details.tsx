@@ -33,7 +33,7 @@ export default function Details() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `http://localhost:3000/absences/${absenceId}`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`
       )
       console.log(response)
       setAbsenceDetails(response.data)
@@ -127,22 +127,21 @@ export default function Details() {
             />
           </div>
           {/* justificatif */}
-          <div className="col-span-1">
-            <div className="border flex items-center justify-between p-4 border-gray-300 rounded shadow-2xs">
+          {absenceDetails?.fichierJustificatifPdf !== 'undefined' && (
+            <div className="border lg:p-8 flex flex-col items-center justify-between p-4 border-gray-300 rounded shadow-2xs">
               <div className="flex items-center gap-4">
-                <img src={PDFIcon} alt="" />
-                <div className="flex flex-col">
-                  <span className="font-semibold">Justificatif.pdf</span>
-                  <span className="text-sm text-gray-500">5.3 Mb</span>
-                </div>
+                <img src={PDFIcon} alt="pdf-icon" className="w-40" />
               </div>
-              <Download
-                onClick={() => handleDownload()}
-                className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
-                size={32}
-              />
+              <div className="flex items-center justify-between w-full p-4">
+                <span className="font-semibold">Justificatif</span>
+                <Download
+                  onClick={() => handleDownload()}
+                  className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
+                  size={32}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
       {/* approuver : refuser */}

@@ -9,7 +9,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import SendRequestModal from './componsnts/SendRequestModal'
 
-interface IAbsenceForm {
+export interface ICoffre {
   salarie: number
   type: string
   annee: number
@@ -23,12 +23,13 @@ export default function Add() {
   const navigate = useNavigate()
 
   // states
+  const [formData, setFormData] = useState<ICoffre | undefined>()
   const [justificatif, setJustificatif] = useState<File>()
   const [activeSendRequestModal, setActiveSendRequestModal] =
     useState<boolean>(false)
 
   // react hook form
-  const methods = useForm<IAbsenceForm>({
+  const methods = useForm<ICoffre>({
     mode: 'onBlur',
   })
 
@@ -40,8 +41,9 @@ export default function Add() {
     setValue,
   } = methods
 
-  const onSubmit = (data: IAbsenceForm) => {
+  const onSubmit = (data: ICoffre) => {
     console.log(data)
+    setFormData(data)
     setActiveSendRequestModal(true)
   }
 
@@ -169,7 +171,7 @@ export default function Add() {
               selectDefaultValue=""
             />
             {/* Note */}
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               <ControlledTextarea
                 name="note"
                 label="Note"
@@ -179,7 +181,7 @@ export default function Add() {
               />
             </div>
             {/* justificatif */}
-            <div className="col-span-2">
+            <div className="lg:col-span-2">
               <FileUploader
                 title="Pièce justificatif"
                 name="justificatif"
@@ -205,7 +207,7 @@ export default function Add() {
             </Button>
             {/* continuer */}
             <Button type="submit" variant="default" size={'lg'}>
-              Demander
+              Ajouter
             </Button>
           </div>
         </form>
@@ -215,6 +217,7 @@ export default function Add() {
         setOpenModal={setActiveSendRequestModal}>
         <SendRequestModal
           setActiveSendRequestModal={setActiveSendRequestModal}
+          data={formData}
         />
       </CustomModal>
     </>

@@ -8,19 +8,19 @@ import PagePath from '@/components/PagePath/PagePath'
 import PDFIcon from '@/assets/icons/pdf-icon.png'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 
-import type { IAbsence } from '../Home/components/AbsencesTable'
+import type { ICoffreFort } from '../Home/components/CoffreFortTable'
 import { downloadFile } from '@/lib/downloadFile'
 
 export default function Details() {
-  const { absenceId } = useParams()
+  const { idCoffre } = useParams()
   const [isLoading, setIsLoading] = useState(false)
-  const [absenceDetails, setAbsenceDetails] = useState<IAbsence | null>(null)
+  const [absenceDetails, setAbsenceDetails] = useState<ICoffreFort | null>(null)
 
   const fetchAbsenceDetails = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`
+        `${import.meta.env.VITE_API_BASE_URL}/coffres/${idCoffre}`
       )
       setAbsenceDetails(response.data)
     } catch (error) {
@@ -28,7 +28,7 @@ export default function Details() {
     } finally {
       setIsLoading(false)
     }
-  }, [absenceId])
+  }, [idCoffre])
 
   const handleDownload = useCallback(async () => {
     if (!absenceDetails?.fichierJustificatifPdf) return
@@ -47,32 +47,6 @@ export default function Details() {
     fetchAbsenceDetails()
   }, [fetchAbsenceDetails])
 
-  const renderStatus = () => {
-    const status = absenceDetails?.statut
-    const baseClass =
-      'text-white text-lg font-medium px-14 py-2 rounded mb-10 mx-auto w-11/12 max-w-[1280px] flex justify-center'
-
-    switch (status) {
-      case 'approuver':
-        return <div className={`${baseClass} bg-green-600`}>Approuvée</div>
-      case 'en-attente':
-        return <div className={`${baseClass} bg-black`}>En attente</div>
-      case 'refusser':
-        return (
-          <div className="flex flex-col gap-5 items-center w-11/12 max-w-[1280px] mx-auto mb-10">
-            <span className="bg-red-600 text-white text-lg font-medium px-14 py-2 rounded">
-              Refusée
-            </span>
-            <span className="inline-block w-full h-36 overflow-y-scroll no-scrollbar p-4 rounded border border-red-500 bg-white">
-              {absenceDetails?.motifDeRefus || 'Motif non fourni'}
-            </span>
-          </div>
-        )
-      default:
-        return null
-    }
-  }
-
   if (isLoading) {
     return (
       <>
@@ -87,31 +61,31 @@ export default function Details() {
   return (
     <>
       <PagePath />
-      {renderStatus()}
 
       <div className="w-11/12 max-w-[1280px] mb-20 mt-5 mx-auto grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md">
-        <div className="col-span-1 lg:col-span-2">
-          <DisplayInput
-            label="Type d'absence"
-            value={absenceDetails?.typeAbsence.replace(/_/g, ' ') || '-'}
-          />
-        </div>
-
         <DisplayInput
-          label="Date de début"
-          value={absenceDetails?.dateDebut.slice(0, 10) || '-'}
+          label="Salarié"
+          value={
+            absenceDetails?.user
+              ? `${absenceDetails?.user?.nomDeNaissance} ${absenceDetails?.user?.prenom}`
+              : '-'
+          }
         />
 
         <DisplayInput
-          label="Date de fin"
-          value={absenceDetails?.dateFin.slice(0, 10) || '-'}
+          label="Type Bulletin"
+          value={absenceDetails?.typeBulletin.replace('_', ' ') ?? '-'}
         />
+
+        <DisplayInput label="Mois" value={absenceDetails?.mois ?? '-'} />
+
+        <DisplayInput label="Année" value={absenceDetails?.annee ?? '-'} />
 
         <div className="lg:col-span-2">
           <DisplayInput label="Note" value={absenceDetails?.note || '-'} />
         </div>
 
-        {absenceDetails?.fichierJustificatifPdf !== 'undefined' && (
+        {absenceDetails?.fichierJustificatifPdf && (
           <div className="border p-10 flex flex-col items-center justify-center border-gray-300 rounded shadow-2xs">
             <img src={PDFIcon} alt="pdf-icon" className="w-40 mb-4" />
             <div className="flex items-center justify-between w-full">

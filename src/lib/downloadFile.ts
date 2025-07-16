@@ -10,7 +10,7 @@ export const downloadFile = async (fileName: string) => {
     const encodedFileName = encodeURIComponent(fileName)
 
     const response = await axios.get(
-      `http://localhost:3000/files/download/${encodedFileName}`,
+      `${import.meta.env.VITE_API_BASE_URL}/files/download/${encodedFileName}`,
       {
         responseType: 'blob',
       }

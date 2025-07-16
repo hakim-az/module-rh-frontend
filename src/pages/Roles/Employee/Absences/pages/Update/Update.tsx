@@ -73,7 +73,7 @@ export default function Update() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `http://localhost:3000/absences/${absenceId}`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`
       )
       console.log(response)
       setAbsenceDetails(response.data)
@@ -185,19 +185,21 @@ export default function Update() {
                 />
               </div>
               {/* justificatif */}
-              <div className="border h-[calc(100%-36px)] flex flex-col items-center justify-between p-4 border-gray-300 rounded shadow-2xs">
-                <div className="flex items-center gap-4">
-                  <img src={PDFIcon} alt="pdf-icon" className="w-40" />
+              {absenceDetails?.fichierJustificatifPdf !== 'undefined' && (
+                <div className="border h-[calc(100%-36px)] flex flex-col items-center justify-between p-4 border-gray-300 rounded shadow-2xs">
+                  <div className="flex items-center gap-4">
+                    <img src={PDFIcon} alt="pdf-icon" className="w-40" />
+                  </div>
+                  <div className="flex items-center justify-between w-full p-4">
+                    <span className="font-semibold">Justificatif</span>
+                    <Download
+                      onClick={() => handleDownload()}
+                      className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
+                      size={32}
+                    />
+                  </div>
                 </div>
-                <div className="flex items-center justify-between w-full p-4">
-                  <span className="font-semibold">Justificatif</span>
-                  <Download
-                    onClick={() => handleDownload()}
-                    className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
-                    size={32}
-                  />
-                </div>
-              </div>
+              )}
               <FileUploader
                 title="Pièce justificatif"
                 name="justificatif"

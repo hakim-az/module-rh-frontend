@@ -133,13 +133,8 @@ export const columns: ColumnDef<IAbsence>[] = [
     enableHiding: false,
     cell: ({ row }) => {
       const id = row.getValue('id') as string
-      const statut = row.getValue('statut') as string
-      // const status = row.getValue('status') as string
 
-      // Extract step number from "step-1" to "step-5"
-      // const stepNumber = parseInt(status.replace('step-', ''), 10)
-
-      return <ActionsCell id={id} statut={statut} />
+      return <ActionsCell id={id} />
     },
   },
 ]

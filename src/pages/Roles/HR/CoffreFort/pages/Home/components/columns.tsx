@@ -19,10 +19,10 @@ export const columns: ColumnDef<ICoffreFort>[] = [
   },
   // salarié
   {
-    id: 'salarie',
+    id: 'user',
     header: 'Salarié',
     accessorFn: (row) =>
-      `${row.salarie.nom} ${row.salarie.prenom} ${row.salarie.email}`,
+      `${row.user.nomDeNaissance} ${row.user.prenom} ${row.user.emailProfessionnel}`,
     filterFn: (row, columnId, filterValue) => {
       const fullName = (row.getValue(columnId) as string)
         .toLowerCase()
@@ -38,22 +38,34 @@ export const columns: ColumnDef<ICoffreFort>[] = [
         />
         <div className="flex flex-col">
           <span className="text-sm font-bold">
-            {row.original.salarie.nom} {row.original.salarie.prenom}
+            {row.original.user.nomDeNaissance} {row.original.user.prenom}
           </span>
-          <span className="text-xs">{row.original.salarie.email}</span>
+          <span className="text-xs">
+            {row.original.user.emailProfessionnel}
+          </span>
         </div>
       </div>
     ),
   },
   // type
   {
-    accessorKey: 'type',
+    accessorKey: 'typeBulletin',
     header: 'Type',
     cell: ({ row }) => {
+      const rawType = row.getValue('typeBulletin') as string | undefined
+
+      const formatType = (type?: string) => {
+        if (!type || typeof type !== 'string') return '-'
+        return type
+          .split('_')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+      }
+
       return (
-        <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('type') ? row.getValue('type') : '-'}
+        <div>
+          <span className="text-sm font-medium text-black">
+            {formatType(rawType)}
           </span>
         </div>
       )
@@ -108,9 +120,9 @@ export const columns: ColumnDef<ICoffreFort>[] = [
     id: 'actions',
     enableHiding: false,
     cell: ({ row }) => {
-      const id = row.getValue('id') as string
+      const idCoffre = row.original.id
 
-      return <ActionsCell id={id} />
+      return <ActionsCell id={idCoffre} />
     },
   },
 ]
