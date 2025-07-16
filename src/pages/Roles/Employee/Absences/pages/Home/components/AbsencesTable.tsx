@@ -177,7 +177,7 @@ export default function AbsencesTable() {
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => (
-                      <TableHead key={header.id}>
+                      <TableHead key={header.id} className="py-6">
                         {header.isPlaceholder
                           ? null
                           : flexRender(

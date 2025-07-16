@@ -101,16 +101,6 @@ export class UserService {
 
       // Add files individually if they exist
       if (userData.justificatif) {
-        console.log('Processing justificatif files:', {
-          fichierCarteVitalePdf:
-            userData.justificatif.fichierCarteVitalePdf?.name,
-          fichierRibPdf: userData.justificatif.fichierRibPdf?.name,
-          fichierPieceIdentitePdf:
-            userData.justificatif.fichierPieceIdentitePdf?.name,
-          fichierJustificatifDomicilePdf:
-            userData.justificatif.fichierJustificatifDomicilePdf?.name,
-        })
-
         if (
           userData.justificatif.fichierCarteVitalePdf &&
           userData.justificatif.fichierCarteVitalePdf instanceof File
@@ -119,7 +109,6 @@ export class UserService {
             'justificatif[fichierCarteVitalePdf]',
             userData.justificatif.fichierCarteVitalePdf
           )
-          console.log('Added fichierCarteVitalePdf to FormData')
         }
         if (
           userData.justificatif.fichierRibPdf &&
@@ -129,7 +118,6 @@ export class UserService {
             'justificatif[fichierRibPdf]',
             userData.justificatif.fichierRibPdf
           )
-          console.log('Added fichierRibPdf to FormData')
         }
         if (
           userData.justificatif.fichierPieceIdentitePdf &&
@@ -139,7 +127,6 @@ export class UserService {
             'justificatif[fichierPieceIdentitePdf]',
             userData.justificatif.fichierPieceIdentitePdf
           )
-          console.log('Added fichierPieceIdentitePdf to FormData')
         }
         if (
           userData.justificatif.fichierJustificatifDomicilePdf &&
@@ -149,7 +136,6 @@ export class UserService {
             'justificatif[fichierJustificatifDomicilePdf]',
             userData.justificatif.fichierJustificatifDomicilePdf
           )
-          console.log('Added fichierJustificatifDomicilePdf to FormData')
         }
 
         // Only add justificatif section if at least one file exists

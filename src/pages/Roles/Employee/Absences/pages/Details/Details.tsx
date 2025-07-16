@@ -50,14 +50,14 @@ export default function Details() {
   const renderStatus = () => {
     const status = absenceDetails?.statut
     const baseClass =
-      'text-white text-lg font-medium px-14 py-2 rounded mb-10 mx-auto w-11/12 max-w-[1280px] flex justify-center'
+      'text-white text-lg font-medium px-14 py-2 inline-block rounded mb-10 mx-auto flex justify-center'
 
     switch (status) {
       case 'approuver':
         return <div className={`${baseClass} bg-green-600`}>Approuvée</div>
       case 'en-attente':
         return <div className={`${baseClass} bg-black`}>En attente</div>
-      case 'refusser':
+      case 'refuser':
         return (
           <div className="flex flex-col gap-5 items-center w-11/12 max-w-[1280px] mx-auto mb-10">
             <span className="bg-red-600 text-white text-lg font-medium px-14 py-2 rounded">
@@ -89,7 +89,7 @@ export default function Details() {
       <PagePath />
       {renderStatus()}
 
-      <div className="w-11/12 max-w-[1280px] mb-20 mt-5 mx-auto grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md">
+      <div className="w-11/12 max-w-[1280px] mb-20 mt-5 mx-auto grid grid-cols-1 bg-white items-end lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md">
         <div className="col-span-1 lg:col-span-2">
           <DisplayInput
             label="Type d'absence"

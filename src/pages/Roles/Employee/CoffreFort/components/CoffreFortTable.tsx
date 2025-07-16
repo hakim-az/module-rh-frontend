@@ -217,7 +217,7 @@ export default function CoffreFortTable() {
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id} className="py-5 lg:px-">
+                      <TableHead key={header.id} className="py-6">
                         {header.isPlaceholder
                           ? null
                           : flexRender(

@@ -49,7 +49,6 @@ export default function Add() {
   } = methods
 
   const onSubmit = (data: IRestauForm) => {
-    console.log(data)
     setFormData(data)
     setActiveUpdateTitreRestau(true)
   }
@@ -87,7 +86,6 @@ export default function Add() {
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/restaux/${idTitre}`
       )
-      console.log(response)
       setTitreRestauDetails(response.data)
 
       setIsLoadingFetch(false)

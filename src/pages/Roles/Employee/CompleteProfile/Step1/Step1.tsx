@@ -55,7 +55,6 @@ export default function Step1() {
     }
   }
 
-  // console.log(currentStepIndex)
   console.log(createdUser)
 
   // Form Component Selector

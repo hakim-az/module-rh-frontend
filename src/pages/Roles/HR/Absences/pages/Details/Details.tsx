@@ -13,11 +13,6 @@ import axios from 'axios'
 import { downloadFile } from '@/lib/downloadFile'
 
 export default function Details() {
-  const { statut } = useParams<{
-    statut: string
-    absenceId: string
-  }>()
-
   const [activeApprouverAbsenceModal, setActiveApprouverAbsenceModal] =
     useState(false)
   const [activeRefuserAbsenceModal, setActiveRefuserAbsenceModal] =
@@ -67,14 +62,14 @@ export default function Details() {
     <>
       <PagePath />
 
-      {statut === 'approuver' && (
+      {absenceDetails?.statut === 'approuver' && (
         <div className="w-11/12 mx-auto max-w-[1280px] mb-10 flex items-center justify-center">
           <span className="bg-green-600 text-white text-lg font-medium px-14 py-2 rounded">
             Approuver
           </span>
         </div>
       )}
-      {statut === 'refuser' && (
+      {absenceDetails?.statut === 'refuser' && (
         <div className="w-11/12 flex-col gap-5 mx-auto max-w-[1280px] mb-10 flex items-center justify-center">
           <span className="bg-red-600  text-white text-lg font-medium px-14 py-2 rounded">
             Refuser
@@ -145,8 +140,8 @@ export default function Details() {
         </div>
       )}
       {/* approuver : refuser */}
-      <div className="w-11/12 max-w-[1280px] mx-auto">
-        {statut === 'en-attente' && (
+      <div className="w-11/12 max-w-[1280px] mb-20 mx-auto">
+        {absenceDetails?.statut === 'en-attente' && (
           <div className="flex items-center justify-center gap-8">
             <Button
               onClick={() => setActiveRefuserAbsenceModal(true)}
