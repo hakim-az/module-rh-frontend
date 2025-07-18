@@ -6,6 +6,7 @@ export interface FormContextType {
   setWideNavbar: React.Dispatch<React.SetStateAction<boolean>>
   isLoadingUser: boolean
   userDetails: User | undefined
+  userStatus: string | null
 }
 
 export const FormContext = createContext<FormContextType | undefined>(undefined)

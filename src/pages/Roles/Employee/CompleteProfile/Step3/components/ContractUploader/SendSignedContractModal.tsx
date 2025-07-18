@@ -30,7 +30,7 @@ export default function SendSignedContractModal({
       }
 
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_BASE_URL}/contrats/user/${userDetails?.contrat.id}/upload-signed`,
+        `${import.meta.env.VITE_API_BASE_URL}/contrats/user/${userDetails?.id}/upload-signed`,
         formData,
         {
           headers: {

@@ -77,10 +77,12 @@ export default function ValidateIntegrationModal({
           fichierJustificatifDomicilePdf: justificatifDomicile ?? undefined,
         },
       }
-      localStorage.setItem('userStatus', 'profile-completed')
+
       setTimeout(() => {
         navigate(0)
-      }, 100)
+        localStorage.setItem('userId', newUser.id)
+        console.log(newUser)
+      }, 200)
       const newUser = await UserService.createUser(createUserDto)
 
       onSuccess(newUser)

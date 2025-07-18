@@ -157,6 +157,10 @@ export class UserService {
       )
 
       if (response.data.success && response.data.data) {
+        const createdUser = response.data.data
+
+        console.log('Created user ID:', createdUser.id)
+
         return response.data.data
       } else {
         throw new Error(response.data.message || 'Failed to create user')

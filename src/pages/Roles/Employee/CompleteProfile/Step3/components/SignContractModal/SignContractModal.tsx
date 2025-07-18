@@ -40,7 +40,6 @@ export default function SignContractModal({
         message: 'Demande envoyer avec success',
         type: 'success',
       })
-      localStorage.setItem('userStatus', 'email-sent')
       setTimeout(() => {
         navigate(0)
         setIsLoading(false)

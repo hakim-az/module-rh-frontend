@@ -18,7 +18,7 @@ const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
 export default function Employee() {
-  const { userDetails } = useDashboardContext()
+  const { userStatus, userDetails } = useDashboardContext()
 
   if (userDetails === null) {
     return (
@@ -28,7 +28,10 @@ export default function Employee() {
     )
   }
 
-  if (userDetails?.statut !== 'user-approuved') {
+  if (
+    userStatus !== 'user-approuved' &&
+    userDetails?.statut !== 'user-approuved'
+  ) {
     return (
       <Routes>
         {/* Home page */}

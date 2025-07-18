@@ -32,6 +32,7 @@ import { useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 export interface IAbsence {
   id: string
@@ -48,6 +49,7 @@ export interface IAbsence {
 }
 
 export default function AbsencesTable() {
+  const { userDetails } = useDashboardContext()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -87,7 +89,7 @@ export default function AbsencesTable() {
       setIsLoading(true)
       setFetchError(null)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/user/cmd4a8b5q0000gp9gkgmv3kvp`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/user/${userDetails?.id}`
       )
       setAbsences(response.data ?? [])
     } catch (error) {
@@ -96,7 +98,7 @@ export default function AbsencesTable() {
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [userDetails?.id])
 
   useEffect(() => {
     fetchAbsences()

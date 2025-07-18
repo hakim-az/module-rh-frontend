@@ -22,7 +22,7 @@ export default function SendRequestModal({
     try {
       const formData = new FormData()
       if (data) {
-        formData.append('idUser', 'cmd4a8b5q0000gp9gkgmv3kvp')
+        formData.append('idUser', 'cmd8lcc81000ogp3obk81vvdv')
         formData.append('typeBulletin', data.type)
         formData.append('mois', data.mois)
         formData.append('annee', data.annee.toString())
@@ -62,6 +62,7 @@ export default function SendRequestModal({
       setIsLoading(false)
     }
   }
+
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full section-email">
       {/* Hero icon */}

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import type { IAbsenceForm } from '../Add'
 import { useState } from 'react'
 import ToastNotification, { notify } from '@/lib/ToastNotification'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 interface PropsType {
   setActiveSendRequestModal: (activeSendRequestModal: boolean) => void
@@ -14,6 +15,7 @@ export default function SendRequestModal({
   setActiveSendRequestModal,
   data,
 }: PropsType) {
+  const { userDetails } = useDashboardContext()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
@@ -22,7 +24,7 @@ export default function SendRequestModal({
     try {
       const formData = new FormData()
       if (data) {
-        formData.append('idUser', 'cmd4a8b5q0000gp9gkgmv3kvp')
+        formData.append('idUser', userDetails?.id ?? '-')
         formData.append('typeAbsence', data.type)
         formData.append('dateDebut', data.date_debut.toString())
         formData.append('dateFin', data.date_fin.toString())

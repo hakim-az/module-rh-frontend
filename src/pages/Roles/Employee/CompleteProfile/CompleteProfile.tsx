@@ -6,8 +6,8 @@ import Step4 from './Step4/Step4'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 export default function CompleteProfile() {
-  const { userDetails } = useDashboardContext()
-  if (userDetails?.statut === 'user-created') {
+  const { userDetails, userStatus } = useDashboardContext()
+  if (userStatus === 'user-created') {
     return (
       <IntegrationFormProvider>
         <Step1 />
