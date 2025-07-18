@@ -9,9 +9,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import SendRequestModal from './componsnts/SendRequestModal'
 import { ControlledInput } from '@/components/FormFeilds/ControlledInput/ControlledInput'
+import SelectUser from './componsnts/SelectUser'
 
 export interface IRestauForm {
-  salarie: number
+  user_id: string
   nbr_jr: string
   annee: number
   mois: string
@@ -37,9 +38,11 @@ export default function Add() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     control,
     setValue,
+    clearErrors,
+    setError,
   } = methods
 
   const onSubmit = (data: IRestauForm) => {
@@ -81,23 +84,12 @@ export default function Add() {
           {/* Informations bancaire : */}
           <div className="grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md w-full">
             {/* Salarié */}
-            <ControlledSelect
-              name="salarie"
-              label="Salarié"
-              placeholder="Sélectionner un salarié"
-              control={control}
-              rules={{ required: true }}
-              items={[
-                { label: 'Camille Dupont', value: '1' },
-                { label: 'Lucas Moreau', value: '2' },
-                { label: 'Chloé Bernard', value: '3' },
-                { label: 'Thomas Lefèvre', value: '4' },
-                { label: 'Élise Fontaine', value: '5' },
-                { label: 'Nathan Girard', value: '6' },
-                { label: 'Sophie Marchand', value: '7' },
-              ]}
-              error={errors.salarie}
-              selectDefaultValue=""
+            <SelectUser
+              setValue={setValue}
+              errors={errors}
+              isSubmitting={isSubmitting}
+              clearErrors={clearErrors}
+              setError={setError}
             />
             {/* Nombre de jours ouvrés */}
             <ControlledInput

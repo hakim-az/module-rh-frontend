@@ -81,7 +81,7 @@ export default function ValidateIntegrationModal({
       setTimeout(() => {
         navigate(0)
         localStorage.setItem('userId', newUser.id)
-        console.log(newUser)
+        console.log('newUser', newUser)
       }, 200)
       const newUser = await UserService.createUser(createUserDto)
 

@@ -13,11 +13,11 @@ export default function CompleteProfileLayout({
 
   const renderBannerContent = (status: string | undefined) => {
     switch (status) {
-      case 'user-created':
+      case '':
         return {
-          title: "01 - Formulaire d'intégration",
+          title: 'Chargement...',
           description:
-            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis dolores numquam eius labore ullam sint blanditiis debitis in eaque ex neque omnis soluta ut excepturi fugiat asperiores id libero, quisquam velit perspiciatis, minus nobis. Velit molestias adipisci cumque. Quis quod vero aperiam! Nam sed numquam consectetur dolorem amet reiciendis excepturi.',
+            'Veuillez patienter pendant le chargement de votre statut.',
         }
       case 'profile-completed':
         return {
@@ -45,9 +45,9 @@ export default function CompleteProfileLayout({
         }
       default:
         return {
-          title: 'Chargement...',
+          title: "01 - Formulaire d'intégration",
           description:
-            'Veuillez patienter pendant le chargement de votre statut.',
+            'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officiis dolores numquam eius labore ullam sint blanditiis debitis in eaque ex neque omnis soluta ut excepturi fugiat asperiores id libero, quisquam velit perspiciatis, minus nobis. Velit molestias adipisci cumque. Quis quod vero aperiam! Nam sed numquam consectetur dolorem amet reiciendis excepturi.',
         }
     }
   }

@@ -1,10 +1,11 @@
 import React from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
-import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import CompleteProfileLayout from '@/components/Layouts/CompleteProfileLayout/CompleteProfileLayout'
 import CompleteProfile from './CompleteProfile/CompleteProfile'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import IntegrationFormProvider from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormProvider'
+import Step1 from './CompleteProfile/Step1/Step1'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
@@ -18,20 +19,30 @@ const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
 export default function Employee() {
-  const { userStatus, userDetails } = useDashboardContext()
+  const { userDetails } = useDashboardContext()
 
-  if (userDetails === null) {
+  if (!userDetails) {
     return (
-      <div className="w-screen h-screen flex items-center justify-center">
-        <LoadingSpinner />
-      </div>
+      <Routes>
+        {/* Home page */}
+        <Route
+          index
+          element={
+            <CompleteProfileLayout>
+              <IntegrationFormProvider>
+                <Step1 />
+              </IntegrationFormProvider>
+            </CompleteProfileLayout>
+          }
+        />
+
+        {/* Redirect any other route to index */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     )
   }
 
-  if (
-    userStatus !== 'user-approuved' &&
-    userDetails?.statut !== 'user-approuved'
-  ) {
+  if (userDetails?.statut !== 'user-approuved') {
     return (
       <Routes>
         {/* Home page */}

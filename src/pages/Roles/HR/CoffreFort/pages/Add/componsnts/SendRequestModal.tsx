@@ -22,7 +22,7 @@ export default function SendRequestModal({
     try {
       const formData = new FormData()
       if (data) {
-        formData.append('idUser', 'cmd8lcc81000ogp3obk81vvdv')
+        formData.append('idUser', data.user_id)
         formData.append('typeBulletin', data.type)
         formData.append('mois', data.mois)
         formData.append('annee', data.annee.toString())
