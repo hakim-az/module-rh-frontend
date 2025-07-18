@@ -44,12 +44,12 @@ export default function UpdateTitreRestau({
       console.log(response)
 
       notify({
-        message: 'Coffre ajouter avec success',
+        message: 'Titre restau modifier avec success',
         type: 'success',
       })
 
       setTimeout(() => {
-        navigate('/accueil/coffre-fort')
+        navigate('/accueil/titre-restaurant')
         setIsLoading(false)
       }, 2000)
     } catch (error) {
@@ -73,11 +73,10 @@ export default function UpdateTitreRestau({
           Modifier Titre Restaurant
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          Vous êtes sur le point de modifier un enregistrement de
-          titres-restaurant pour le salarié sélectionné. Vérifiez que le mois,
-          l'année, le nombre de jours ouvrés et les justificatifs sont corrects.
-          Une fois confirmé, le salarié pourra consulter cette information dans
-          son historique.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa impedit
+          nemo, libero molestias deserunt adipisci, molestiae necessitatibus,
+          sapiente porro accusantium doloremque temporibus quis voluptates nisi.
+          Possimus placeat omnis amet odio.
         </p>
       </div>
       {/* buttons */}

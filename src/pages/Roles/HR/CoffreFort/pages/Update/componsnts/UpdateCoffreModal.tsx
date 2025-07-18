@@ -45,7 +45,7 @@ export default function UpdateCoffreModal({
       console.log(response)
 
       notify({
-        message: 'Coffre ajouter avec success',
+        message: 'Coffre modifier avec success',
         type: 'success',
       })
 
@@ -71,13 +71,14 @@ export default function UpdateCoffreModal({
       {/* content */}
       <div className="w-full h-full section-title ">
         <h2 className="my-4 text-xl text-center font-semibold sm:text-2xl lg:text-4xl text-primaryblack">
-          Ajouter un document salarié
+          Modifier coffre fort
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          Vous êtes sur le point dajouter un document au coffre-fort numérique
-          du salarié sélectionné. Vérifiez que le type de document, la période
-          et le fichier joint sont corrects. Une fois validé, le salarié sera
-          notifié et pourra le consulter depuis son espace personnel.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
+          sapiente a hic quo tempore aliquid consequuntur, dolore officia ullam
+          repellendus optio voluptatem voluptatibus, voluptates nam voluptatum
+          tempora! Facilis culpa veritatis laudantium expedita soluta,
+          doloremque tenetur?
         </p>
       </div>
       {/* buttons */}
