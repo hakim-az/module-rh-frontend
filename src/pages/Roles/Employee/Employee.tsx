@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import CompleteProfileLayout from '@/components/Layouts/CompleteProfileLayout/CompleteProfileLayout'
 import CompleteProfile from './CompleteProfile/CompleteProfile'
-
-export type UserStatus = 'step-1' | 'step-2' | 'step-3' | 'step-4' | 'step-5'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
@@ -19,30 +18,9 @@ const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
 export default function Employee() {
-  const [userStatus, setUserStatus] = useState<UserStatus | null>(null)
+  const { userDetails } = useDashboardContext()
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const storedRole = localStorage.getItem('userStatus') as UserStatus | null
-
-      const validRoles: UserStatus[] = [
-        'step-1',
-        'step-2',
-        'step-3',
-        'step-4',
-        'step-5',
-      ]
-      if (storedRole && validRoles.includes(storedRole)) {
-        setUserStatus(storedRole)
-      } else {
-        setUserStatus('step-1') // or handle fallback
-      }
-    }, 100)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  if (userStatus === null) {
+  if (userDetails === null) {
     return (
       <div className="w-screen h-screen flex items-center justify-center">
         <LoadingSpinner />
@@ -50,7 +28,7 @@ export default function Employee() {
     )
   }
 
-  if (userStatus !== 'step-5') {
+  if (userDetails?.statut !== 'user-approuved') {
     return (
       <Routes>
         {/* Home page */}
@@ -58,7 +36,7 @@ export default function Employee() {
           index
           element={
             <CompleteProfileLayout>
-              <CompleteProfile userStatus={userStatus} />
+              <CompleteProfile />
             </CompleteProfileLayout>
           }
         />
@@ -69,7 +47,7 @@ export default function Employee() {
     )
   }
 
-  if (userStatus === 'step-5') {
+  if (userDetails?.statut === 'user-approuved') {
     return (
       <Routes>
         <Route

@@ -2,33 +2,14 @@ import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import ProfileBanner from './components/ProfileBanner'
 import { Download } from 'lucide-react'
 import PDFIcon from '@/assets/icons/pdf-icon.png'
-import type { UserData } from '../InfosPerso/InfoPerso'
-import { useCallback, useEffect, useState } from 'react'
-import axios from 'axios'
+import { useCallback, useState } from 'react'
 import { downloadFile } from '@/lib/downloadFile'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 export default function InfosPro() {
-  const [isLoadingFetch, setIsLoadingFetch] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [userDetails, setUserDetails] = useState<UserData>()
 
-  const fetchAbsenceDetails = useCallback(async () => {
-    setIsLoadingFetch(true)
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/users/cmd4a8b5q0000gp9gkgmv3kvp`
-      )
-      setUserDetails(response.data.data)
-    } catch (error) {
-      console.error('Failed to fetch user details:', error)
-    } finally {
-      setIsLoadingFetch(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchAbsenceDetails()
-  }, [fetchAbsenceDetails])
+  const { userDetails, isLoadingUser } = useDashboardContext()
 
   const handleDownload = useCallback(async (fileName: string) => {
     if (!fileName) return
@@ -45,7 +26,7 @@ export default function InfosPro() {
   return (
     <>
       <ProfileBanner />
-      {isLoadingFetch ? (
+      {isLoadingUser ? (
         <>Loading...</>
       ) : (
         <section className="w-11/12 max-w-[1200px] pb-28 mx-auto gap-10 flex flex-col ">
@@ -86,7 +67,7 @@ export default function InfosPro() {
               value={userDetails?.urgence.telephone ?? '-'}
             />
           </div>
-          {/* Contacte d'urgence : */}
+          {/* Définition du contrat : */}
           <div className="grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
             <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
               Définition du contrat :

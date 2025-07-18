@@ -1,120 +1,15 @@
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import ProfileBanner from './components/ProfileBanner'
-import { useCallback, useEffect, useState } from 'react'
-import axios from 'axios'
-
-export interface UserData {
-  id: string
-  role: string
-  statut: string
-  civilite: string
-  prenom: string
-  nomDeNaissance: string
-  nomUsuel: string
-  situationFamiliale: string
-  numeroSecuriteSociale: string
-  emailPersonnel: string
-  emailProfessionnel: string
-  telephonePersonnel: string
-  telephoneProfessionnel: string
-  avatar: string
-  createdAt: string
-  updatedAt: string
-  naissance: {
-    id: string
-    idUser: string
-    dateDeNaissance: string
-    paysDeNaissance: string
-    departementDeNaissance: string
-    communeDeNaissance: string
-    paysDeNationalite: string
-    createdAt: string
-    updatedAt: string
-  }
-  adresse: {
-    id: string
-    idUser: string
-    pays: string
-    codePostal: string
-    ville: string
-    adresse: string
-    complementAdresse: string
-    domiciliteHorsLaFrance: string
-    createdAt: string
-    updatedAt: string
-  }
-  paiement: {
-    id: string
-    idUser: string
-    iban: string
-    bic: string
-    createdAt: string
-    updatedAt: string
-  }
-  urgence: {
-    id: string
-    idUser: string
-    nomComplet: string
-    lienAvecLeSalarie: string
-    telephone: string
-    createdAt: string
-    updatedAt: string
-  }
-  justificatif: {
-    id: string
-    idUser: string
-    fichierCarteVitalePdf: string
-    fichierRibPdf: string
-    fichierPieceIdentitePdf: string
-    fichierJustificatifDomicilePdf: string
-    createdAt: string
-    updatedAt: string
-  }
-  contrat: {
-    id: string
-    idUser: string
-    poste: string
-    typeContrat: string
-    dateDebut: string
-    dateFin: string
-    etablissementDeSante: string
-    serviceDeSante: string
-    matricule: string
-    salaire: string
-    fichierContratNonSignerPdf: string
-    fichierContratSignerPdf: string
-    createdAt: string
-    updatedAt: string
-  }
-}
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 export default function InfoPerso() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [userDetails, setUserDetails] = useState<UserData>()
-
-  const fetchAbsenceDetails = useCallback(async () => {
-    setIsLoading(true)
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/users/cmd4a8b5q0000gp9gkgmv3kvp`
-      )
-      setUserDetails(response.data.data)
-    } catch (error) {
-      console.error('Failed to fetch user details:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
-
-  useEffect(() => {
-    fetchAbsenceDetails()
-  }, [fetchAbsenceDetails])
+  const { userDetails, isLoadingUser } = useDashboardContext()
 
   return (
     <>
       <ProfileBanner />
 
-      {isLoading ? (
+      {isLoadingUser ? (
         <>Loading...</>
       ) : (
         <section className="w-11/12 max-w-[1200px] pb-28 mx-auto gap-10 flex flex-col ">

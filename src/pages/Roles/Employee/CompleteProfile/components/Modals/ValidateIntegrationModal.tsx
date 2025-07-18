@@ -3,6 +3,7 @@ import { UserService } from '@/services/userService'
 import type { CreateUserDto, User } from '@/types/user.types'
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface PropsType {
   setActiveValidateIntegrationModal: (
@@ -25,7 +26,7 @@ export default function ValidateIntegrationModal({
     rib,
   } = useIntegrationFormDataContext()
 
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
   const submitConfirmation = async () => {
@@ -33,7 +34,7 @@ export default function ValidateIntegrationModal({
     try {
       const createUserDto: CreateUserDto = {
         role: 'employee',
-        statut: 'profile-created',
+        statut: 'profile-completed',
         civilite: employeePersonalInfo.civilite,
         prenom: employeePersonalInfo.prenom,
         nomDeNaissance: employeePersonalInfo.nom_de_naissance,
@@ -76,8 +77,12 @@ export default function ValidateIntegrationModal({
           fichierJustificatifDomicilePdf: justificatifDomicile ?? undefined,
         },
       }
-
+      localStorage.setItem('userStatus', 'profile-completed')
+      setTimeout(() => {
+        navigate(0)
+      }, 100)
       const newUser = await UserService.createUser(createUserDto)
+
       onSuccess(newUser)
     } catch (err) {
       setIsLoading(false)
@@ -114,12 +119,7 @@ export default function ValidateIntegrationModal({
         <button
           type="button"
           disabled={isLoading}
-          onClick={() => {
-            // localStorage.setItem('userStatus', 'step-2')
-            // setActiveValidateIntegrationModal(false)
-            submitConfirmation()
-            // window.location.reload()
-          }}
+          onClick={submitConfirmation}
           className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
           {isLoading ? 'Loading...' : 'Valider'}
         </button>

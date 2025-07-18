@@ -11,9 +11,10 @@ import { useNavigate } from 'react-router-dom'
 
 interface ActionsCellProps {
   id: string
+  statut: string
 }
 
-export default function ActionsCell({ id }: ActionsCellProps) {
+export default function ActionsCell({ id, statut }: ActionsCellProps) {
   const navigate = useNavigate()
 
   return (
@@ -27,8 +28,10 @@ export default function ActionsCell({ id }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => navigate(`details/${id}`)}>
-            Détails absence
+          <DropdownMenuItem
+            disabled={statut === 'user-created'}
+            onClick={() => navigate(`details/${id}`)}>
+            Détails salarié
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

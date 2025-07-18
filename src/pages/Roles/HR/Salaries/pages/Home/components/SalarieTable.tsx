@@ -31,59 +31,7 @@ import {
 } from '@/components/ui/table'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-
-// export type Salarie = {
-//   id: string
-//   salarie: {
-//     nom: string
-//     prenom: string
-//     email: string
-//   }
-//   poste: string
-//   tel: string
-//   status: 'step-1' | 'step-2' | 'step-3' | 'step-4' | 'step-5'
-// }
-
-// Define the TypeScript interface for a Salarie item
-export interface ISalarie {
-  id: string
-  prenom: string
-  nomDeNaissance: string
-  status: number
-  nomUsuel: string
-  situationFamiliale: string
-  emailPerso: string
-  emailPro: string
-  telPerso: string
-  telPro: string
-  dateDeNaissance: string
-  paysDeNaissance: string
-  departmentDeNaissance: string
-  communeDeNaissance: string
-  paysDeNationalite: string
-  codePostal: string
-  ville: string
-  adresse: string
-  complementAdresse: string
-  iban: string
-  bic: string
-  nomCompletContactUrgence: string
-  lienAvecSalarieContactUrgence: string
-  telContactUrgence: string
-  carteVitale: string
-  rib: string
-  pieceIdentite: string
-  justificatifDeDomicile: string
-  poste: string
-  typeContrat: string
-  dateDebut: string
-  dateFin: string | null
-  etablissemnetSante: string
-  serviceSante: string
-  salaire: number
-  urlPdfNonSigner: string | null
-  urlPdfSigner: string | null
-}
+import type { User } from '@/types/user.types'
 
 export default function SalarieTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -93,7 +41,7 @@ export default function SalarieTable() {
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
-  const [salaries, setSalaries] = useState<ISalarie[]>([])
+  const [salaries, setSalaries] = useState<User[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
@@ -101,10 +49,10 @@ export default function SalarieTable() {
       setLoading(true)
 
       try {
-        const response = await axios.get<ISalarie[]>(
-          `${import.meta.env.VITE_API_BASE_URL}/salaries`
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_BASE_URL}/users`
         )
-        setSalaries(response.data)
+        setSalaries(response.data.data)
       } catch (err) {
         console.log(err)
       } finally {

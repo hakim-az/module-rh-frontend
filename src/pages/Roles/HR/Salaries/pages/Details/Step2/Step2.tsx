@@ -2,8 +2,6 @@ import { useState } from 'react'
 
 // components
 import Stepper from '../components/Stepper/Stepper'
-import CustomModal from '@/components/Headers/CustomModal/CustomModal'
-import ValidateIntegrationModal from '../components/Modals/ValidateIntegrationModal/ValidateIntegrationModal'
 import PagePath from '@/components/PagePath/PagePath'
 import InfosPerso from './InfosPerso/InfosPerso'
 import InfosPro from './InfosPro/InfosPro'
@@ -23,8 +21,6 @@ export interface Step {
 export default function Step2({ statusLabel }: IProps) {
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
-  const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
-    useState<boolean>(false)
 
   // consts
   const labels = [
@@ -42,20 +38,6 @@ export default function Step2({ statusLabel }: IProps) {
     return { label, status }
   })
 
-  // handle go next
-  const goNext = () => {
-    if (currentStepIndex < labels.length - 1) {
-      setCurrentStepIndex(currentStepIndex + 1)
-    }
-  }
-
-  // handle go back
-  const goBack = () => {
-    if (currentStepIndex > 0) {
-      setCurrentStepIndex(currentStepIndex - 1)
-    }
-  }
-
   // Form Component Selector
   const renderForm = () => {
     switch (currentStepIndex) {
@@ -64,9 +46,6 @@ export default function Step2({ statusLabel }: IProps) {
           <InfosPerso
             currentStepIndex={currentStepIndex}
             setCurrentStepIndex={setCurrentStepIndex}
-            setActiveValidateIntegrationModal={
-              setActiveValidateIntegrationModal
-            }
             labels={labels}
           />
         )
@@ -75,9 +54,6 @@ export default function Step2({ statusLabel }: IProps) {
           <InfosPro
             currentStepIndex={currentStepIndex}
             setCurrentStepIndex={setCurrentStepIndex}
-            setActiveValidateIntegrationModal={
-              setActiveValidateIntegrationModal
-            }
             labels={labels}
           />
         )
@@ -85,12 +61,8 @@ export default function Step2({ statusLabel }: IProps) {
         return (
           <Justificatifs
             currentStepIndex={currentStepIndex}
-            setActiveValidateIntegrationModal={
-              setActiveValidateIntegrationModal
-            }
+            setCurrentStepIndex={setCurrentStepIndex}
             labels={labels}
-            goNext={goNext}
-            goBack={goBack}
           />
         )
       case 3:
@@ -98,12 +70,7 @@ export default function Step2({ statusLabel }: IProps) {
           <Contrat
             currentStepIndex={currentStepIndex}
             setCurrentStepIndex={setCurrentStepIndex}
-            setActiveValidateIntegrationModal={
-              setActiveValidateIntegrationModal
-            }
             labels={labels}
-            goNext={goNext}
-            goBack={goBack}
           />
         )
       default:
@@ -119,13 +86,6 @@ export default function Step2({ statusLabel }: IProps) {
         <Stepper steps={steps} />
         <div className="w-full mx-auto py-20">{renderForm()}</div>
       </div>
-      <CustomModal
-        openModal={activeValidateIntegrationModal}
-        setOpenModal={setActiveValidateIntegrationModal}>
-        <ValidateIntegrationModal
-          setActiveValidateIntegrationModal={setActiveValidateIntegrationModal}
-        />
-      </CustomModal>
     </>
   )
 }

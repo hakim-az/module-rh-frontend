@@ -1,44 +1,41 @@
 import FileUploader from '@/components/FileUploader/FileUploader'
 import { ControlledInput } from '@/components/FormFeilds/ControlledInput/ControlledInput'
 import { ControlledSelect } from '@/components/FormFeilds/ControlledSelect/ControlledSelect'
+import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
+import ValidateIntegrationModal from '../../components/Modals/ValidateIntegrationModal/ValidateIntegrationModal'
 
-interface IContractInfo {
+export interface IContractInfo {
   poste: string
   type_de_contrat: string
   date_de_début: Date
   date_de_fin: Date
+  matricule: string
   etablisment_de_sante: string
   service_de_sante: string
   salaire: number
-  contract: File
+  contrat: File
 }
 
 interface PropsType {
   currentStepIndex: number
-  setActiveValidateIntegrationModal: (
-    activeValidateIntegrationModal: boolean
-  ) => void
   setCurrentStepIndex: (setCurrentStepIndex: number) => void
   labels: string[]
-  goNext: () => void
-  goBack: () => void
 }
 
 export default function Contrat({
   currentStepIndex,
   setCurrentStepIndex,
-  setActiveValidateIntegrationModal,
   labels,
-  goNext,
-  goBack,
 }: PropsType) {
   // States
   const [ContractInfo, setContractInfo] = useState<IContractInfo>()
-  const [contractFile, setContractFile] = useState<File>()
+  const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
+    useState<boolean>(false)
+  const [contrat, setContrat] = useState<File>()
   // react hook form
   const methods = useForm<IContractInfo>({
     mode: 'onBlur',
@@ -52,20 +49,33 @@ export default function Contrat({
     setValue,
   } = methods
 
+  // handle go back
+  const goBack = () => {
+    if (currentStepIndex > 0) {
+      setCurrentStepIndex(currentStepIndex - 1)
+    }
+  }
+
   // handle form submit
   const onSubmit = (data: IContractInfo) => {
     console.log(data)
     setContractInfo(data)
-    goNext()
-    if (currentStepIndex === labels.length - 1) {
-      setActiveValidateIntegrationModal(true)
-    } else {
-      setCurrentStepIndex(currentStepIndex + 1)
-    }
+    setActiveValidateIntegrationModal(true)
   }
 
-  console.log('ContractInfo', ContractInfo)
-  console.log('contractFile', contractFile)
+  useEffect(() => {
+    register('contrat', {
+      required: 'Ce champ est requis',
+      validate: {
+        size: (file: File) =>
+          file && file.size <= 10 * 1024 * 1024
+            ? true
+            : 'Le fichier doit faire moins de 10 Mo',
+      },
+    })
+
+    if (contrat) setValue('contrat', contrat)
+  }, [contrat, register, setValue])
 
   return (
     <FormProvider {...methods}>
@@ -125,6 +135,17 @@ export default function Contrat({
             inputType="date"
             inputDefaultValue=""
           />
+          {/* Matricule */}
+          <ControlledInput
+            name="matricule"
+            label="Matricule"
+            placeholder="Matricule"
+            register={register}
+            rules={{ required: true }}
+            error={errors.matricule}
+            inputType="text"
+            inputDefaultValue=""
+          />
           <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
             L'établissement et le service de santé :
           </span>
@@ -172,25 +193,25 @@ export default function Contrat({
             Contrat d'intégration :
           </span>
           <Controller
-            name="contract"
+            name="contrat"
             control={control}
             rules={{ required: 'Veuillez ajouter un fichier' }}
             render={({ field }) => (
               <FileUploader
                 title="Contrat de travail"
-                name="contract"
+                name="contrat"
                 setValue={setValue}
                 onFileSelect={(file) => {
-                  setContractFile(file)
-                  setValue('contract', file, { shouldValidate: true })
+                  setContrat(file)
+                  setValue('contrat', file, { shouldValidate: true })
                   field.onChange(file)
                 }}
                 error={
-                  typeof errors.contract?.message === 'string'
-                    ? errors.contract.message
+                  typeof errors.contrat?.message === 'string'
+                    ? errors.contrat.message
                     : undefined
                 }
-                defaultFile={contractFile}
+                defaultFile={contrat}
               />
             )}
           />
@@ -207,6 +228,14 @@ export default function Contrat({
           </Button>
         </div>
       </form>
+      <CustomModal
+        openModal={activeValidateIntegrationModal}
+        setOpenModal={setActiveValidateIntegrationModal}>
+        <ValidateIntegrationModal
+          setActiveValidateIntegrationModal={setActiveValidateIntegrationModal}
+          data={ContractInfo}
+        />
+      </CustomModal>
     </FormProvider>
   )
 }
