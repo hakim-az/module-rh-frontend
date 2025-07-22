@@ -42,9 +42,13 @@ export default function Justificatifs({
   const handleDownload = useCallback(
     async (fileName: string | undefined, key: string) => {
       if (!fileName) return
+
+      // Extract only the path starting from "uploads/"
+      const extractedPath = fileName.replace(/^.*\/uploads\//, 'uploads/')
+
       setDownloadingKey(key)
       try {
-        await downloadFile(fileName)
+        await downloadFile(extractedPath)
       } catch (error) {
         console.error('Download failed:', error)
       } finally {

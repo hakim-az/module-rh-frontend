@@ -2,6 +2,7 @@ import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import { Button } from '@/components/ui/button'
 import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
+import { getCountryLabel } from '@/lib/getCountryLabel'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 // types
@@ -105,7 +106,10 @@ export default function InfosPerso({
             {/* Pays de nationalité */}
             <DisplayInput
               label="Pays de nationalité"
-              value={salarieDetails?.naissance.paysDeNationalite ?? '-'}
+              value={
+                getCountryLabel(salarieDetails?.naissance.paysDeNationalite) ??
+                '-'
+              }
             />
           </div>
           {/* coordonnées & adresse */}
@@ -140,7 +144,7 @@ export default function InfosPerso({
             {/* Pays */}
             <DisplayInput
               label="Pays"
-              value={salarieDetails?.adresse.pays ?? '-'}
+              value={getCountryLabel(salarieDetails?.adresse.pays) ?? '-'}
             />
             {/* Code postal */}
             <DisplayInput

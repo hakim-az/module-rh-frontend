@@ -1,3 +1,4 @@
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import { FilePenLine } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { Document, Page, pdfjs } from 'react-pdf'
@@ -10,6 +11,7 @@ interface IPropsType {
 }
 
 export default function FileViewer({ setActiveSignContractModal }: IPropsType) {
+  const { userDetails, isLoadingUser } = useDashboardContext()
   const [numPages, setNumPages] = useState<number | null>(null)
   const [pageNumber, setPageNumber] = useState(1)
   const [width, setWidth] = useState(800)
@@ -39,6 +41,10 @@ export default function FileViewer({ setActiveSignContractModal }: IPropsType) {
   const goNext = () =>
     setPageNumber((prev) => Math.min(prev + 1, numPages || 1))
 
+  if (isLoadingUser) {
+    return <>Loading...</>
+  }
+
   return (
     <section className="min-h-screen pb-20">
       <div
@@ -46,7 +52,7 @@ export default function FileViewer({ setActiveSignContractModal }: IPropsType) {
         className="mx-auto flex items-center justify-center shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded"
         style={{ maxWidth: '800px', minWidth: '300px' }}>
         <Document
-          file="/files/sample.pdf"
+          file={userDetails?.contrat.fichierContratNonSignerPdf}
           onLoadSuccess={onDocumentLoadSuccess}>
           <Page
             pageNumber={pageNumber}

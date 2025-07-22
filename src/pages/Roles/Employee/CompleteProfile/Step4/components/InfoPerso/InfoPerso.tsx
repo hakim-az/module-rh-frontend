@@ -1,5 +1,6 @@
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import { getCountryLabel } from '@/lib/getCountryLabel'
 
 export default function InfoPerso() {
   const { userDetails, isLoadingUser } = useDashboardContext()
@@ -71,7 +72,7 @@ export default function InfoPerso() {
             {/* Pays de nationalité */}
             <DisplayInput
               label="Pays de nationalité"
-              value={userDetails?.naissance.paysDeNationalite ?? '-'}
+              value={getCountryLabel(userDetails?.naissance.paysDeNationalite)}
             />
           </div>
           {/* coordonnées & adresse */}
@@ -106,7 +107,7 @@ export default function InfoPerso() {
             {/* Pays */}
             <DisplayInput
               label="Pays"
-              value={userDetails?.adresse.pays ?? '-'}
+              value={getCountryLabel(userDetails?.adresse.pays)}
             />
             {/* Code postal */}
             <DisplayInput

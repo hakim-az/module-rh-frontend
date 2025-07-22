@@ -1,5 +1,3 @@
-import { Label } from '@/components/ui/label'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -44,9 +42,7 @@ export default function InfosPerso({
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
-    watch,
     control,
   } = methods
 
@@ -355,20 +351,6 @@ export default function InfosPerso({
             inputType="text"
             inputDefaultValue={employeePersonalInfo.complement_adresse}
           />
-          {/* Domicilié fiscalement hors de France */}
-          <div className="flex justify-start mt-2 w-full lg:col-span-2 items-center gap-3 ">
-            <Checkbox
-              checked={watch('fiscalement_hors_france')}
-              onCheckedChange={(checked) =>
-                setValue('fiscalement_hors_france', !!checked)
-              }
-              className="size-5"
-              aria-label="Size small"
-            />
-            <Label htmlFor="complement_adresse">
-              Domicilié fiscalement hors de France
-            </Label>
-          </div>
         </div>
         <div className="w-full flex gap-16 justify-center">
           {/* revenir */}

@@ -95,7 +95,7 @@ export default function Contrat() {
         className="mx-auto flex items-center justify-center shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded"
         style={{ maxWidth: '800px', minWidth: '300px' }}>
         <Document
-          file="/files/sample.pdf"
+          file={userDetails?.contrat.fichierContratSignerPdf}
           onLoadSuccess={onDocumentLoadSuccess}>
           <Page
             pageNumber={pageNumber}
