@@ -137,6 +137,15 @@ export class UserService {
             userData.justificatif.fichierJustificatifDomicilePdf
           )
         }
+        if (
+          userData.justificatif.fichierAmeli &&
+          userData.justificatif.fichierAmeli instanceof File
+        ) {
+          formData.append(
+            'justificatif[fichierAmeli]',
+            userData.justificatif.fichierAmeli
+          )
+        }
 
         // Only add justificatif section if at least one file exists
         const hasAnyFile = [
@@ -144,6 +153,7 @@ export class UserService {
           userData.justificatif.fichierRibPdf,
           userData.justificatif.fichierPieceIdentitePdf,
           userData.justificatif.fichierJustificatifDomicilePdf,
+          userData.justificatif.fichierAmeli,
         ].some((file) => file instanceof File)
 
         if (hasAnyFile) {

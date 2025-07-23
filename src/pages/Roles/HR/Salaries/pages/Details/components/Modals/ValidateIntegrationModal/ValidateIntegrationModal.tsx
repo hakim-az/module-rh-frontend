@@ -1,5 +1,5 @@
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
-import type { IContractInfo } from '../../../Step2/Contrat/Contrat'
+import type { IContractInfo } from '../../../UploadContract/Contrat/Contrat'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import { notify } from '@/lib/ToastNotification'

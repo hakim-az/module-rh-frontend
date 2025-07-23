@@ -24,6 +24,7 @@ export default function ValidateIntegrationModal({
     carteVitale,
     pieceIdentite,
     rib,
+    ameli,
   } = useIntegrationFormDataContext()
 
   const navigate = useNavigate()
@@ -75,6 +76,7 @@ export default function ValidateIntegrationModal({
           fichierRibPdf: rib ?? undefined,
           fichierPieceIdentitePdf: pieceIdentite ?? undefined,
           fichierJustificatifDomicilePdf: justificatifDomicile ?? undefined,
+          fichierAmeli: ameli ?? undefined,
         },
       }
 

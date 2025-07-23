@@ -1,11 +1,8 @@
 import { useParams } from 'react-router-dom'
 
-// steps
-import Step1 from './Step1/Step1'
-import Step2 from './Step2/Step2'
-import Step3 from './Step3/Step3'
-import Step4 from './Step4/Step4'
-import Step5 from './Step5/Step5'
+import UploadContract from './UploadContract/UploadContract'
+import WaitSignature from './WaitSignature/WaitSignature'
+import SalarieValidation from './SalarieValidation/SalarieValidation'
 import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
 import { useEffect } from 'react'
 
@@ -75,27 +72,24 @@ export default function Details() {
     }
   }
 
-  //   step 1
-  if (salarieDetails?.statut === 'user-created') {
-    return <Step1 />
-  }
-  //   step 2
+  //   Upload contract
   if (salarieDetails?.statut === 'profile-completed') {
-    return <Step2 statusLabel={getStepLabel(salarieDetails?.statut)} />
+    return <UploadContract statusLabel={getStepLabel(salarieDetails?.statut)} />
   }
-  //   step 3
+  //  Wait signature
   if (
     salarieDetails?.statut === 'contract-uploaded' ||
     salarieDetails?.statut === 'email-sent'
   ) {
-    return <Step3 statusLabel={getStepLabel(salarieDetails?.statut)} />
+    return <WaitSignature statusLabel={getStepLabel(salarieDetails?.statut)} />
   }
-  //   step 4
-  if (salarieDetails?.statut === 'contract-signed') {
-    return <Step4 statusLabel={getStepLabel(salarieDetails?.statut)} />
-  }
-  //   step 5
-  if (salarieDetails?.statut === 'user-approuved') {
-    return <Step5 statusLabel={getStepLabel(salarieDetails?.statut)} />
+  //   Salarie validation
+  if (
+    salarieDetails?.statut === 'contract-signed' ||
+    salarieDetails?.statut === 'user-approuved'
+  ) {
+    return (
+      <SalarieValidation statusLabel={getStepLabel(salarieDetails?.statut)} />
+    )
   }
 }

@@ -48,6 +48,8 @@ export interface IntegrationFormContextType {
   setPieceIdentite: React.Dispatch<React.SetStateAction<File | null>>
   justificatifDomicile: File | null
   setJustificatifDomicile: React.Dispatch<React.SetStateAction<File | null>>
+  ameli: File | null
+  setAmeli: React.Dispatch<React.SetStateAction<File | null>>
 }
 
 export const IntegrationFormContext = createContext<

@@ -5,7 +5,7 @@ import CompleteProfileLayout from '@/components/Layouts/CompleteProfileLayout/Co
 import CompleteProfile from './CompleteProfile/CompleteProfile'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import IntegrationFormProvider from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormProvider'
-import Step1 from './CompleteProfile/Step1/Step1'
+import IntegrationForm from './CompleteProfile/IntegrationForm/IntegrationForm'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
@@ -30,7 +30,7 @@ export default function Employee() {
           element={
             <CompleteProfileLayout>
               <IntegrationFormProvider>
-                <Step1 />
+                <IntegrationForm />
               </IntegrationFormProvider>
             </CompleteProfileLayout>
           }

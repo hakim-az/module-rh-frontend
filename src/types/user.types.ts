@@ -52,6 +52,7 @@ export interface JustificatifDto {
   fichierRibPdf?: File
   fichierPieceIdentitePdf?: File
   fichierJustificatifDomicilePdf?: File
+  fichierAmeli?: File
 }
 
 export interface User {
@@ -118,6 +119,7 @@ export interface User {
     fichierRibPdf: string
     fichierPieceIdentitePdf: string
     fichierJustificatifDomicilePdf: string
+    fichierAmeli: string
     createdAt: string
     updatedAt: string
   }
