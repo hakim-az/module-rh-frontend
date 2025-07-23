@@ -17,16 +17,68 @@ export default function SignContractModal({
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  // const SendSignatureRequest = async () => {
+  //   setIsLoading(true)
+  //   try {
+  //     const payload = {
+  //       idUser: userDetails?.id,
+  //       firstName: userDetails?.prenom,
+  //       lastName: userDetails?.nomDeNaissance,
+  //       email: userDetails?.emailPersonnel,
+  //       pdfUrl: userDetails?.contrat.fichierContratNonSignerPdf,
+  //     }
+
+  //     const response = await axios.post(
+  //       `${import.meta.env.VITE_API_BASE_URL}/signature`,
+  //       payload
+  //     )
+
+  //     console.log(response)
+
+  //     notify({
+  //       message: 'Demande envoyer avec success',
+  //       type: 'success',
+  //     })
+  //     setTimeout(() => {
+  //       navigate(0)
+  //       setIsLoading(false)
+  //     }, 2000)
+  //   } catch (error) {
+  //     console.error(error)
+
+  //     notify({
+  //       message: 'Echec',
+  //       type: 'error',
+  //     })
+
+  //     setIsLoading(false)
+  //   }
+  // }
+
   const SendSignatureRequest = async () => {
     setIsLoading(true)
     try {
+      if (
+        !userDetails?.id ||
+        !userDetails?.prenom ||
+        !userDetails?.nomDeNaissance ||
+        !userDetails?.emailPersonnel ||
+        !userDetails?.contrat?.fichierContratNonSignerPdf
+      ) {
+        notify({
+          message: 'Informations utilisateur incomplètes pour la signature',
+          type: 'error',
+        })
+        setIsLoading(false)
+        return
+      }
+
       const payload = {
-        idUser: userDetails?.id,
-        firstName: userDetails?.prenom,
-        lastName: userDetails?.nomDeNaissance,
-        email: userDetails?.emailPersonnel,
-        pdfUrl:
-          'https://www.ambient-it.net/wp-content/uploads/pdf/Annexe-1-Fiche-descriptive-nest-js.pdf',
+        idUser: userDetails.id,
+        firstName: userDetails.prenom,
+        lastName: userDetails.nomDeNaissance,
+        email: userDetails.emailPersonnel,
+        pdfUrl: userDetails.contrat.fichierContratNonSignerPdf,
       }
 
       const response = await axios.post(
@@ -34,27 +86,29 @@ export default function SignContractModal({
         payload
       )
 
-      console.log(response)
+      console.log('Réponse API signature:', response.data)
 
       notify({
-        message: 'Demande envoyer avec success',
+        message: 'Email envoyé avec succès',
         type: 'success',
       })
+
       setTimeout(() => {
         navigate(0)
         setIsLoading(false)
       }, 2000)
     } catch (error) {
-      console.error(error)
+      console.error("Erreur lors de l'envoi de la signature:", error)
 
       notify({
-        message: 'Echec',
+        message: 'Échec de la demande de signature',
         type: 'error',
       })
 
       setIsLoading(false)
     }
   }
+
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full section-email">
       {/* Hero icon */}

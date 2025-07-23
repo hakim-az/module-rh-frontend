@@ -53,26 +53,26 @@ export default function ContractDispalyForm({ details, loading }: IProps) {
           Définition du contrat :
         </span>
         {/* Poste */}
-        <DisplayInput label="Poste" value={details?.contrat.poste ?? '-'} />
+        <DisplayInput label="Poste" value={details?.contrat?.poste ?? '-'} />
         {/* Type de contrat */}
         <DisplayInput
           label="Type de contrat"
-          value={details?.contrat.typeContrat ?? '-'}
+          value={details?.contrat?.typeContrat ?? '-'}
         />
         {/* Date de début */}
         <DisplayInput
           label="Date de début"
-          value={formatDateToLabel(details?.contrat.dateDebut) ?? '-'}
+          value={formatDateToLabel(details?.contrat?.dateDebut) ?? '-'}
         />
         {/* Date de fin */}
         <DisplayInput
           label="Date de fin"
-          value={formatDateToLabel(details?.contrat.dateFin) ?? '-'}
+          value={formatDateToLabel(details?.contrat?.dateFin) ?? '-'}
         />
         {/* Matricule */}
         <DisplayInput
           label="Matricule"
-          value={details?.contrat.matricule ?? '-'}
+          value={details?.contrat?.matricule ?? '-'}
         />
         <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
           L'établissement et le service de santé :
@@ -80,12 +80,12 @@ export default function ContractDispalyForm({ details, loading }: IProps) {
         {/* Etablissement */}
         <DisplayInput
           label="Etablissement"
-          value={details?.contrat.etablissementDeSante ?? '-'}
+          value={details?.contrat?.etablissementDeSante ?? '-'}
         />
         {/* Service de santé */}
         <DisplayInput
           label="Service de santé"
-          value={details?.contrat.serviceDeSante ?? '-'}
+          value={details?.contrat?.serviceDeSante ?? '-'}
         />
       </div>
       <div className="grid grid-cols-1 mb-20 bg-white lg:grid-cols-2 p-7 gap-10 rounded-md border border-gray-200 shadow-md w-full">
@@ -95,7 +95,7 @@ export default function ContractDispalyForm({ details, loading }: IProps) {
         {/* Mode de salaire de base */}
         <DisplayInput
           label="Mode de salaire de base"
-          value={details?.contrat.salaire ?? '-'}
+          value={details?.contrat?.salaire ?? '-'}
         />
       </div>
       <div

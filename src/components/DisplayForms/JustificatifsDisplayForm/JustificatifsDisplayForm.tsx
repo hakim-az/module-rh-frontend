@@ -74,7 +74,9 @@ export default function JustificatifsDisplayForm({ details, loading }: IProps) {
             </span>
           ) : fileUrl ? (
             <Download
-              onClick={() => handleDownload(fileUrl, fileKey)}
+              onClick={() =>
+                typeof fileUrl === 'string' && handleDownload(fileUrl, fileKey)
+              }
               className="hover:text-blue-600 cursor-pointer"
             />
           ) : (

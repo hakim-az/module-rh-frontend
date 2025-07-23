@@ -1,7 +1,8 @@
 import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
-import { UserService } from '@/services/userService'
-import type { CreateUserDto, User } from '@/types/user.types'
+import ToastNotification, { notify } from '@/lib/ToastNotification'
+import type { User } from '@/types/user.types'
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
+import axios from 'axios'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -14,7 +15,6 @@ interface PropsType {
 
 export default function ValidateIntegrationModal({
   setActiveValidateIntegrationModal,
-  onSuccess,
 }: PropsType) {
   // integration form context
   const {
@@ -30,68 +30,165 @@ export default function ValidateIntegrationModal({
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
-  const submitConfirmation = async () => {
+  const sendIntegrationForm = async () => {
     setIsLoading(true)
     try {
-      const createUserDto: CreateUserDto = {
-        role: 'employee',
-        statut: 'profile-completed',
-        civilite: employeePersonalInfo.civilite,
-        prenom: employeePersonalInfo.prenom,
-        nomDeNaissance: employeePersonalInfo.nom_de_naissance,
-        nomUsuel: employeePersonalInfo.nom_usuel,
-        situationFamiliale: employeePersonalInfo.situation_familiale,
-        numeroSecuriteSociale: employeePersonalInfo.numero_ssr,
-        emailPersonnel: employeePersonalInfo.email_perso,
-        emailProfessionnel: employeePersonalInfo.email_pro,
-        telephonePersonnel: employeePersonalInfo.tel_perso,
-        telephoneProfessionnel: employeePersonalInfo.tel_pro,
-        avatar: '',
-        naissance: {
-          dateDeNaissance: employeePersonalInfo.date_de_naissance,
-          paysDeNaissance: employeePersonalInfo.pays_de_naissance,
-          departementDeNaissance: employeePersonalInfo.departement_de_naissance,
-          communeDeNaissance: employeePersonalInfo.commune_de_naissance,
-          paysDeNationalite: employeePersonalInfo.pays_de_nationalite,
-        },
-        adresse: {
-          pays: employeePersonalInfo.pays,
-          codePostal: employeePersonalInfo.code_postal,
-          ville: employeePersonalInfo.ville,
-          adresse: employeePersonalInfo.adresse,
-          complementAdresse: employeePersonalInfo.complement_adresse,
-          domiciliteHorsLaFrance: false,
-        },
-        paiement: {
-          iban: employeeProfesionalInfo.iban,
-          bic: employeeProfesionalInfo.bic,
-        },
-        urgence: {
-          nomComplet: employeeProfesionalInfo.nom_complet,
-          lienAvecLeSalarie: employeeProfesionalInfo.lien_avec_salarie,
-          telephone: employeeProfesionalInfo.tel,
-        },
-        justificatif: {
-          fichierCarteVitalePdf: carteVitale ?? undefined,
-          fichierRibPdf: rib ?? undefined,
-          fichierPieceIdentitePdf: pieceIdentite ?? undefined,
-          fichierJustificatifDomicilePdf: justificatifDomicile ?? undefined,
-          fichierAmeli: ameli ?? undefined,
-        },
+      const formData = new FormData()
+      // Add basic user fields
+      formData.append('role', 'employee')
+      formData.append('statut', 'profile-completed')
+      formData.append('civilite', employeePersonalInfo.civilite)
+      formData.append('prenom', employeePersonalInfo.prenom)
+      formData.append('nomDeNaissance', employeePersonalInfo.nom_de_naissance)
+      formData.append('nomUsuel', employeePersonalInfo.nom_usuel)
+      formData.append(
+        'situationFamiliale',
+        employeePersonalInfo.situation_familiale
+      )
+      formData.append('numeroSecuriteSociale', employeePersonalInfo.numero_ssr)
+      formData.append('emailPersonnel', employeePersonalInfo.email_perso)
+      formData.append('emailProfessionnel', employeePersonalInfo.email_pro)
+      formData.append('telephonePersonnel', employeePersonalInfo.tel_perso)
+      formData.append('telephoneProfessionnel', employeePersonalInfo.tel_pro)
+      formData.append('avatar', '')
+
+      // Add nested objects as JSON strings
+      if (employeePersonalInfo) {
+        formData.append('naissance[idUser]', 'test1234')
+        formData.append(
+          'naissance[dateDeNaissance]',
+          employeePersonalInfo.date_de_naissance
+        )
+        formData.append(
+          'naissance[paysDeNaissance]',
+          employeePersonalInfo.pays_de_naissance
+        )
+        formData.append(
+          'naissance[departementDeNaissance]',
+          employeePersonalInfo.departement_de_naissance
+        )
+        formData.append(
+          'naissance[communeDeNaissance]',
+          employeePersonalInfo.commune_de_naissance
+        )
+        formData.append(
+          'naissance[paysDeNationalite]',
+          employeePersonalInfo.pays_de_nationalite
+        )
+      }
+      // adresse
+      if (employeePersonalInfo) {
+        formData.append('adresse[idUser]', 'test1234')
+        formData.append('adresse[pays]', employeePersonalInfo.pays)
+        formData.append('adresse[codePostal]', employeePersonalInfo.code_postal)
+        formData.append('adresse[ville]', employeePersonalInfo.ville)
+        formData.append('adresse[adresse]', employeePersonalInfo.adresse)
+        formData.append(
+          'adresse[complementAdresse]',
+          employeePersonalInfo.complement_adresse
+        )
+
+        formData.append('adresse[domiciliteHorsLaFrance]', 'false')
+      }
+      // paiment
+      if (employeeProfesionalInfo) {
+        formData.append('paiement[idUser]', 'test1234')
+        formData.append('paiement[iban]', employeeProfesionalInfo.iban)
+        formData.append('paiement[bic]', employeeProfesionalInfo.bic)
+      }
+      // urgence
+      if (employeeProfesionalInfo) {
+        formData.append('urgence[idUser]', 'test1234')
+        formData.append(
+          'urgence[nomComplet]',
+          employeeProfesionalInfo.nom_complet
+        )
+        formData.append(
+          'urgence[lienAvecLeSalarie]',
+          employeeProfesionalInfo.lien_avec_salarie
+        )
+        formData.append('urgence[telephone]', employeeProfesionalInfo.tel)
+      }
+
+      // justificatifs
+      if (justificatifDomicile) {
+        // carte vitale
+        if (carteVitale && carteVitale instanceof File) {
+          formData.append('justificatif[fichierCarteVitalePdf]', carteVitale)
+        }
+        // rib
+        if (rib && rib instanceof File) {
+          formData.append('justificatif[fichierRibPdf]', rib)
+        }
+        // pièce identité
+        if (pieceIdentite && pieceIdentite instanceof File) {
+          formData.append(
+            'justificatif[fichierPieceIdentitePdf]',
+            pieceIdentite
+          )
+        }
+        // justificatif de domicile
+        if (justificatifDomicile && justificatifDomicile instanceof File) {
+          formData.append(
+            'justificatif[fichierJustificatifDomicilePdf]',
+            justificatifDomicile
+          )
+        }
+        // ameli
+        if (ameli && ameli instanceof File) {
+          formData.append('justificatif[fichierAmeli]', ameli)
+        }
+
+        // Only add justificatif section if at least one file exists
+        const hasAnyFile = [
+          carteVitale,
+          rib,
+          pieceIdentite,
+          justificatifDomicile,
+          ameli,
+        ].some((file) => file instanceof File)
+
+        if (hasAnyFile) {
+          // Add idUser for justificatif
+          formData.append('justificatif[idUser]', 'test1234')
+        }
+      }
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/users`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+
+      console.log(response)
+
+      notify({
+        message: `Formulair d'integration envoyer avec success`,
+        type: 'success',
+      })
+
+      // Assuming response.data contains the created user object with an `id` field
+      const userId = response.data.data.id
+      if (userId) {
+        localStorage.setItem('userId', userId)
       }
 
       setTimeout(() => {
-        navigate(0)
-        localStorage.setItem('userId', newUser.id)
-        console.log('newUser', newUser)
-      }, 200)
-      const newUser = await UserService.createUser(createUserDto)
+        navigate('/accueil/absences')
+        setIsLoading(false)
+      }, 2000)
+    } catch (error) {
+      console.error(error)
 
-      onSuccess(newUser)
-    } catch (err) {
-      setIsLoading(false)
-      console.log(err)
-    } finally {
+      notify({
+        message: 'Echec',
+        type: 'error',
+      })
+
       setIsLoading(false)
     }
   }
@@ -123,11 +220,12 @@ export default function ValidateIntegrationModal({
         <button
           type="button"
           disabled={isLoading}
-          onClick={submitConfirmation}
+          onClick={sendIntegrationForm}
           className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
           {isLoading ? 'Loading...' : 'Valider'}
         </button>
       </div>
+      <ToastNotification />
     </div>
   )
 }

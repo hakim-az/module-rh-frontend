@@ -1,28 +1,11 @@
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import ProfileBanner from './components/ProfileBanner'
-import { Download } from 'lucide-react'
-import PDFIcon from '@/assets/icons/pdf-icon.png'
-import { useCallback, useState } from 'react'
-import { downloadFile } from '@/lib/downloadFile'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import JustificatifsDisplayForm from '@/components/DisplayForms/JustificatifsDisplayForm/JustificatifsDisplayForm'
 
 export default function InfosPro() {
-  const [isLoading, setIsLoading] = useState(false)
-
   const { userDetails, isLoadingUser } = useDashboardContext()
 
-  const handleDownload = useCallback(async (fileName: string) => {
-    if (!fileName) return
-
-    setIsLoading(true)
-    try {
-      await downloadFile(fileName)
-    } catch (error) {
-      console.error('Download failed:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [])
   return (
     <>
       <ProfileBanner />
@@ -118,113 +101,10 @@ export default function InfosPro() {
             />
           </div>
           {/* documents */}
-          <div className="grid grid-cols-1 items-start lg:grid-cols-2 p-7 gap-12 w-full">
-            {/* card 01 */}
-            <div className="bg-white border gap-8 flex flex-col items-center border-gray-300 rounded-md shadow p-5">
-              <img src={PDFIcon} alt="" className="w-48" />
-              <div className="w-full flex items-center justify-between">
-                <div className="flex flex-col gap-2">
-                  <span className="text-lg font-medium">carte-vitale.pdf</span>
-                  <span className="text-gray-400">5.3 Mb</span>
-                </div>
-                {isLoading ? (
-                  <>Loading...</>
-                ) : (
-                  <Download
-                    onClick={() => {
-                      if (userDetails?.justificatif.fichierCarteVitalePdf) {
-                        handleDownload(
-                          userDetails?.justificatif.fichierCarteVitalePdf
-                        )
-                      }
-                    }}
-                    className="hover:text-blue-500 cursor-pointer"
-                    size={32}
-                  />
-                )}
-              </div>
-            </div>
-            {/* card 02 */}
-            <div className="bg-white border gap-8 flex flex-col items-center border-gray-300 rounded-md shadow p-5">
-              <img src={PDFIcon} alt="" className="w-48" />
-              <div className="w-full flex items-center justify-between">
-                <div className="flex flex-col gap-2">
-                  <span className="text-lg font-medium">rib.pdf</span>
-                  <span className="text-gray-400">5.3 Mb</span>
-                </div>
-                {isLoading ? (
-                  <>Loading...</>
-                ) : (
-                  <Download
-                    onClick={() => {
-                      if (userDetails?.justificatif.fichierRibPdf) {
-                        handleDownload(userDetails?.justificatif.fichierRibPdf)
-                      }
-                    }}
-                    className="hover:text-blue-500 cursor-pointer"
-                    size={32}
-                  />
-                )}
-              </div>
-            </div>
-            {/* card 03 */}
-            <div className="bg-white border gap-8 flex flex-col items-center border-gray-300 rounded-md shadow p-5">
-              <img src={PDFIcon} alt="" className="w-48" />
-              <div className="w-full flex items-center justify-between">
-                <div className="flex flex-col gap-2">
-                  <span className="text-lg font-medium">
-                    pièce-identité.pdf
-                  </span>
-                  <span className="text-gray-400">5.3 Mb</span>
-                </div>
-                {isLoading ? (
-                  <>Loading...</>
-                ) : (
-                  <Download
-                    onClick={() => {
-                      if (userDetails?.justificatif.fichierPieceIdentitePdf) {
-                        handleDownload(
-                          userDetails?.justificatif.fichierPieceIdentitePdf
-                        )
-                      }
-                    }}
-                    className="hover:text-blue-500 cursor-pointer"
-                    size={32}
-                  />
-                )}
-              </div>
-            </div>
-            {/* card 04 */}
-            <div className="bg-white border gap-8 flex flex-col items-center border-gray-300 rounded-md shadow p-5">
-              <img src={PDFIcon} alt="" className="w-48" />
-              <div className="w-full flex items-center justify-between">
-                <div className="flex flex-col gap-2">
-                  <span className="text-lg font-medium">
-                    justificatif-domicile.pdf
-                  </span>
-                  <span className="text-gray-400">5.3 Mb</span>
-                </div>
-                {isLoading ? (
-                  <>Loading...</>
-                ) : (
-                  <Download
-                    onClick={() => {
-                      if (
-                        userDetails?.justificatif.fichierJustificatifDomicilePdf
-                      ) {
-                        handleDownload(
-                          userDetails?.justificatif
-                            .fichierJustificatifDomicilePdf
-                        )
-                      }
-                    }}
-                    className="hover:text-blue-500 cursor-pointer"
-                    size={32}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
+          <JustificatifsDisplayForm
+            details={userDetails}
+            loading={isLoadingUser}
+          />
         </section>
       )}
     </>
