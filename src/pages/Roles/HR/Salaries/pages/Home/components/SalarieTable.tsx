@@ -32,6 +32,13 @@ import {
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import type { User } from '@/types/user.types'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export default function SalarieTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -90,7 +97,7 @@ export default function SalarieTable() {
   return (
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* search */}
-      <div className="flex items-center py-4 mb-5">
+      <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
         <Input
           placeholder="Recherche par nom et prenom ..."
           value={(table.getColumn('salarie')?.getFilterValue() as string) ?? ''}
@@ -99,6 +106,32 @@ export default function SalarieTable() {
           }
           className="max-w-sm h-11 bg-white"
         />
+        {/* Filtrer par statut */}
+        <Select
+          onValueChange={(value) => {
+            // Si "all", on reset le filtre (undefined)
+            table
+              .getColumn('statut')
+              ?.setFilterValue(value === 'all' ? undefined : value)
+          }}
+          value={
+            (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
+          }>
+          <SelectTrigger className="max-w-[200px] w-[200px] min-h-11 bg-white">
+            <SelectValue placeholder="Filtrer par statut" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tous</SelectItem>
+            <SelectItem value="user-created">Compte créé</SelectItem>
+            <SelectItem value="profile-completed">
+              Formulaire complété
+            </SelectItem>
+            <SelectItem value="contract-uploaded">Contrat prêt</SelectItem>
+            <SelectItem value="email-sent">Email envoyé</SelectItem>
+            <SelectItem value="contract-signed">Contrat signé</SelectItem>
+            <SelectItem value="user-approuved">Accès validé</SelectItem>
+          </SelectContent>
+        </Select>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto bg-white h-11">
