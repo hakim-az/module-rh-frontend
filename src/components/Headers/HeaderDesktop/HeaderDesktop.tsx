@@ -1,10 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import useScroll from '@/hooks/useScroll/useScroll'
 import { cn } from '@/lib/utils'
-import {
-  BellIcon,
-  ArrowLeftEndOnRectangleIcon,
-} from '@heroicons/react/24/outline'
+import { ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,12 +9,15 @@ import {
   // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import DefaultAvatar from '@/assets/icons/user-avatar.png'
 
 interface PropsType {
   nameRoute: string
 }
 
 function Header({ nameRoute }: PropsType) {
+  const { userDetails } = useDashboardContext()
   const scrolled = useScroll(5)
   const location = useLocation()
 
@@ -60,19 +60,16 @@ function Header({ nameRoute }: PropsType) {
           </span>
 
           <div className="flex items-center gap-8">
-            {/* notifications */}
-            <Link to="/dashboard/notifications" className="relative w-9">
-              <span className="w-[10px] h-[10px] right-1 top-1 rounded-full bg-errorColor absolute" />
-              <BellIcon
-                className={`w-10 p-2 rounded-full cursor-pointer hover:stroke-white hover:bg-primaryBlue  ${nameRoute === 'Notifications' ? 'stroke-white bg-primaryBlue' : 'bg-[#F8F9FA] stroke-primaryBlue'}`}
-              />
-            </Link>
             {/* avatar */}
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <img
                   className="w-11 h-11 object-cover rounded-full border-2 border-[#96ABFF] "
-                  src="#"
+                  src={
+                    userDetails?.avatar === ''
+                      ? DefaultAvatar
+                      : userDetails?.avatar
+                  }
                   alt="user-avatar"
                 />
               </DropdownMenuTrigger>
