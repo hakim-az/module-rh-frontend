@@ -1,7 +1,5 @@
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import PagePath from '@/components/PagePath/PagePath'
-import PDFIcon from '@/assets/icons/pdf-icon.png'
-import { Download } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
@@ -10,7 +8,7 @@ import ApprouverAbsenceModal from './Modals/ApprouverAbsenceModal'
 import RefuserAbsenceModal from './Modals/RefuserAbsenceModal'
 import type { IAbsence } from '../Home/components/AbsencesTable'
 import axios from 'axios'
-import { downloadFile } from '@/lib/downloadFile'
+import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 
 export default function Details() {
   const [activeApprouverAbsenceModal, setActiveApprouverAbsenceModal] =
@@ -40,22 +38,8 @@ export default function Details() {
     }
   }, [absenceId])
 
-  // donload file
-  const handleDownload = useCallback(async () => {
-    if (!absenceDetails?.fichierJustificatifPdf) return
-
-    setIsLoading(true)
-    try {
-      await downloadFile(absenceDetails.fichierJustificatifPdf)
-    } catch (err) {
-      console.log(err)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [absenceDetails?.fichierJustificatifPdf])
-
   useEffect(() => {
-    fetchAbsences() // Initial fetch
+    fetchAbsences()
   }, [fetchAbsences])
 
   return (
@@ -122,21 +106,7 @@ export default function Details() {
             />
           </div>
           {/* justificatif */}
-          {absenceDetails?.fichierJustificatifPdf !== 'undefined' && (
-            <div className="border lg:p-8 flex flex-col items-center justify-between p-4 border-gray-300 rounded shadow-2xs">
-              <div className="flex items-center gap-4">
-                <img src={PDFIcon} alt="pdf-icon" className="w-40" />
-              </div>
-              <div className="flex items-center justify-between w-full p-4">
-                <span className="font-semibold">Justificatif</span>
-                <Download
-                  onClick={() => handleDownload()}
-                  className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
-                  size={32}
-                />
-              </div>
-            </div>
-          )}
+          <DownloadJustificatif file={absenceDetails?.fichierJustificatifPdf} />
         </div>
       )}
       {/* approuver : refuser */}

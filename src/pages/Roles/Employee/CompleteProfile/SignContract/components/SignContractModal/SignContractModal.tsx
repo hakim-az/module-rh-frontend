@@ -17,44 +17,6 @@ export default function SignContractModal({
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
-  // const SendSignatureRequest = async () => {
-  //   setIsLoading(true)
-  //   try {
-  //     const payload = {
-  //       idUser: userDetails?.id,
-  //       firstName: userDetails?.prenom,
-  //       lastName: userDetails?.nomDeNaissance,
-  //       email: userDetails?.emailPersonnel,
-  //       pdfUrl: userDetails?.contrat.fichierContratNonSignerPdf,
-  //     }
-
-  //     const response = await axios.post(
-  //       `${import.meta.env.VITE_API_BASE_URL}/signature`,
-  //       payload
-  //     )
-
-  //     console.log(response)
-
-  //     notify({
-  //       message: 'Demande envoyer avec success',
-  //       type: 'success',
-  //     })
-  //     setTimeout(() => {
-  //       navigate(0)
-  //       setIsLoading(false)
-  //     }, 2000)
-  //   } catch (error) {
-  //     console.error(error)
-
-  //     notify({
-  //       message: 'Echec',
-  //       type: 'error',
-  //     })
-
-  //     setIsLoading(false)
-  //   }
-  // }
-
   const SendSignatureRequest = async () => {
     setIsLoading(true)
     try {
@@ -96,7 +58,7 @@ export default function SignContractModal({
       setTimeout(() => {
         navigate(0)
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error("Erreur lors de l'envoi de la signature:", error)
 

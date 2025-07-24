@@ -52,7 +52,7 @@ export default function UpdateAbsenceModel({
       setTimeout(() => {
         navigate('/accueil/absences')
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error(error)
 

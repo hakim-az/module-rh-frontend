@@ -1,20 +1,15 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { Download } from 'lucide-react'
-
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import PagePath from '@/components/PagePath/PagePath'
-import PDFIcon from '@/assets/icons/pdf-icon.png'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
-
 import type { ITitreRestau } from '../Home/components/TitreRestaurantTable'
-import { downloadFile } from '@/lib/downloadFile'
+import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 
 export default function Details() {
   const { idTitre } = useParams()
   const [isLoadingFetch, setIsLoadingFetch] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [absenceDetails, setAbsenceDetails] = useState<ITitreRestau | null>(
     null
   )
@@ -32,19 +27,6 @@ export default function Details() {
       setIsLoadingFetch(false)
     }
   }, [idTitre])
-
-  const handleDownload = useCallback(async () => {
-    if (!absenceDetails?.fichierJustificatifPdf) return
-
-    setIsLoading(true)
-    try {
-      await downloadFile(absenceDetails.fichierJustificatifPdf)
-    } catch (error) {
-      console.error('Download failed:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [absenceDetails])
 
   useEffect(() => {
     fetchAbsenceDetails()
@@ -88,23 +70,8 @@ export default function Details() {
           <DisplayInput label="Note" value={absenceDetails?.note || '-'} />
         </div>
 
-        {absenceDetails?.fichierJustificatifPdf && (
-          <div className="border p-10 flex flex-col items-center justify-center border-gray-300 rounded shadow-2xs">
-            <img src={PDFIcon} alt="pdf-icon" className="w-40 mb-4" />
-            <div className="flex items-center justify-between w-full">
-              <span className="font-semibold">Justificatif</span>
-              {isLoading ? (
-                <>Loading...</>
-              ) : (
-                <Download
-                  onClick={handleDownload}
-                  className="hover:text-blue-500 cursor-pointer transition-colors"
-                  size={32}
-                />
-              )}
-            </div>
-          </div>
-        )}
+        {/* justificatif */}
+        <DownloadJustificatif file={absenceDetails?.fichierJustificatifPdf} />
       </div>
     </>
   )

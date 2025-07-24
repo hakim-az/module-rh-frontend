@@ -49,7 +49,7 @@ export default function SendSignedContractModal({
       setTimeout(() => {
         navigate(0)
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error(error)
 

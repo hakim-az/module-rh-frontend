@@ -52,7 +52,7 @@ export default function UpdateCoffreModal({
       setTimeout(() => {
         navigate('/accueil/coffre-fort')
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error(error)
 

@@ -57,7 +57,7 @@ export default function UpdateInfosPersoModal({
         navigate('/accueil/informations-personnelles')
         window.location.reload()
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error(error)
 

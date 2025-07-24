@@ -43,7 +43,7 @@ export default function IntegrateSalarieModel({
         setActiveValidateSalarieModal(false)
         navigate('/accueil/salariés')
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error(error)
 

@@ -7,33 +7,32 @@ interface ActionsCellProps {
 }
 
 export default function ActionsCell({ fileName }: ActionsCellProps) {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoadingFile, setIsLoadingFile] = useState(false)
 
-  // donload file
-  const handleDownload = useCallback(async () => {
+  const handleDownload = useCallback(async (fileName: string | undefined) => {
+    setIsLoadingFile(true)
     if (!fileName) return
 
-    setIsLoading(true)
-    try {
-      await downloadFile(fileName)
-    } catch (err) {
-      console.log(err)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [fileName])
+    // Extract only the path starting from "uploads/"
+    const extractedPath = fileName.replace(/^.*\/uploads\//, 'uploads/')
 
-  console.log('fileName', fileName)
+    try {
+      await downloadFile(extractedPath)
+      setIsLoadingFile(false)
+    } catch (error) {
+      console.error('Download failed:', error)
+      setIsLoadingFile(false)
+    }
+  }, [])
 
   return (
     <div className="flex items-center justify-center">
-      {isLoading ? (
+      {isLoadingFile ? (
         <>Loading...</>
       ) : (
         <Download
           onClick={() => {
-            console.log('hello coffre')
-            handleDownload()
+            handleDownload(fileName)
           }}
           className="hover:text-blue-500 cursor-pointer  transition-all ease-in-out delay-75"
         />

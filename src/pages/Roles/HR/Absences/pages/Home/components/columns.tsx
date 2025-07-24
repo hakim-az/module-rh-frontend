@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table'
-
 import type { IAbsence } from './AbsencesTable'
 import ActionsCell from './ActionsCell'
+import DefaultAvatar from '@/assets/icons/user-avatar.png'
 
 export const columns: ColumnDef<IAbsence>[] = [
   // id
@@ -23,23 +23,26 @@ export const columns: ColumnDef<IAbsence>[] = [
         .replace(/\s+/g, ' ')
       return fullName.includes(filterValue.toLowerCase().trim())
     },
-    cell: ({ row }) => (
-      <div className="flex items-center gap-3 justify-start">
-        <img
-          src="#"
-          alt="user-avatar"
-          className="size-10 min-w-10 min-h-10 rounded bg-gray-400"
-        />
-        <div className="flex flex-col">
-          <span className="text-sm font-bold">
-            {row.original.user.nomDeNaissance} {row.original.user.prenom}
-          </span>
-          <span className="text-xs">
-            {row.original.user.emailProfessionnel}
-          </span>
+    cell: ({ row }) => {
+      const avatar = row.original.user.avatar
+      return (
+        <div className="flex items-center gap-3 justify-start">
+          <img
+            src={avatar === '' ? DefaultAvatar : avatar}
+            alt="user-avatar"
+            className="size-10 min-w-10 min-h-10 rounded bg-white border border-gray-300"
+          />
+          <div className="flex flex-col">
+            <span className="text-sm font-bold">
+              {row.original.user.nomDeNaissance} {row.original.user.prenom}
+            </span>
+            <span className="text-xs">
+              {row.original.user.emailProfessionnel}
+            </span>
+          </div>
         </div>
-      </div>
-    ),
+      )
+    },
   },
   // type
   {

@@ -51,7 +51,7 @@ export default function UpdateTitreRestau({
       setTimeout(() => {
         navigate('/accueil/titre-restaurant')
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error(error)
 

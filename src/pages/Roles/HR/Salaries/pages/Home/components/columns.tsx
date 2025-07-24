@@ -1,6 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import ActionsCell from './ActionsCell'
 import type { User } from '@/types/user.types'
+import DefaultAvatar from '@/assets/icons/user-avatar.png'
 
 export const columns: ColumnDef<User>[] = [
   // id
@@ -22,21 +23,24 @@ export const columns: ColumnDef<User>[] = [
         .replace(/\s+/g, ' ')
       return fullName.includes(filterValue.toLowerCase().trim())
     },
-    cell: ({ row }) => (
-      <div className="flex items-center gap-3 justify-start">
-        <img
-          src="#"
-          alt="user-avatar"
-          className="size-10 min-w-10 min-h-10 rounded bg-gray-400"
-        />
-        <div className="flex flex-col">
-          <span className="text-sm font-bold">
-            {row.original.nomDeNaissance} {row.original.prenom}
-          </span>
-          <span className="text-xs">{row.original.emailProfessionnel}</span>
+    cell: ({ row }) => {
+      const avatar = row.original.avatar
+      return (
+        <div className="flex items-center gap-3 justify-start">
+          <img
+            src={avatar === '' ? DefaultAvatar : avatar}
+            alt="user-avatar"
+            className="size-10 min-w-10 min-h-10 rounded bg-white border border-gray-300"
+          />
+          <div className="flex flex-col">
+            <span className="text-sm font-bold">
+              {row.original.nomDeNaissance} {row.original.prenom}
+            </span>
+            <span className="text-xs">{row.original.emailProfessionnel}</span>
+          </div>
         </div>
-      </div>
-    ),
+      )
+    },
   },
   // poste
   {

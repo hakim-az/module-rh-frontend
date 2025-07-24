@@ -58,7 +58,7 @@ export default function ValidateIntegrationModal({
         setActiveValidateIntegrationModal(false)
         navigate('/accueil/salariés')
         setIsLoading(false)
-      }, 2000)
+      }, 200)
     } catch (error) {
       console.error(error)
 
