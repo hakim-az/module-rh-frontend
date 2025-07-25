@@ -1,4 +1,4 @@
-export interface NaissanceDto {
+export interface Naissance {
   dateDeNaissance: string
   paysDeNaissance: string
   departementDeNaissance: string
@@ -6,7 +6,7 @@ export interface NaissanceDto {
   paysDeNationalite: string
 }
 
-export interface AdresseDto {
+export interface Adresse {
   pays: string
   codePostal: string
   ville: string
@@ -15,18 +15,18 @@ export interface AdresseDto {
   domiciliteHorsLaFrance: boolean
 }
 
-export interface PaiementDto {
+export interface Paiement {
   iban: string
   bic: string
 }
 
-export interface UrgenceDto {
+export interface Urgence {
   nomComplet: string
   lienAvecLeSalarie: string
   telephone: string
 }
 
-export interface JustificatifDto {
+export interface Justificatif {
   fichierCarteVitalePdf?: File
   fichierRibPdf?: File
   fichierPieceIdentitePdf?: File
@@ -34,7 +34,7 @@ export interface JustificatifDto {
   fichierAmeli?: File
 }
 
-export interface ContratDto {
+export interface Contrat {
   id: string
   idUser: string
   poste: string
@@ -68,10 +68,72 @@ export interface User {
   avatar?: string
   createdAt: Date
   updatedAt: Date
-  naissance: NaissanceDto
-  adresse: AdresseDto
-  paiement: PaiementDto
-  urgence: UrgenceDto
-  justificatif: JustificatifDto
-  contrat: ContratDto
+  naissance: Naissance
+  adresse: Adresse
+  paiement: Paiement
+  urgence: Urgence
+  justificatif: Justificatif
+  contrat: Contrat
+}
+
+export interface Absence {
+  id: string
+  idUser: string
+  typeAbsence: string
+  dateDebut: string
+  dateFin: string
+  note: string
+  statut: string
+  motifDeRefus: string
+  fichierJustificatifPdf: string
+  createdAt: string
+  updatedAt: string
+  user: AbsenceUser
+}
+
+export interface AbsenceUser {
+  nomDeNaissance: string
+  prenom: string
+  emailProfessionnel: string
+  avatar: string
+}
+
+export interface Coffre {
+  id: string
+  idUser: string
+  typeBulletin: string
+  mois: string
+  annee: string
+  note: string
+  fichierJustificatifPdf: string
+  createdAt: string
+  updatedAt: string
+  user: CoffreUser
+}
+
+export interface CoffreUser {
+  nomDeNaissance: string
+  prenom: string
+  emailProfessionnel: string
+  avatar: string
+}
+
+export interface Restauration {
+  id: string
+  idUser: string
+  nbrJours: string
+  mois: string
+  annee: string
+  note: string
+  fichierJustificatifPdf: string
+  createdAt: string
+  updatedAt: string
+  user: RestaurationUser
+}
+
+export interface RestaurationUser {
+  nomDeNaissance: string
+  prenom: string
+  emailProfessionnel: string
+  avatar: string
 }
