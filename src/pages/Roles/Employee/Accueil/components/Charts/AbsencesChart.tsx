@@ -95,7 +95,7 @@ export default function AbsencesChart() {
       {isLoading ? (
         <>Loading...</>
       ) : (
-        <Card className="flex flex-col">
+        <Card className="w-full flex flex-col">
           <CardHeader className="items-center pb-0">
             <CardTitle>Statut des absences</CardTitle>
             <CardDescription>
@@ -105,7 +105,7 @@ export default function AbsencesChart() {
           <CardContent className="flex-1 pb-0">
             <ChartContainer
               config={chartConfig}
-              className="mx-auto aspect-square max-h-[250px]">
+              className="mx-auto aspect-square max-h-[350px]">
               <PieChart>
                 <ChartTooltip
                   cursor={false}
