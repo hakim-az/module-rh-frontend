@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/select'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 export type ICoffreFort = {
   id: string
@@ -51,6 +52,7 @@ export type ICoffreFort = {
 }
 
 export default function CoffreFortTable() {
+  const { userDetails } = useDashboardContext()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -100,7 +102,7 @@ export default function CoffreFortTable() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/coffres`
+        `${import.meta.env.VITE_API_BASE_URL}/coffres/user/${userDetails?.id}`
       )
       console.log(response)
       setCoffres(response.data)
@@ -110,7 +112,7 @@ export default function CoffreFortTable() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [])
+  }, [userDetails?.id])
 
   useEffect(() => {
     fetchCoffres()

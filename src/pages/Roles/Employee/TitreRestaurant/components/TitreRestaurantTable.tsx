@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/select'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 export type ITitreRestau = {
   id: string
@@ -51,6 +52,7 @@ export type ITitreRestau = {
 }
 
 export default function TitreRestaurantTable() {
+  const { userDetails } = useDashboardContext()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -88,7 +90,7 @@ export default function TitreRestaurantTable() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/restaux`
+        `${import.meta.env.VITE_API_BASE_URL}/restaux/user/${userDetails?.id}`
       )
       console.log(response)
       setRestaux(response.data)
@@ -98,7 +100,7 @@ export default function TitreRestaurantTable() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [])
+  }, [userDetails?.id])
 
   useEffect(() => {
     fetchRestaux()
