@@ -1,3 +1,5 @@
+import { User } from 'lucide-react'
+
 type BannerProps = {
   title: string
   description: string | React.ReactNode
@@ -5,9 +7,14 @@ type BannerProps = {
 
 export default function Banner({ title, description }: BannerProps) {
   return (
-    <div className="w-11/12 mx-auto max-w-[1200px] min-h-[250px] mb-16 text-white p-10 rounded-md bg-black">
-      <h2 className="text-3xl font-semibold mb-4 text-center">{title}</h2>
-      <p className="text-justify">{description}</p>
+    <div className="w-11/12 p-10 relative mx-auto overflow-hidden bg-[#fff] border border-gray-300 my-16 max-w-[1280px] text-white min-h-[320px] rounded-lg">
+      <User className="absolute right-0 bottom-0 -my-14 w-96 h-96 stroke-[#000000]/20" />
+      <div>
+        <span className="text-[#000000] text-2xl inline-block mb-4 font-medium">
+          {title}
+        </span>
+        {description}
+      </div>
     </div>
   )
 }
