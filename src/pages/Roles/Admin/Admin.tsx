@@ -1,8 +1,5 @@
 import React from 'react'
 import { Outlet, Route, Routes } from 'react-router-dom'
-// import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
-
-// components
 import AdminLayout from '@/components/Layouts/AdminLayout'
 
 /* ROUTES */
@@ -18,7 +15,7 @@ const TitreRestaurant = React.lazy(
 const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
-export default function Admin() {
+export default function HR() {
   return (
     <Routes>
       <Route
@@ -27,28 +24,13 @@ export default function Admin() {
             <Outlet />
           </AdminLayout>
         }>
-        {/* Home page */}
         <Route index element={<Accueil />} />
-
-        {/* Home page */}
-        <Route path="absences" element={<Absences />} />
-
-        {/* Home page */}
-        <Route path="salariés" element={<Salaries />} />
-
-        {/* Home page */}
-        <Route path="coffre-fort" element={<CoffreFort />} />
-
-        {/* Home page */}
-        <Route path="titre-restaurant" element={<TitreRestaurant />} />
-
-        {/* Home page */}
+        <Route path="absences/*" element={<Absences />} />
+        <Route path="salariés/*" element={<Salaries />} />
+        <Route path="coffre-fort/*" element={<CoffreFort />} />
+        <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
         <Route path="informations-personnelles" element={<InfoPerso />} />
-
-        {/* Home page */}
         <Route path="informations-professionnelles" element={<InfosPro />} />
-
-        {/* Not Found page */}
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
