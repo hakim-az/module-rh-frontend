@@ -6,14 +6,14 @@ export default function Banner() {
       <CreditCard className="absolute right-0 bottom-0 -m-14 w-96 h-96 stroke-[#4040D2]/80" />
       <div>
         <span className="text-[#4040D2] text-2xl inline-block mb-4 font-medium">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit :
+          Gérez les titres-restaurant et leurs suivis :
         </span>
         <ul className="list-disc pl-6 text-lg text-[#4040D2]">
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
+          <li>Visualisez la liste des suivis des titres-restaurant ajoutés.</li>
+          <li>Consultez les détails de chaque titre-restaurant.</li>
+          <li>Ajoutez un nouveau suivi de titre-restaurant.</li>
+          <li>Modifiez les suivis existants facilement.</li>
+          <li>Assurez un suivi précis et à jour des titres-restaurant.</li>
         </ul>
       </div>
     </div>

@@ -6,14 +6,14 @@ export default function Banner() {
       <CalendarOff className="absolute right-0 bottom-0 -my-14 w-96 h-96 stroke-[#4040D2]/80" />
       <div>
         <span className="text-[#4040D2] text-2xl inline-block mb-4 font-medium">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit :
+          Gérez les demandes d'absence efficacement :
         </span>
         <ul className="list-disc pl-6 text-lg text-[#4040D2]">
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
+          <li>Visualisez la liste complète des demandes d'absence.</li>
+          <li>Consultez les détails de chaque demande rapidement.</li>
+          <li>Approuvez ou refusez les demandes en un seul clic.</li>
+          <li>Suivez en temps réel le statut des demandes.</li>
+          <li>Assurez une gestion fluide et transparente des absences.</li>
         </ul>
       </div>
     </div>

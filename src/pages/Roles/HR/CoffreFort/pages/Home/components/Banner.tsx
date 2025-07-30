@@ -6,14 +6,16 @@ export default function Banner() {
       <Lock className="absolute right-0 bottom-0 -m-14 w-96 h-96 stroke-[#4040D2]/80" />
       <div>
         <span className="text-[#4040D2] text-2xl inline-block mb-4 font-medium">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit :
+          Gérez votre coffre-fort numérique en toute sécurité :
         </span>
         <ul className="list-disc pl-6 text-lg text-[#4040D2]">
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
+          <li>Consultez la liste des documents ajoutés.</li>
+          <li>Visualisez les détails de chaque document stocké.</li>
+          <li>
+            Ajoutez des documents tels que bulletins de paie, attestations, etc.
+          </li>
+          <li>Modifiez les documents existants facilement.</li>
+          <li>Assurez la confidentialité et la sécurité des données.</li>
         </ul>
       </div>
     </div>

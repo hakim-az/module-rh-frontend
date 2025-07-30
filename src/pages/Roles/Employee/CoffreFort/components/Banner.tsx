@@ -6,14 +6,14 @@ export default function Banner() {
       <Lock className="absolute right-0 bottom-0 -m-14 w-96 h-96 stroke-[#000000]/80" />
       <div>
         <span className="text-[#000000] text-2xl inline-block mb-4 font-medium">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit :
+          Vos documents professionnels, accessibles en toute sécurité :
         </span>
         <ul className="list-disc pl-6 text-lg text-[#000000]">
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
+          <li>Consultez la liste de vos documents personnels.</li>
+          <li>Visualisez les détails de chaque document RH.</li>
+          <li>Téléchargez vos fichiers au format PDF à tout moment.</li>
+          <li>Accédez à vos bulletins de paie, attestations et plus.</li>
+          <li>Vos données sont conservées de manière confidentielle.</li>
         </ul>
       </div>
     </div>

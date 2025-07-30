@@ -6,14 +6,14 @@ export default function Banner() {
       <CreditCard className="absolute right-0 bottom-0 -m-14 w-96 h-96 stroke-[#000000]/80" />
       <div>
         <span className="text-[#000000] text-2xl inline-block mb-4 font-medium">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit :
+          Suivez vos titres-restaurant en toute simplicité :
         </span>
         <ul className="list-disc pl-6 text-lg text-[#000000]">
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
-          <li>Lorem ipsum dolor sit amet.</li>
+          <li>Accédez à l'historique de vos titres-restaurant.</li>
+          <li>Visualisez les détails de chaque titre attribué.</li>
+          <li>Consultez les montants et dates de distribution.</li>
+          <li>Téléchargez les documents associés au format PDF.</li>
+          <li>Bénéficiez d'un suivi clair, mis à jour par le service RH.</li>
         </ul>
       </div>
     </div>
