@@ -14,7 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 
 const chartConfig = {
@@ -44,39 +44,52 @@ interface IStatus {
 export default function AbsencesChart() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [absencesStatus, setAbsencesStatus] = useState<IStatus>()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const chartData = [
-    {
-      browser: 'enAttente',
-      visitors: absencesStatus?.['en-attente'],
-      fill: 'var(--color-enAttente)',
-    },
-    {
-      browser: 'refuser',
-      visitors: absencesStatus?.refuser,
-      fill: 'var(--color-refuser)',
-    },
-    {
-      browser: 'approuver',
-      visitors: absencesStatus?.approuver,
-      fill: 'var(--color-approuver)',
-    },
-  ]
+
+  const chartData = useMemo(
+    () => [
+      {
+        browser: 'enAttente',
+        visitors: absencesStatus?.['en-attente'],
+        fill: 'var(--color-enAttente)',
+      },
+      {
+        browser: 'refuser',
+        visitors: absencesStatus?.refuser,
+        fill: 'var(--color-refuser)',
+      },
+      {
+        browser: 'approuver',
+        visitors: absencesStatus?.approuver,
+        fill: 'var(--color-approuver)',
+      },
+    ],
+    [absencesStatus]
+  )
 
   const totalStatus = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + (curr?.visitors ?? 0), 0)
   }, [chartData])
 
-  // fetch designs
+  const isEmpty = totalStatus === 0
+
+  // If empty, show one gray slice as placeholder
+  const displayChartData = isEmpty
+    ? [
+        {
+          browser: 'empty',
+          visitors: 1,
+          fill: '#e0e0e0',
+        },
+      ]
+    : chartData
+
   const fetchAbsences = React.useCallback(async () => {
     try {
       setIsLoading(true)
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/absences/totals-by-status`
       )
-      console.log(response)
       setAbsencesStatus(response.data)
-
       setIsLoading(false)
     } catch (error) {
       setIsLoading(false)
@@ -110,7 +123,7 @@ export default function AbsencesChart() {
                   content={<ChartTooltipContent hideLabel />}
                 />
                 <Pie
-                  data={chartData}
+                  data={displayChartData}
                   dataKey="visitors"
                   nameKey="browser"
                   innerRadius={60}
@@ -145,6 +158,7 @@ export default function AbsencesChart() {
               </PieChart>
             </ChartContainer>
           </CardContent>
+
           <div className="px-10 flex items-center justify-center gap-10 flex-wrap">
             <div className="flex items-center justify-center gap-3">
               <span className="bg-[#333333] inline-block size-5 rounded"></span>

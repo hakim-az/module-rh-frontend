@@ -39,6 +39,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
 
 export default function SalarieTable() {
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -201,13 +202,11 @@ export default function SalarieTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-80 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
+                <NotFoundTable
+                  columns={columns.length}
+                  title="Salarié introuvable"
+                  content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                />
               )}
             </TableBody>
           </Table>

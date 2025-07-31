@@ -22,7 +22,7 @@ export default function IntegrateSalarieModel({
 
       formData.append('statut', 'user-approuved')
 
-      const response = await axios.put(
+      const response = await axios.patch(
         `${import.meta.env.VITE_API_BASE_URL}/users/${idSalarie}`,
         formData,
         {

@@ -14,7 +14,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
@@ -46,39 +46,52 @@ export default function AbsencesChart() {
   const { userDetails } = useDashboardContext()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [absencesStatus, setAbsencesStatus] = useState<IStatus>()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const chartData = [
-    {
-      browser: 'enAttente',
-      visitors: absencesStatus?.['en-attente'],
-      fill: 'var(--color-enAttente)',
-    },
-    {
-      browser: 'refuser',
-      visitors: absencesStatus?.refuser,
-      fill: 'var(--color-refuser)',
-    },
-    {
-      browser: 'approuver',
-      visitors: absencesStatus?.approuver,
-      fill: 'var(--color-approuver)',
-    },
-  ]
+
+  const chartData = useMemo(
+    () => [
+      {
+        browser: 'enAttente',
+        visitors: absencesStatus?.['en-attente'],
+        fill: 'var(--color-enAttente)',
+      },
+      {
+        browser: 'refuser',
+        visitors: absencesStatus?.refuser,
+        fill: 'var(--color-refuser)',
+      },
+      {
+        browser: 'approuver',
+        visitors: absencesStatus?.approuver,
+        fill: 'var(--color-approuver)',
+      },
+    ],
+    [absencesStatus]
+  )
 
   const totalStatus = React.useMemo(() => {
     return chartData.reduce((acc, curr) => acc + (curr?.visitors ?? 0), 0)
   }, [chartData])
 
-  // fetch designs
+  const isEmpty = totalStatus === 0
+
+  // If empty, show one gray slice as placeholder
+  const displayChartData = isEmpty
+    ? [
+        {
+          browser: 'empty',
+          visitors: 1,
+          fill: '#e0e0e0',
+        },
+      ]
+    : chartData
+
   const fetchAbsences = React.useCallback(async () => {
     try {
       setIsLoading(true)
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/absences/user/${userDetails?.id}/totals-by-status`
       )
-      console.log(response)
       setAbsencesStatus(response.data)
-
       setIsLoading(false)
     } catch (error) {
       setIsLoading(false)
@@ -95,7 +108,7 @@ export default function AbsencesChart() {
       {isLoading ? (
         <>Loading...</>
       ) : (
-        <Card className="w-full flex flex-col">
+        <Card className="flex flex-col">
           <CardHeader className="items-center pb-0">
             <CardTitle>Statut des absences</CardTitle>
             <CardDescription>
@@ -105,14 +118,14 @@ export default function AbsencesChart() {
           <CardContent className="flex-1 pb-0">
             <ChartContainer
               config={chartConfig}
-              className="mx-auto aspect-square max-h-[350px]">
+              className="mx-auto aspect-square max-h-[300px]">
               <PieChart>
                 <ChartTooltip
                   cursor={false}
                   content={<ChartTooltipContent hideLabel />}
                 />
                 <Pie
-                  data={chartData}
+                  data={displayChartData}
                   dataKey="visitors"
                   nameKey="browser"
                   innerRadius={60}
@@ -147,6 +160,7 @@ export default function AbsencesChart() {
               </PieChart>
             </ChartContainer>
           </CardContent>
+
           <div className="px-10 flex items-center justify-center gap-10 flex-wrap">
             <div className="flex items-center justify-center gap-3">
               <span className="bg-[#333333] inline-block size-5 rounded"></span>

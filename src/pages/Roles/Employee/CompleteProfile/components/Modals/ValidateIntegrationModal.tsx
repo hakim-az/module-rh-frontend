@@ -1,4 +1,5 @@
 import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import ToastNotification, { notify } from '@/lib/ToastNotification'
 import type { User } from '@/types/user.types'
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
@@ -27,6 +28,8 @@ export default function ValidateIntegrationModal({
     ameli,
   } = useIntegrationFormDataContext()
 
+  const { userDetails } = useDashboardContext()
+
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -35,26 +38,20 @@ export default function ValidateIntegrationModal({
     try {
       const formData = new FormData()
       // Add basic user fields
-      formData.append('role', 'employee')
       formData.append('statut', 'profile-completed')
       formData.append('civilite', employeePersonalInfo.civilite)
-      formData.append('prenom', employeePersonalInfo.prenom)
-      formData.append('nomDeNaissance', employeePersonalInfo.nom_de_naissance)
       formData.append('nomUsuel', employeePersonalInfo.nom_usuel)
       formData.append(
         'situationFamiliale',
         employeePersonalInfo.situation_familiale
       )
       formData.append('numeroSecuriteSociale', employeePersonalInfo.numero_ssr)
-      formData.append('emailPersonnel', employeePersonalInfo.email_perso)
       formData.append('emailProfessionnel', employeePersonalInfo.email_pro)
-      formData.append('telephonePersonnel', employeePersonalInfo.tel_perso)
       formData.append('telephoneProfessionnel', employeePersonalInfo.tel_pro)
       formData.append('avatar', '')
 
       // Add nested objects as JSON strings
       if (employeePersonalInfo) {
-        formData.append('naissance[idUser]', 'test1234')
         formData.append(
           'naissance[dateDeNaissance]',
           employeePersonalInfo.date_de_naissance
@@ -78,7 +75,6 @@ export default function ValidateIntegrationModal({
       }
       // adresse
       if (employeePersonalInfo) {
-        formData.append('adresse[idUser]', 'test1234')
         formData.append('adresse[pays]', employeePersonalInfo.pays)
         formData.append('adresse[codePostal]', employeePersonalInfo.code_postal)
         formData.append('adresse[ville]', employeePersonalInfo.ville)
@@ -92,13 +88,11 @@ export default function ValidateIntegrationModal({
       }
       // paiment
       if (employeeProfesionalInfo) {
-        formData.append('paiement[idUser]', 'test1234')
         formData.append('paiement[iban]', employeeProfesionalInfo.iban)
         formData.append('paiement[bic]', employeeProfesionalInfo.bic)
       }
       // urgence
       if (employeeProfesionalInfo) {
-        formData.append('urgence[idUser]', 'test1234')
         formData.append(
           'urgence[nomComplet]',
           employeeProfesionalInfo.nom_complet
@@ -150,12 +144,11 @@ export default function ValidateIntegrationModal({
 
         if (hasAnyFile) {
           // Add idUser for justificatif
-          formData.append('justificatif[idUser]', 'test1234')
         }
       }
 
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/users`,
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_BASE_URL}/users/${userDetails?.id}`,
         formData,
         {
           headers: {
@@ -171,14 +164,8 @@ export default function ValidateIntegrationModal({
         type: 'success',
       })
 
-      // Assuming response.data contains the created user object with an `id` field
-      const userId = response.data.data.id
-      if (userId) {
-        localStorage.setItem('userId', userId)
-      }
-
       setTimeout(() => {
-        navigate('/accueil/absences')
+        navigate(0)
         setIsLoading(false)
       }, 200)
     } catch (error) {

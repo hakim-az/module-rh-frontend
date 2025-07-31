@@ -33,6 +33,7 @@ import { Input } from '@/components/ui/input'
 import { useNavigate } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
+import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
 
 export type ITitreRestau = {
   id: string
@@ -233,13 +234,11 @@ export default function TitreRestaurantTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-80 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
+                <NotFoundTable
+                  columns={columns.length}
+                  title="Titre restaurant introuvable"
+                  content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                />
               )}
             </TableBody>
           </Table>

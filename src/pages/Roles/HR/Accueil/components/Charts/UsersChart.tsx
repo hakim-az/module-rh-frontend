@@ -21,8 +21,8 @@ const chartConfig = {
   visitors: {
     label: 'Users',
   },
-  'user-created': {
-    label: 'User Created',
+  'user-registred': {
+    label: 'User Registred',
     color: '#9CA3AF',
   },
   'profile-completed': {
@@ -48,7 +48,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 interface IStatus {
-  'user-created': number
+  'user-registred': number
   'profile-completed': number
   'contract-uploaded': number
   'email-sent': number
@@ -62,9 +62,9 @@ export default function UsersChart() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const chartData = [
     {
-      browser: 'user-created',
-      visitors: absencesStatus?.['user-created'],
-      fill: 'var(--color-user-created)',
+      browser: 'user-registred',
+      visitors: absencesStatus?.['user-registred'],
+      fill: 'var(--color-user-registred)',
     },
     {
       browser: 'profile-completed',
@@ -84,12 +84,12 @@ export default function UsersChart() {
     {
       browser: 'contract-signed',
       visitors: absencesStatus?.['contract-signed'],
-      fill: 'var(--color-refuser)',
+      fill: 'var(--color-contract-signed)',
     },
     {
       browser: 'user-approuved',
       visitors: absencesStatus?.['user-approuved'],
-      fill: 'var(--color-contract-signed)',
+      fill: 'var(--color-user-approuved)',
     },
   ]
 

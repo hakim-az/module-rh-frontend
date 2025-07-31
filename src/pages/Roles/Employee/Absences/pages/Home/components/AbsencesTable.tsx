@@ -33,6 +33,7 @@ import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
 
 export interface IAbsence {
   id: string
@@ -200,13 +201,11 @@ export default function AbsencesTable() {
                     </TableRow>
                   ))
                 ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="h-80 text-center">
-                      No results
-                    </TableCell>
-                  </TableRow>
+                  <NotFoundTable
+                    columns={columns.length}
+                    title="Absence introuvable"
+                    content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                  />
                 )}
               </TableBody>
             </Table>

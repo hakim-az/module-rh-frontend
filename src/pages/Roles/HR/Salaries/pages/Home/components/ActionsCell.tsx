@@ -29,7 +29,7 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem
-            disabled={statut === 'user-created'}
+            disabled={statut === 'user-registred'}
             onClick={() => navigate(`details/${id}`)}>
             Détails salarié
           </DropdownMenuItem>

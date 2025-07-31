@@ -6,6 +6,8 @@ import { ControlledInput } from '@/components/FormFeilds/ControlledInput/Control
 import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
 import type { EmployeePersonalInformations } from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormContext'
 import { countriesData } from '@/components/__mock__/Countries'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import DisplayInput from '@/components/DisplayInput/DisplayInput'
 
 // types
 interface PropsType {
@@ -26,6 +28,7 @@ export default function InfosPerso({
   // integration form context
   const { employeePersonalInfo, setEmployeePersonalInfo } =
     useIntegrationFormDataContext()
+  const { userDetails } = useDashboardContext()
 
   // react hook form
   const methods = useForm<EmployeePersonalInformations>({
@@ -89,26 +92,11 @@ export default function InfosPerso({
             selectDefaultValue={employeePersonalInfo.civilite}
           />
           {/* Prénom */}
-          <ControlledInput
-            name="prenom"
-            label="Prénom"
-            placeholder="Entrer un prénom"
-            register={register}
-            rules={{ required: true }}
-            error={errors.prenom}
-            inputType="text"
-            inputDefaultValue={employeePersonalInfo.prenom}
-          />
+          <DisplayInput label="Prénom" value={userDetails?.prenom ?? '-'} />
           {/* Nom de naissance */}
-          <ControlledInput
-            name="nom_de_naissance"
+          <DisplayInput
             label="Nom de naissance"
-            placeholder="Entrer un nom de naissance"
-            register={register}
-            rules={{ required: true }}
-            error={errors.nom_de_naissance}
-            inputType="text"
-            inputDefaultValue={employeePersonalInfo.nom_de_naissance}
+            value={userDetails?.nomDeNaissance ?? '-'}
           />
           {/* Nom usuel */}
           <ControlledInput
@@ -218,21 +206,9 @@ export default function InfosPerso({
             Coordonnées :
           </span>
           {/* E-mail personnelle */}
-          <ControlledInput
-            name="email_perso"
+          <DisplayInput
             label="E-mail personnelle"
-            placeholder="Entrer un E-mail personnelle"
-            register={register}
-            rules={{
-              required: 'Ce champ est requis',
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: 'Please enter a valid email address',
-              },
-            }}
-            error={errors.email_perso}
-            inputType="email"
-            inputDefaultValue={employeePersonalInfo.email_perso}
+            value={userDetails?.emailPersonnel ?? '-'}
           />
           {/* E-mail professionnel */}
           <ControlledInput
@@ -252,21 +228,9 @@ export default function InfosPerso({
             inputDefaultValue={employeePersonalInfo.email_pro}
           />
           {/* Téléphone portable personnelle */}
-          <ControlledInput
-            name="tel_perso"
+          <DisplayInput
             label="Téléphone portable personnelle"
-            placeholder="07 77 77 77 77"
-            register={register}
-            rules={{
-              required: 'Ce champ est requis',
-              pattern: {
-                value: /^\d{10}$/,
-                message: 'Le numéro doit contenir exactement 10 chiffres',
-              },
-            }}
-            error={errors.tel_perso}
-            inputType="number"
-            inputDefaultValue={employeePersonalInfo.tel_perso}
+            value={userDetails?.telephonePersonnel ?? '-'}
           />
           {/* Téléphone portable professionnel */}
           <ControlledInput

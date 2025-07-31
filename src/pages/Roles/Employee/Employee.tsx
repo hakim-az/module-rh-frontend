@@ -21,7 +21,7 @@ const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 export default function Employee() {
   const { userDetails } = useDashboardContext()
 
-  if (!userDetails) {
+  if (userDetails?.statut == 'user-registred') {
     return (
       <Routes>
         {/* Home page */}

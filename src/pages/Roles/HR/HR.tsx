@@ -29,8 +29,8 @@ export default function HR() {
         <Route path="salariés/*" element={<Salaries />} />
         <Route path="coffre-fort/*" element={<CoffreFort />} />
         <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
-        <Route path="informations-personnelles" element={<InfoPerso />} />
-        <Route path="informations-professionnelles" element={<InfosPro />} />
+        <Route path="informations-personnelles/*" element={<InfoPerso />} />
+        <Route path="informations-professionnelles/*" element={<InfosPro />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

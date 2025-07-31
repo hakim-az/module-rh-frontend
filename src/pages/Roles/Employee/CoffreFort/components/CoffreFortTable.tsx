@@ -32,6 +32,7 @@ import {
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
 
 export type ICoffreFort = {
   id: string
@@ -250,13 +251,11 @@ export default function CoffreFortTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-80 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
+                <NotFoundTable
+                  columns={columns.length}
+                  title="Coffre fort introuvable"
+                  content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                />
               )}
             </TableBody>
           </Table>

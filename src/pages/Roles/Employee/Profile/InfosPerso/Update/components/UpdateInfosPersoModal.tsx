@@ -36,7 +36,7 @@ export default function UpdateInfosPersoModal({
         formData.append('adresse[complementAdresse]', data.complement_adresse)
       }
 
-      const response = await axios.put(
+      const response = await axios.patch(
         `${import.meta.env.VITE_API_BASE_URL}/users/${userDetails?.id}`,
         formData,
         {

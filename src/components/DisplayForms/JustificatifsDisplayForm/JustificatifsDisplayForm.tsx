@@ -27,7 +27,7 @@ const documents = [
     key: 'fichierJustificatifDomicilePdf',
   },
   {
-    label: 'Ameli',
+    label: 'Attestation Ameli',
     key: 'fichierAmeli',
   },
 ]
@@ -66,7 +66,6 @@ export default function JustificatifsDisplayForm({ details, loading }: IProps) {
         <div className="flex items-center justify-between w-full">
           <div className="flex flex-col">
             <span className="text-sm font-medium text-black">{label}</span>
-            <span className="text-xs text-gray-400">~5.3 Mb</span>
           </div>
           {downloadingKey === fileKey ? (
             <span className="text-xs text-gray-400 animate-pulse">

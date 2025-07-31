@@ -37,7 +37,7 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
             {userDetails?.nomDeNaissance} {userDetails?.prenom}
           </span>
           <span className="text-base capitalize lg:text-lg">
-            {userDetails?.contrat.poste}
+            {userDetails?.contrat?.poste}
           </span>
         </div>
       </div>

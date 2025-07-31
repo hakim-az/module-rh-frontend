@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/table'
 import type { DashboardData } from '../../../Accueil'
 import { useNavigate } from 'react-router-dom'
+import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
 
 interface IProps {
   dashboardData: DashboardData | undefined
@@ -110,13 +111,11 @@ export default function SalarieTable({ dashboardData }: IProps) {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-80 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
+              <NotFoundTable
+                columns={columns.length}
+                title="Salarié introuvable"
+                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+              />
             )}
           </TableBody>
         </Table>

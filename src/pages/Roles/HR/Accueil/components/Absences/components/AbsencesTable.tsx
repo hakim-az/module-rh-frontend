@@ -21,6 +21,7 @@ import {
 import { useState } from 'react'
 import type { DashboardData } from '../../../Accueil'
 import { useNavigate } from 'react-router-dom'
+import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
 
 export interface IAbsence {
   id: string
@@ -127,13 +128,11 @@ export default function AbsencesTable({ dashboardData }: IProps) {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-80 text-center">
-                  No results.
-                </TableCell>
-              </TableRow>
+              <NotFoundTable
+                columns={columns.length}
+                title="Absences introuvable"
+                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+              />
             )}
           </TableBody>
         </Table>

@@ -33,7 +33,7 @@ export default function UpdateInfosProModal({
         formData.append('urgence[telephone]', data.tel)
       }
 
-      const response = await axios.put(
+      const response = await axios.patch(
         `${import.meta.env.VITE_API_BASE_URL}/users/${userDetails?.id}`,
         formData,
         {

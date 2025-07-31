@@ -75,13 +75,13 @@ export const columns: ColumnDef<User>[] = [
   },
   // tel
   {
-    accessorKey: 'telephoneProfessionnel',
+    accessorKey: 'telephonePersonnel',
     header: 'Téléphone',
     cell: ({ row }) => {
       return (
         <div className="capitalize">
           <span className="text-sm text-black lowercase">
-            {row.getValue('telephoneProfessionnel')}
+            {row.getValue('telephonePersonnel') ?? '-'}
           </span>
         </div>
       )
@@ -94,7 +94,7 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const renderStatusBg = (statut: string) => {
         switch (statut) {
-          case 'user-created':
+          case 'user-registred':
             return '#9CA3AF'
           case 'profile-completed':
             return '#3B82F6'
@@ -113,7 +113,7 @@ export const columns: ColumnDef<User>[] = [
 
       const getShortStatusFR = (statut: string) => {
         switch (statut) {
-          case 'user-created':
+          case 'user-registred':
             return 'Compte créé'
           case 'profile-completed':
             return 'Formulaire complété'

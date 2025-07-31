@@ -126,6 +126,7 @@ export default function Justificatifs({
                 : undefined
             }
             defaultFile={carteVitale ?? undefined}
+            required
           />
 
           <FileUploader
@@ -139,6 +140,7 @@ export default function Justificatifs({
                 : undefined
             }
             defaultFile={rib ?? undefined}
+            required
           />
 
           <FileUploader
@@ -152,6 +154,7 @@ export default function Justificatifs({
                 : undefined
             }
             defaultFile={pieceIdentite ?? undefined}
+            required
           />
 
           <FileUploader
@@ -165,10 +168,11 @@ export default function Justificatifs({
                 : undefined
             }
             defaultFile={justificatifDomicile ?? undefined}
+            required
           />
 
           <FileUploader
-            title="Ameli"
+            title="Attestation Ameli"
             name="ameli"
             setValue={setValue}
             onFileSelect={setAmeli}
@@ -178,6 +182,7 @@ export default function Justificatifs({
                 : undefined
             }
             defaultFile={ameli ?? undefined}
+            required
           />
         </div>
 

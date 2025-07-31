@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/select'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
+import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
 
 export interface IAbsence {
   id: string
@@ -208,13 +209,11 @@ export default function AbsencesTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-80 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
+                <NotFoundTable
+                  columns={columns.length}
+                  title="Absences introuvable"
+                  content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                />
               )}
             </TableBody>
           </Table>
