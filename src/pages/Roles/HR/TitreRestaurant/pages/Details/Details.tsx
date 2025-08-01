@@ -6,6 +6,7 @@ import PagePath from '@/components/PagePath/PagePath'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import type { ITitreRestau } from '../Home/components/TitreRestaurantTable'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
+import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 
 export default function Details() {
   const { idTitre } = useParams()
@@ -13,6 +14,9 @@ export default function Details() {
   const [absenceDetails, setAbsenceDetails] = useState<ITitreRestau | null>(
     null
   )
+
+  const [openPdfModal, setOpenPdfModal] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
   const fetchAbsenceDetails = useCallback(async () => {
     setIsLoadingFetch(true)
@@ -71,7 +75,17 @@ export default function Details() {
         </div>
 
         {/* justificatif */}
-        <DownloadJustificatif file={absenceDetails?.fichierJustificatifPdf} />
+        <DownloadJustificatif
+          file={absenceDetails?.fichierJustificatifPdf}
+          setFileUrl={setFileUrl}
+          setOpenPdfModal={setOpenPdfModal}
+        />
+
+        <DisplayPdf
+          openModal={openPdfModal}
+          setOpenModal={setOpenPdfModal}
+          fileUrl={fileUrl}
+        />
       </div>
     </>
   )

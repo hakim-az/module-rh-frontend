@@ -5,7 +5,7 @@ import { ControlledTextarea } from '@/components/FormFeilds/ControlledTextarea/C
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import PagePath from '@/components/PagePath/PagePath'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import SendRequestModal from './componsnts/SendRequestModal'
@@ -45,19 +45,6 @@ export default function Add() {
     setFormData(data)
     setActiveSendRequestModal(true)
   }
-  useEffect(() => {
-    register('justificatif', {
-      required: 'Ce champ est requis',
-      validate: {
-        size: (file: File) =>
-          file && file.size <= 10 * 1024 * 1024
-            ? true
-            : 'Le fichier doit faire moins de 10 Mo',
-      },
-    })
-
-    if (justificatif) setValue('justificatif', justificatif)
-  }, [justificatif, register, setValue])
 
   return (
     <>
@@ -137,6 +124,7 @@ export default function Add() {
                     : undefined
                 }
                 defaultFile={justificatif ?? undefined}
+                required={false}
               />
             </div>
           </div>

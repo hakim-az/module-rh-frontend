@@ -6,11 +6,14 @@ import PagePath from '@/components/PagePath/PagePath'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import type { ICoffreFort } from '../Home/components/CoffreFortTable'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
+import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 
 export default function Details() {
   const { idCoffre } = useParams()
   const [isLoading, setIsLoading] = useState(false)
   const [absenceDetails, setAbsenceDetails] = useState<ICoffreFort | null>(null)
+  const [openPdfModal, setOpenPdfModal] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
   const fetchAbsenceDetails = useCallback(async () => {
     setIsLoading(true)
@@ -68,7 +71,17 @@ export default function Details() {
           <DisplayInput label="Note" value={absenceDetails?.note || '-'} />
         </div>
 
-        <DownloadJustificatif file={absenceDetails?.fichierJustificatifPdf} />
+        <DownloadJustificatif
+          file={absenceDetails?.fichierJustificatifPdf}
+          setFileUrl={setFileUrl}
+          setOpenPdfModal={setOpenPdfModal}
+        />
+
+        <DisplayPdf
+          openModal={openPdfModal}
+          setOpenModal={setOpenPdfModal}
+          fileUrl={fileUrl}
+        />
       </div>
     </>
   )

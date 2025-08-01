@@ -6,10 +6,14 @@ import PagePath from '@/components/PagePath/PagePath'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import type { IAbsence } from '../Home/components/AbsencesTable'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
+import { formatDateToLabel } from '@/lib/formatDate'
+import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 
 export default function Details() {
   const { absenceId } = useParams()
   const [isLoading, setIsLoading] = useState(false)
+  const [openPdfModal, setOpenPdfModal] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
   const [absenceDetails, setAbsenceDetails] = useState<IAbsence | null>(null)
 
@@ -83,19 +87,29 @@ export default function Details() {
 
         <DisplayInput
           label="Date de début"
-          value={absenceDetails?.dateDebut.slice(0, 10) || '-'}
+          value={formatDateToLabel(absenceDetails?.dateDebut) || '-'}
         />
 
         <DisplayInput
           label="Date de fin"
-          value={absenceDetails?.dateFin.slice(0, 10) || '-'}
+          value={formatDateToLabel(absenceDetails?.dateFin) || '-'}
         />
 
         <div className="lg:col-span-2">
           <DisplayInput label="Note" value={absenceDetails?.note || '-'} />
         </div>
 
-        <DownloadJustificatif file={absenceDetails?.fichierJustificatifPdf} />
+        <DownloadJustificatif
+          file={absenceDetails?.fichierJustificatifPdf}
+          setFileUrl={setFileUrl}
+          setOpenPdfModal={setOpenPdfModal}
+        />
+
+        <DisplayPdf
+          openModal={openPdfModal}
+          setOpenModal={setOpenPdfModal}
+          fileUrl={fileUrl}
+        />
       </div>
     </>
   )

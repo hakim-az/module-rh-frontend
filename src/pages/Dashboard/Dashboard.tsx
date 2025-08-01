@@ -7,7 +7,7 @@ type UserRole = 'employee' | 'hr' | 'admin' | null
 // Lazy load role components
 const Employee = React.lazy(() => import('../Roles/Employee/Employee'))
 const HR = React.lazy(() => import('../Roles/HR/HR'))
-const Admin = React.lazy(() => import('../Roles/Admin/Admin'))
+// const Admin = React.lazy(() => import('../Roles/Admin/Admin'))
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(true)
@@ -49,7 +49,7 @@ export default function Dashboard() {
       }>
       {userRole === 'employee' && <Employee />}
       {userRole === 'hr' && <HR />}
-      {userRole === 'admin' && <Admin />}
+      {/* {userRole === 'admin' && <Admin />} */}
     </Suspense>
   )
 }

@@ -1,8 +1,9 @@
 import type { User } from '@/types/user.types'
-import { Download } from 'lucide-react'
+import { Download, Eye } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { downloadFile } from '@/lib/downloadFile'
 import PdfIcon from '@/assets/icons/pdf-icon.png'
+import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 
 interface IProps {
   details: User | undefined
@@ -35,6 +36,9 @@ const documents = [
 export default function JustificatifsDisplayForm({ details, loading }: IProps) {
   const [downloadingKey, setDownloadingKey] = useState<string | null>(null)
 
+  const [openPdfModal, setOpenPdfModal] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>('')
+
   const handleDownload = useCallback(
     async (fileName: string | undefined, key: string) => {
       if (!fileName) return
@@ -55,8 +59,9 @@ export default function JustificatifsDisplayForm({ details, loading }: IProps) {
   )
 
   const renderCard = (label: string, fileKey: string) => {
-    const fileUrl =
-      details?.justificatif?.[fileKey as keyof typeof details.justificatif]
+    const fileUrl = details?.justificatif?.[
+      fileKey as keyof typeof details.justificatif
+    ] as string | undefined
 
     return (
       <div
@@ -67,20 +72,30 @@ export default function JustificatifsDisplayForm({ details, loading }: IProps) {
           <div className="flex flex-col">
             <span className="text-sm font-medium text-black">{label}</span>
           </div>
-          {downloadingKey === fileKey ? (
-            <span className="text-xs text-gray-400 animate-pulse">
-              Téléchargement...
-            </span>
-          ) : fileUrl ? (
-            <Download
-              onClick={() =>
-                typeof fileUrl === 'string' && handleDownload(fileUrl, fileKey)
-              }
+          <div className="flex items-center justify-center gap-5">
+            <Eye
+              onClick={() => {
+                setOpenPdfModal(true)
+                setFileUrl(fileUrl)
+              }}
               className="hover:text-blue-600 cursor-pointer"
             />
-          ) : (
-            <span className="text-xs text-red-400">Aucun fichier</span>
-          )}
+            {downloadingKey === fileKey ? (
+              <span className="text-xs text-gray-400 animate-pulse">
+                Téléchargement...
+              </span>
+            ) : fileUrl ? (
+              <Download
+                onClick={() =>
+                  typeof fileUrl === 'string' &&
+                  handleDownload(fileUrl, fileKey)
+                }
+                className="hover:text-blue-600 cursor-pointer"
+              />
+            ) : (
+              <span className="text-xs text-red-400">Aucun fichier</span>
+            )}
+          </div>
         </div>
       </div>
     )
@@ -96,6 +111,11 @@ export default function JustificatifsDisplayForm({ details, loading }: IProps) {
           </div>
         </section>
       )}
+      <DisplayPdf
+        openModal={openPdfModal}
+        setOpenModal={setOpenPdfModal}
+        fileUrl={fileUrl}
+      />
     </>
   )
 }

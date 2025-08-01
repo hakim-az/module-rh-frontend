@@ -2,6 +2,7 @@ import type { ColumnDef } from '@tanstack/react-table'
 
 import type { IAbsence } from './AbsencesTable'
 import ActionsCell from './ActionsCell'
+import { formatDateToLabel } from '@/lib/formatDate'
 
 export const columns: ColumnDef<IAbsence>[] = [
   // id
@@ -40,14 +41,26 @@ export const columns: ColumnDef<IAbsence>[] = [
     accessorKey: 'dateDebut',
     header: 'Date début',
     cell: ({ row }) => {
-      const raw = row.getValue('dateDebut') as string | Date | undefined
-      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
-
+      const raw = row.getValue('dateDebut') as string
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">{formattedDate}</span>
+          <span className="text-sm capitalize text-black">
+            {formatDateToLabel(raw)}
+          </span>
         </div>
       )
+    },
+    // 🔥 Ajout du filtre par plage de dates
+    filterFn: (row, columnId, filterValue) => {
+      const value = row.getValue(columnId) as string
+      const date = new Date(value)
+      const from = filterValue?.from ? new Date(filterValue.from) : null
+      const to = filterValue?.to ? new Date(filterValue.to) : null
+
+      if (from && to) return date >= from && date <= to
+      if (from) return date >= from
+      if (to) return date <= to
+      return true
     },
   },
   // Date fin
@@ -55,12 +68,13 @@ export const columns: ColumnDef<IAbsence>[] = [
     accessorKey: 'dateFin',
     header: 'Date fin',
     cell: ({ row }) => {
-      const raw = row.getValue('dateFin') as string | Date | undefined
-      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
+      const raw = row.getValue('dateFin') as string
 
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">{formattedDate}</span>
+          <span className="text-sm capitalize text-black">
+            {formatDateToLabel(raw)}
+          </span>
         </div>
       )
     },

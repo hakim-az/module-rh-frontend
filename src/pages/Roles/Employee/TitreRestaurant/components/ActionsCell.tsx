@@ -1,12 +1,15 @@
 import { downloadFile } from '@/lib/downloadFile'
-import { Download } from 'lucide-react'
+import { Download, Eye } from 'lucide-react'
 import { useCallback, useState } from 'react'
+import { usePdfModal } from './PdfModalContext'
 
 interface ActionsCellProps {
   fileName: string
 }
 
 export default function ActionsCell({ fileName }: ActionsCellProps) {
+  const { setOpenPdfModal, setFileUrl } = usePdfModal()
+
   const [isLoadingFile, setIsLoadingFile] = useState(false)
 
   const handleDownload = useCallback(async (fileName: string | undefined) => {
@@ -27,6 +30,14 @@ export default function ActionsCell({ fileName }: ActionsCellProps) {
 
   return (
     <div className="flex items-center justify-center">
+      <Eye
+        onClick={() => {
+          setOpenPdfModal(true)
+          setFileUrl(fileName)
+        }}
+        className="hover:text-blue-500 cursor-pointer  transition-all ease-in-out delay-75"
+      />
+      <Eye className="text-transparent" />
       {isLoadingFile ? (
         <>Loading...</>
       ) : (

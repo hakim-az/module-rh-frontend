@@ -51,6 +51,20 @@ export const columns: ColumnDef<ITitreRestau>[] = [
       )
     },
   },
+  // Mois
+  {
+    accessorKey: 'mois',
+    header: 'Mois',
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize">
+          <span className="text-sm capitalize text-black">
+            {row.getValue('mois')}
+          </span>
+        </div>
+      )
+    },
+  },
   // Année
   {
     accessorKey: 'annee',
@@ -61,20 +75,6 @@ export const columns: ColumnDef<ITitreRestau>[] = [
         <div className="capitalize">
           <span className="text-sm capitalize text-black">
             {row.getValue('annee')}
-          </span>
-        </div>
-      )
-    },
-  },
-  // Mois
-  {
-    accessorKey: 'mois',
-    header: 'Mois',
-    cell: ({ row }) => {
-      return (
-        <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('mois')}
           </span>
         </div>
       )

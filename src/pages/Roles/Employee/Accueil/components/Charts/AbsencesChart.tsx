@@ -118,7 +118,7 @@ export default function AbsencesChart() {
           <CardContent className="flex-1 pb-0">
             <ChartContainer
               config={chartConfig}
-              className="mx-auto aspect-square max-h-[300px]">
+              className="mx-auto aspect-square max-h-[350px]">
               <PieChart>
                 <ChartTooltip
                   cursor={false}
@@ -128,7 +128,7 @@ export default function AbsencesChart() {
                   data={displayChartData}
                   dataKey="visitors"
                   nameKey="browser"
-                  innerRadius={60}
+                  innerRadius={100}
                   strokeWidth={5}>
                   <Label
                     content={({ viewBox }) => {

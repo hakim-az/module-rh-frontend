@@ -57,6 +57,7 @@ export default function AbsencesTable() {
   const [rowSelection, setRowSelection] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const [absences, setAbsences] = useState<IAbsence[]>([])
+  const [dateRange, setDateRange] = useState<{ from?: string; to?: string }>({})
 
   const navigate = useNavigate()
 
@@ -106,46 +107,57 @@ export default function AbsencesTable() {
   return (
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
-        <Select
-          onValueChange={(value) =>
-            table
-              .getColumn('statut')
-              ?.setFilterValue(value === 'all' ? undefined : value)
-          }
-          value={
-            (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
-          }>
-          <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
-            <SelectValue placeholder="Filtrer par statut" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous</SelectItem>
-            <SelectItem value="en-attente">En attente</SelectItem>
-            <SelectItem value="approuve">Approuvé</SelectItem>
-            <SelectItem value="refuse">Refusé</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-wrap items-end gap-4 py-4 mb-5">
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Statut d'absence</span>
+          <Select
+            onValueChange={(value) =>
+              table
+                .getColumn('statut')
+                ?.setFilterValue(value === 'all' ? undefined : value)
+            }
+            value={
+              (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
+            }>
+            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+              <SelectValue placeholder="Filtrer par statut" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous</SelectItem>
+              <SelectItem value="en-attente">En attente</SelectItem>
+              <SelectItem value="approuve">Approuvé</SelectItem>
+              <SelectItem value="refuse">Refusé</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-        <Input
-          type="date"
-          value={
-            (table.getColumn('dateDebut')?.getFilterValue() as string) ?? ''
-          }
-          onChange={(e) =>
-            table.getColumn('dateDebut')?.setFilterValue(e.target.value)
-          }
-          className="max-w-[200px] h-11 bg-white"
-        />
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Date de début</span>
+          <Input
+            type="date"
+            value={dateRange.from ?? ''}
+            onChange={(e) => {
+              const updated = { ...dateRange, from: e.target.value }
+              setDateRange(updated)
+              table.getColumn('dateDebut')?.setFilterValue(updated)
+            }}
+            className="max-w-[200px] w-[200px] h-11 bg-white"
+          />
+        </div>
 
-        <Input
-          type="date"
-          value={(table.getColumn('dateFin')?.getFilterValue() as string) ?? ''}
-          onChange={(e) =>
-            table.getColumn('dateFin')?.setFilterValue(e.target.value)
-          }
-          className="max-w-[200px] h-11 bg-white"
-        />
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Date de fin</span>
+          <Input
+            type="date"
+            value={dateRange.to ?? ''}
+            onChange={(e) => {
+              const updated = { ...dateRange, to: e.target.value }
+              setDateRange(updated)
+              table.getColumn('dateDebut')?.setFilterValue(updated)
+            }}
+            className="max-w-[200px] w-[200px] h-11 bg-white"
+          />
+        </div>
 
         <Button
           type="button"

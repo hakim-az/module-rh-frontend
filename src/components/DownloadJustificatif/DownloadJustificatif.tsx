@@ -1,13 +1,19 @@
-import { Download } from 'lucide-react'
+import { Download, Eye } from 'lucide-react'
 import PdfIcon from '@/assets/icons/pdf-icon.png'
 import { useCallback, useState } from 'react'
 import { downloadFile } from '@/lib/downloadFile'
 
 interface IProps {
   file: string | undefined
+  setFileUrl: (val: string | undefined) => void
+  setOpenPdfModal: (val: boolean) => void
 }
 
-export default function DownloadJustificatif({ file }: IProps) {
+export default function DownloadJustificatif({
+  file,
+  setFileUrl,
+  setOpenPdfModal,
+}: IProps) {
   const [isLoadingFile, setIsLoadingFile] = useState(false)
 
   const handleDownload = useCallback(async (fileName: string | undefined) => {
@@ -33,22 +39,33 @@ export default function DownloadJustificatif({ file }: IProps) {
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col">
               <span className="text-sm font-medium text-black">
-                Justificatif
+                Justificatif d'absence
               </span>
-              <span className="text-xs text-gray-400">~5.3 Mb</span>
             </div>
-            {isLoadingFile ? (
-              <span className="text-xs text-gray-400 animate-pulse">
-                Téléchargement...
-              </span>
-            ) : file ? (
-              <Download
-                onClick={() => typeof file === 'string' && handleDownload(file)}
+
+            <div className="flex items-center justify-center gap-5">
+              <Eye
+                onClick={() => {
+                  setOpenPdfModal(true)
+                  setFileUrl(file)
+                }}
                 className="hover:text-blue-600 cursor-pointer"
               />
-            ) : (
-              <span className="text-xs text-red-400">Aucun fichier</span>
-            )}
+              {isLoadingFile ? (
+                <span className="text-xs text-gray-400 animate-pulse">
+                  Téléchargement...
+                </span>
+              ) : file ? (
+                <Download
+                  onClick={() =>
+                    typeof file === 'string' && handleDownload(file)
+                  }
+                  className="hover:text-blue-600 cursor-pointer"
+                />
+              ) : (
+                <span className="text-xs text-red-400">Aucun fichier</span>
+              )}
+            </div>
           </div>
         </div>
       )}

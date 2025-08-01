@@ -99,40 +99,48 @@ export default function SalarieTable() {
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* search */}
       <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
-        <Input
-          placeholder="Recherche par nom et prenom ..."
-          value={(table.getColumn('salarie')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('salarie')?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm h-11 bg-white"
-        />
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Salarié</span>
+          <Input
+            placeholder="Recherche par nom et prénom ..."
+            value={
+              (table.getColumn('salarie')?.getFilterValue() as string) ?? ''
+            }
+            onChange={(event) =>
+              table.getColumn('salarie')?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm h-11 min-w-[250px] bg-white"
+          />
+        </div>
         {/* Filtrer par statut */}
-        <Select
-          onValueChange={(value) => {
-            // Si "all", on reset le filtre (undefined)
-            table
-              .getColumn('statut')
-              ?.setFilterValue(value === 'all' ? undefined : value)
-          }}
-          value={
-            (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
-          }>
-          <SelectTrigger className="max-w-[200px] w-[200px] min-h-11 bg-white">
-            <SelectValue placeholder="Filtrer par statut" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous</SelectItem>
-            <SelectItem value="user-created">Compte créé</SelectItem>
-            <SelectItem value="profile-completed">
-              Formulaire complété
-            </SelectItem>
-            <SelectItem value="contract-uploaded">Contrat prêt</SelectItem>
-            <SelectItem value="email-sent">Email envoyé</SelectItem>
-            <SelectItem value="contract-signed">Contrat signé</SelectItem>
-            <SelectItem value="user-approuved">Accès validé</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Statut</span>
+          <Select
+            onValueChange={(value) => {
+              // Si "all", on reset le filtre (undefined)
+              table
+                .getColumn('statut')
+                ?.setFilterValue(value === 'all' ? undefined : value)
+            }}
+            value={
+              (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
+            }>
+            <SelectTrigger className="max-w-[200px] w-[200px] min-h-11 bg-white">
+              <SelectValue placeholder="Filtrer par statut" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous</SelectItem>
+              <SelectItem value="user-created">Compte créé</SelectItem>
+              <SelectItem value="profile-completed">
+                Formulaire complété
+              </SelectItem>
+              <SelectItem value="contract-uploaded">Contrat prêt</SelectItem>
+              <SelectItem value="email-sent">Email envoyé</SelectItem>
+              <SelectItem value="contract-signed">Contrat signé</SelectItem>
+              <SelectItem value="user-approuved">Accès validé</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto bg-white h-11">

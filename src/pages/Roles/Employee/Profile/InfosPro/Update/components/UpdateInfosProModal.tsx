@@ -77,10 +77,9 @@ export default function UpdateInfosProModal({
           Valider la modification des infos professionnelles
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis
-          delectus officiis veniam obcaecati, nostrum distinctio error accusamus
-          assumenda ipsam numquam minus eos fugiat doloribus dignissimos beatae
-          voluptatem maiores dolores debitis.
+          Vous êtes sur le point de modifier vos informations professionnelles.
+          Veuillez confirmer pour enregistrer les changements apportés à votre
+          profil.
         </p>
       </div>
       {/* buttons */}

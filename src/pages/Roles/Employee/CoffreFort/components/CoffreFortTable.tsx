@@ -29,7 +29,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
@@ -59,16 +59,31 @@ export default function CoffreFortTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
   const typeBulletinItems = [
-    { label: 'Bulletin de salaire mensuel', value: 'salaire_mensuel' },
-    { label: 'Prime exceptionnelle', value: 'prime_exceptionnelle' },
-    { label: 'Indemnité de transport', value: 'indemnite_transport' },
+    {
+      label: 'Bulletin de salaire mensuel',
+      value: 'salaire_mensuel',
+    },
+    {
+      label: 'Prime exceptionnelle',
+      value: 'prime_exceptionnelle',
+    },
+    {
+      label: 'Indemnité de transport',
+      value: 'indemnite_transport',
+    },
     {
       label: 'Remboursement frais professionnels',
       value: 'remboursement_frais',
     },
-    { label: 'Heures supplémentaires', value: 'heures_supplementaires' },
+    {
+      label: 'Heures supplémentaires',
+      value: 'heures_supplementaires',
+    },
     { label: 'Bonus de performance', value: 'bonus_performance' },
-    { label: 'Bulletin de régularisation', value: 'bulletin_regularisation' },
+    {
+      label: 'Bulletin de régularisation',
+      value: 'bulletin_regularisation',
+    },
   ]
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -98,6 +113,13 @@ export default function CoffreFortTable() {
     },
   })
 
+  const currentYear = new Date().getFullYear()
+  const yearRange = useMemo(
+    () =>
+      Array.from({ length: 11 }, (_, i) => (currentYear - 5 + i).toString()),
+    [currentYear]
+  )
+
   // fetch coffres
   const fetchCoffres = useCallback(async () => {
     try {
@@ -122,90 +144,100 @@ export default function CoffreFortTable() {
   return (
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* search */}
-      <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
+      <div className="flex flex-wrap items-end gap-4 py-4 mb-5">
         {/* Filtrer par typeBulletin */}
-        <Select
-          onValueChange={(value) => {
-            table
-              .getColumn('typeBulletin')
-              ?.setFilterValue(value === 'all' ? undefined : value)
-          }}
-          value={
-            (table.getColumn('typeBulletin')?.getFilterValue() as string) ??
-            'all'
-          }>
-          <SelectTrigger className="max-w-[250px] w-[250px] h-11 bg-white">
-            <SelectValue placeholder="Filtrer par type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous</SelectItem>
-            {typeBulletinItems.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-
-        {/* Filtrer par année */}
-        <Select
-          onValueChange={(value) => {
-            table
-              .getColumn('annee')
-              ?.setFilterValue(value === 'all' ? undefined : value)
-          }}
-          value={
-            table.getColumn('annee')?.getFilterValue() !== undefined
-              ? String(table.getColumn('annee')?.getFilterValue())
-              : 'all'
-          }>
-          <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
-            <SelectValue placeholder="Filtrer par année" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Toutes</SelectItem>
-            <SelectItem value="2025">2025</SelectItem>
-            <SelectItem value="2024">2024</SelectItem>
-            <SelectItem value="2023">2023</SelectItem>
-            <SelectItem value="2022">2022</SelectItem>
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Type</span>
+          <Select
+            onValueChange={(value) => {
+              table
+                .getColumn('typeBulletin')
+                ?.setFilterValue(value === 'all' ? undefined : value)
+            }}
+            value={
+              (table.getColumn('typeBulletin')?.getFilterValue() as string) ??
+              'all'
+            }>
+            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+              <SelectValue placeholder="Filtrer par type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous</SelectItem>
+              {typeBulletinItems.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
         {/* Filtrer par mois */}
-        <Select
-          onValueChange={(value) => {
-            table
-              .getColumn('mois')
-              ?.setFilterValue(value === 'all' ? undefined : value)
-          }}
-          value={
-            (table.getColumn('mois')?.getFilterValue() as string) ?? 'all'
-          }>
-          <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
-            <SelectValue placeholder="Filtrer par mois" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous</SelectItem>
-            {[
-              'Janvier',
-              'Février',
-              'Mars',
-              'Avril',
-              'Mai',
-              'Juin',
-              'Juillet',
-              'Août',
-              'Septembre',
-              'Octobre',
-              'Novembre',
-              'Décembre',
-            ].map((mois) => (
-              <SelectItem key={mois} value={mois}>
-                {mois}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Mois</span>
+          <Select
+            onValueChange={(value) => {
+              table
+                .getColumn('mois')
+                ?.setFilterValue(value === 'all' ? undefined : value)
+            }}
+            value={
+              (table.getColumn('mois')?.getFilterValue() as string) ?? 'all'
+            }>
+            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+              <SelectValue placeholder="Filtrer par mois" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous</SelectItem>
+              {[
+                'Janvier',
+                'Février',
+                'Mars',
+                'Avril',
+                'Mai',
+                'Juin',
+                'Juillet',
+                'Août',
+                'Septembre',
+                'Octobre',
+                'Novembre',
+                'Décembre',
+              ].map((mois) => (
+                <SelectItem key={mois} value={mois}>
+                  {mois}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Filtrer par année */}
+        <div className="flex flex-col gap-2">
+          <span className="text-sm font-medium">Année</span>
+          <Select
+            onValueChange={(value) => {
+              table
+                .getColumn('annee')
+                ?.setFilterValue(value === 'all' ? undefined : value)
+            }}
+            value={
+              table.getColumn('annee')?.getFilterValue() !== undefined
+                ? String(table.getColumn('annee')?.getFilterValue())
+                : 'all'
+            }>
+            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+              <SelectValue placeholder="Filtrer par année" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes</SelectItem>
+              {yearRange.map((year) => (
+                <SelectItem key={year} value={year}>
+                  {year}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* table */}

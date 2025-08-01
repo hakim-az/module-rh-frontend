@@ -1,5 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import type { IAbsence } from './AbsencesTable'
+import { formatDateToLabel } from '@/lib/formatDate'
 
 export const columns: ColumnDef<IAbsence>[] = [
   // id
@@ -38,12 +39,13 @@ export const columns: ColumnDef<IAbsence>[] = [
     accessorKey: 'dateDebut',
     header: 'Date début',
     cell: ({ row }) => {
-      const raw = row.getValue('dateDebut') as string | Date | undefined
-      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
+      const raw = row.getValue('dateDebut') as string
 
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">{formattedDate}</span>
+          <span className="text-sm capitalize text-black">
+            {formatDateToLabel(raw)}
+          </span>
         </div>
       )
     },
@@ -53,12 +55,13 @@ export const columns: ColumnDef<IAbsence>[] = [
     accessorKey: 'dateFin',
     header: 'Date fin',
     cell: ({ row }) => {
-      const raw = row.getValue('dateFin') as string | Date | undefined
-      const formattedDate = raw ? new Date(raw).toISOString().slice(0, 10) : '-'
+      const raw = row.getValue('dateFin') as string
 
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">{formattedDate}</span>
+          <span className="text-sm capitalize text-black">
+            {formatDateToLabel(raw)}
+          </span>
         </div>
       )
     },

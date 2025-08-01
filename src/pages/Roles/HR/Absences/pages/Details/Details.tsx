@@ -9,6 +9,7 @@ import RefuserAbsenceModal from './Modals/RefuserAbsenceModal'
 import type { IAbsence } from '../Home/components/AbsencesTable'
 import axios from 'axios'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
+import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 
 export default function Details() {
   const [activeApprouverAbsenceModal, setActiveApprouverAbsenceModal] =
@@ -20,6 +21,8 @@ export default function Details() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [absenceDetails, setAbsenceDetails] = useState<IAbsence>()
+  const [openPdfModal, setOpenPdfModal] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
   // fetch designs
   const fetchAbsences = useCallback(async () => {
@@ -106,7 +109,11 @@ export default function Details() {
             />
           </div>
           {/* justificatif */}
-          <DownloadJustificatif file={absenceDetails?.fichierJustificatifPdf} />
+          <DownloadJustificatif
+            file={absenceDetails?.fichierJustificatifPdf}
+            setFileUrl={setFileUrl}
+            setOpenPdfModal={setOpenPdfModal}
+          />
         </div>
       )}
       {/* approuver : refuser */}
@@ -144,6 +151,11 @@ export default function Details() {
           absenceId={absenceDetails?.id}
         />
       </CustomModal>
+      <DisplayPdf
+        openModal={openPdfModal}
+        setOpenModal={setOpenPdfModal}
+        fileUrl={fileUrl}
+      />
     </>
   )
 }
