@@ -1,11 +1,9 @@
-'use client'
-
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { notify } from '@/lib/ToastNotification'
+import ToastNotification, { notify } from '@/lib/ToastNotification'
 import { useNavigate } from 'react-router-dom'
 
 type LoginForm = {
@@ -103,6 +101,7 @@ export default function Login() {
           {isSubmitting ? 'Connexion...' : 'Se connecter'}
         </Button>
       </form>
+      <ToastNotification />
     </section>
   )
 }
