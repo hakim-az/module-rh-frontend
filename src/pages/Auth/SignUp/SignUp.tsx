@@ -1,5 +1,3 @@
-'use client'
-
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
 import { Input } from '@/components/ui/input'
@@ -7,6 +5,9 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { notify } from '@/lib/ToastNotification'
 import { useNavigate } from 'react-router-dom'
+import { Eye, EyeOff } from 'lucide-react'
+import { useState } from 'react'
+import AuthBg from '@/assets/images/auth-bg.png'
 
 type FormData = {
   prenom: string
@@ -26,6 +27,10 @@ export default function SignUp() {
   } = useForm<FormData>()
 
   const navigate = useNavigate()
+
+  // State pour afficher / cacher le mot de passe
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const onSubmit = async (data: FormData) => {
     if (data.password !== data.confirmPassword) {
@@ -58,7 +63,7 @@ export default function SignUp() {
       console.log(response)
 
       notify({
-        message: 'success',
+        message: 'Inscription réussie',
         type: 'success',
       })
 
@@ -69,114 +74,185 @@ export default function SignUp() {
       console.error(error)
 
       notify({
-        message: 'Echec',
+        message: 'Échec de l’inscription',
         type: 'error',
       })
     }
   }
 
   return (
-    <section className="flex items-center justify-center min-h-screen">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="w-11/12 max-w-[600px] mx-auto my-20 p-10 border border-gray-300 rounded-md shadow flex flex-col gap-4">
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="prenom">Prénom</Label>
-          <Input
-            id="prenom"
-            {...register('prenom', { required: 'Prénom is required' })}
-          />
-          {errors.prenom && (
-            <p className="text-sm text-red-500">{errors.prenom.message}</p>
-          )}
-        </div>
+    <section
+      className="flex items-center justify-end h-screen min-h-screen bg-cover bg-center"
+      style={{
+        backgroundImage: `url(${AuthBg})`,
+      }}>
+      {/* Form */}
+      <div className="w-full lg:w-1/2 bg-white h-full flex items-center justify-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col items-center p-7 lg:p-12 w-11/12 max-w-[650px] mx-auto bg-white gap-8 rounded-lg border border-gray-300 shadow-2xl">
+          <span className="text-4xl font-bold mb-5">Logo</span>
+          {/* nom / prénom */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 w-full">
+            <div className="flex flex-col">
+              <Label htmlFor="prenom" className="mb-2.5">
+                Prénom <span className="font-medium text-red-500">*</span>
+              </Label>
+              <Input
+                id="prenom"
+                {...register('prenom', { required: 'Le prénom est requis' })}
+                placeholder="Prénom"
+              />
+              {errors.prenom && (
+                <p className="text-sm text-red-500 mt-2">
+                  {errors.prenom.message}
+                </p>
+              )}
+            </div>
 
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="nomDeNaissance">Nom de naissance</Label>
-          <Input
-            id="nomDeNaissance"
-            {...register('nomDeNaissance', { required: 'Nom is required' })}
-          />
-          {errors.nomDeNaissance && (
-            <p className="text-sm text-red-500">
-              {errors.nomDeNaissance.message}
-            </p>
-          )}
-        </div>
+            <div className="flex flex-col">
+              <Label htmlFor="nomDeNaissance" className="mb-2.5">
+                Nom <span className="font-medium text-red-500">*</span>
+              </Label>
+              <Input
+                id="nomDeNaissance"
+                {...register('nomDeNaissance', {
+                  required: 'Le nom est requis',
+                })}
+                placeholder="Nom"
+              />
+              {errors.nomDeNaissance && (
+                <p className="text-sm text-red-500 mt-2">
+                  {errors.nomDeNaissance.message}
+                </p>
+              )}
+            </div>
+          </div>
 
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="emailPersonnel">Email</Label>
-          <Input
-            id="emailPersonnel"
-            type="email"
-            {...register('emailPersonnel', {
-              required: 'Email is required',
-              pattern: { value: /^\S+@\S+$/, message: 'Invalid email format' },
-            })}
-          />
-          {errors.emailPersonnel && (
-            <p className="text-sm text-red-500">
-              {errors.emailPersonnel.message}
-            </p>
-          )}
-        </div>
+          {/* email */}
+          <div className="flex flex-col w-full">
+            <Label htmlFor="emailPersonnel" className="mb-2.5">
+              Email <span className="font-medium text-red-500">*</span>
+            </Label>
+            <Input
+              id="emailPersonnel"
+              type="email"
+              {...register('emailPersonnel', {
+                required: `L'email est requis`,
+                pattern: {
+                  value: /^\S+@\S+$/,
+                  message: 'Format de l’email invalide',
+                },
+              })}
+              placeholder="Email"
+            />
+            {errors.emailPersonnel && (
+              <p className="text-sm text-red-500 mt-2">
+                {errors.emailPersonnel.message}
+              </p>
+            )}
+          </div>
 
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="telephonePersonnel">Téléphone</Label>
-          <Input
-            id="telephonePersonnel"
-            {...register('telephonePersonnel', {
-              required: 'Téléphone is required',
-              pattern: { value: /^[0-9]+$/, message: 'Only numbers allowed' },
-            })}
-          />
-          {errors.telephonePersonnel && (
-            <p className="text-sm text-red-500">
-              {errors.telephonePersonnel.message}
-            </p>
-          )}
-        </div>
+          {/* téléphone */}
+          <div className="flex flex-col w-full">
+            <Label htmlFor="telephonePersonnel" className="mb-2.5">
+              Téléphone <span className="font-medium text-red-500">*</span>
+            </Label>
+            <Input
+              id="telephonePersonnel"
+              {...register('telephonePersonnel', {
+                required: 'Le numéro de téléphone est requis',
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: 'Seulement des chiffres autorisés',
+                },
+              })}
+              placeholder="07 77 77 77 77"
+            />
+            {errors.telephonePersonnel && (
+              <p className="text-sm text-red-500 mt-2">
+                {errors.telephonePersonnel.message}
+              </p>
+            )}
+          </div>
 
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="password">Mot de passe</Label>
-          <Input
-            id="password"
-            type="password"
-            {...register('password', {
-              required: 'Mot de passe requis',
-              minLength: { value: 6, message: 'Minimum 6 caractères' },
-            })}
-          />
-          {errors.password && (
-            <p className="text-sm text-red-500">{errors.password.message}</p>
-          )}
-        </div>
+          {/* mot de passe / confirmer mot de passe */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 w-full">
+            <div className="flex flex-col relative">
+              <Label htmlFor="password" className="mb-2.5">
+                Mot de passe <span className="font-medium text-red-500">*</span>
+              </Label>
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                {...register('password', {
+                  required: 'Le mot de passe est requis',
+                  pattern: {
+                    value:
+                      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,}$/,
+                    message:
+                      'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
+                  },
+                })}
+                placeholder="************"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-2 top-8 text-gray-500">
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-2">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
 
-        <div className="flex flex-col gap-3">
-          <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            {...register('confirmPassword', {
-              validate: (val) =>
-                val === watch('password') ||
-                'Les mots de passe ne correspondent pas',
-            })}
-          />
-          {errors.confirmPassword && (
-            <p className="text-sm text-red-500">
-              {errors.confirmPassword.message}
-            </p>
-          )}
-        </div>
+            <div className="flex flex-col relative">
+              <Label htmlFor="confirmPassword" className="mb-2">
+                Confirmer le mot de passe{' '}
+                <span className="font-medium text-red-500">*</span>
+              </Label>
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? 'text' : 'password'}
+                {...register('confirmPassword', {
+                  validate: (val) =>
+                    val === watch('password') ||
+                    'Les mots de passe ne correspondent pas',
+                })}
+                placeholder="************"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-2 top-8 text-gray-500">
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+              {errors.confirmPassword && (
+                <p className="text-sm text-red-500 mt-2">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+          </div>
 
-        <Button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full mt-5 disabled:cursor-not-allowed disabled:opacity-50">
-          {isSubmitting ? 'Loading...' : 'Sign Up'}
-        </Button>
-      </form>
+          {/* Submit button */}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full text-base h-10 mt-4 disabled:cursor-not-allowed disabled:opacity-50">
+            {isSubmitting ? 'Chargement...' : `S'enregistrer`}
+          </Button>
+
+          <span
+            onClick={() => navigate('/')}
+            className="hover:text-blue-400 hover:underline transition-all ease-in-out self-end font-medium cursor-pointer">
+            Se connecter
+          </span>
+        </form>
+      </div>
     </section>
   )
 }

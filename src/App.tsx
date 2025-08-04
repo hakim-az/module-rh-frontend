@@ -43,7 +43,7 @@ function App() {
 
         {/* signup page */}
         <Route
-          path="/signup"
+          path="/enregistrer"
           element={
             <PublicRoutes>
               <SignUp />
