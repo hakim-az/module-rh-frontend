@@ -89,7 +89,7 @@ export default function TitreRestaurantTable({ dashboardData }: IProps) {
           Voir tout
         </button>
       </div>
-      <div className="rounded-md border bg-white">
+      <div className="rounded-md border bg-white min-h-[350px]">
         <Table>
           {/* Header */}
           <TableHeader>

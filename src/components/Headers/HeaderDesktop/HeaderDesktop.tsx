@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
-import DefaultAvatar from '@/assets/icons/user-avatar.png'
+import { CircleUserRound } from 'lucide-react'
 
 interface PropsType {
   nameRoute: string
@@ -63,15 +63,15 @@ function Header({ nameRoute }: PropsType) {
             {/* avatar */}
             <DropdownMenu>
               <DropdownMenuTrigger>
-                <img
-                  className="w-11 h-11 object-cover rounded-full border-2 border-[#96ABFF] "
-                  src={
-                    userDetails?.avatar === ''
-                      ? DefaultAvatar
-                      : userDetails?.avatar
-                  }
-                  alt="user-avatar"
-                />
+                {userDetails?.avatar === '' ? (
+                  <CircleUserRound width={40} height={40} />
+                ) : (
+                  <img
+                    src={userDetails?.avatar}
+                    alt="user-avatar"
+                    className="w-11 h-11 object-cover rounded-full border-2 border-[#96ABFF] "
+                  />
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent className="p-3 mt-2 mr-6">
                 {/* Logout */}

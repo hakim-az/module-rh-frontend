@@ -1,7 +1,7 @@
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import { useLocation, useNavigate } from 'react-router-dom'
-import DefaultAvatar from '@/assets/icons/user-avatar.png'
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import { CircleUserRound } from 'lucide-react'
 
 interface IProps {
   setActiveUploadAvatarModal: (activeUploadAvatarModal: boolean) => void
@@ -20,19 +20,25 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
     <div className="w-full relative h-[260px] mb-32 lg:h-[300px] bg-black/20 border-b-4 border-b-black">
       <div className="w-11/12 max-w-[1280px] mt-[200px] lg:mt-[228px] gap-10 flex items-center justify-start mx-auto bottom-0">
         <div className="relative">
-          <img
-            src={
-              userDetails?.avatar === '' ? DefaultAvatar : userDetails?.avatar
-            }
-            alt="user-avatar"
-            className="h-28 w-28 min-h-28 min-w-28 lg:w-36 lg:h-36 object-cover bg-gray-300 border-2 border-black rounded-full"
-          />
+          {userDetails?.avatar === '' ? (
+            <CircleUserRound
+              width={144}
+              height={144}
+              className="bg-white rounded-full"
+            />
+          ) : (
+            <img
+              src={userDetails?.avatar}
+              alt="user-avatar"
+              className="h-28 w-28 min-h-28 min-w-28 lg:w-36 lg:h-36 object-cover bg-gray-300 border-2 border-black rounded-full"
+            />
+          )}
           <PencilSquareIcon
             onClick={() => setActiveUploadAvatarModal(true)}
             className="w-8 p-1 rounded-md stroke-white bg-blue-500 hover:scale-110 transition-all ease-in-out delay-75 bottom-1 cursor-pointer right-1 absolute"
           />
         </div>
-        <div className="flex flex-col gap-3 bg-black/40 py-3 px-6 rounded min-w-[200px] text-white">
+        <div className="flex flex-col gap-3 bg-white py-3 px-6 rounded min-w-[200px] text-black border border-gray-300 shadow">
           <span className="text-lg capitalize lg:text-xl font-medium">
             {userDetails?.nomDeNaissance} {userDetails?.prenom}
           </span>

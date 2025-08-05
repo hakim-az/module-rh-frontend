@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table'
 import ActionsCell from './ActionsCell'
 import type { User } from '@/types/user.types'
-import DefaultAvatar from '@/assets/icons/user-avatar.png'
+import { CircleUserRound } from 'lucide-react'
 
 export const columns: ColumnDef<User>[] = [
   // id
@@ -27,11 +27,15 @@ export const columns: ColumnDef<User>[] = [
       const avatar = row.original.avatar
       return (
         <div className="flex items-center gap-3 justify-start">
-          <img
-            src={avatar === '' ? DefaultAvatar : avatar}
-            alt="user-avatar"
-            className="size-10 min-w-10 min-h-10 rounded bg-white border border-gray-300"
-          />
+          {avatar === '' ? (
+            <CircleUserRound width={40} height={40} />
+          ) : (
+            <img
+              src={avatar}
+              alt="user-avatar"
+              className="size-10 min-w-10 min-h-10 rounded bg-white border border-gray-300"
+            />
+          )}
           <div className="flex flex-col">
             <span className="text-sm font-bold">
               {row.original.nomDeNaissance} {row.original.prenom}
