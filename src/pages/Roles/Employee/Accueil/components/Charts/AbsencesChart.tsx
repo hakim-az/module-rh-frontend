@@ -108,7 +108,7 @@ export default function AbsencesChart() {
       {isLoading ? (
         <>Loading...</>
       ) : (
-        <Card className="flex flex-col">
+        <Card className="flex flex-col lg:col-span-2">
           <CardHeader className="items-center pb-0">
             <CardTitle>Statut des absences</CardTitle>
             <CardDescription>

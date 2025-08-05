@@ -27,7 +27,7 @@ export default function Cards({ dashboardData }: IProps) {
     },
   ]
   return (
-    <div className="w-full gap-x-20 gap-y-4 flex flex-col">
+    <div className="w-full gap-x-20 gap-y-4 flex flex-col lg:col-span-1">
       {/* card */}
       {cards.map((card) => (
         <div
@@ -45,20 +45,3 @@ export default function Cards({ dashboardData }: IProps) {
     </div>
   )
 }
-
-// ;<div className="w-full gap-x-20 gap-y-8  grid grid-cols-1 md:grid lg:grid-cols-3">
-//   {/* card */}
-//   {cards.map((card) => (
-//     <div
-//       key={card.id}
-//       className="bg-[#09090B] border p-5 flex gap-20 flex-col items-end border-gray-300 shadow rounded-md text-white">
-//       {/* icon */}
-//       <card.icon className="w-10 h-10" />
-//       {/* data */}
-//       <div className="w-full flex items-center justify-between">
-//         <span className="text-lg font-medium">{card.title}</span>
-//         <span className="text-3xl font-semibold">{card?.total ?? 0}</span>
-//       </div>
-//     </div>
-//   ))}
-// </div>

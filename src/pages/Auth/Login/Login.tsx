@@ -127,11 +127,17 @@ export default function Login() {
             {isSubmitting ? 'Connexion...' : 'Se connecter'}
           </Button>
           {/* navigation to signup */}
-          <span
-            onClick={() => navigate('/enregistrer')}
-            className="hover:text-blue-400 hover:underline transition-all -mt-4 ease-in-out self-end font-medium cursor-pointer">
-            S'enregistrer
-          </span>
+          <div className="text-center">
+            <p className="text-gray-600">
+              Vous n'avez pas de compte ?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('/enregistrer')}
+                className="text-blue-600 hover:text-blue-500 font-medium transition-colors">
+                S'inscrire
+              </button>
+            </p>
+          </div>
         </form>
       </div>
 

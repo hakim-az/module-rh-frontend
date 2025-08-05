@@ -55,11 +55,7 @@ export default function Accueil() {
 
   return (
     <section className="w-11/12 max-w-[1200px] mx-auto py-18 flex flex-col gap-18">
-      {/* <Cards dashboardData={dashboardData} />
-      <div className="grid grid-cols-1 mx-auto gap-16">
-        <AbsencesChart />
-      </div> */}
-      <div className="grid grid-cols-1 w-full lg:grid-cols-2 mx-auto gap-16">
+      <div className="grid grid-cols-1 w-full lg:grid-cols-3 mx-auto gap-16">
         <Cards dashboardData={dashboardData} />
         <AbsencesChart />
       </div>

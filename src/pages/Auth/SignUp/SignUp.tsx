@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import { useState } from 'react'
 import AuthBg from '@/assets/images/auth-bg.png'
+import { PasswordStrengthIndicator } from '@/components/PasswordStrengthIndicator/PasswordStrengthIndicator'
 
 type FormData = {
   prenom: string
@@ -31,6 +32,9 @@ export default function SignUp() {
   // State pour afficher / cacher le mot de passe
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [showPasswordStrength, setShowPasswordStrength] = useState(false)
+
+  const password = watch('password', '')
 
   const onSubmit = async (data: FormData) => {
     if (data.password !== data.confirmPassword) {
@@ -82,15 +86,16 @@ export default function SignUp() {
 
   return (
     <section
-      className="flex items-center justify-end h-screen min-h-screen bg-cover bg-center"
+      className="flex items-center justify-end bg-cover bg-center"
       style={{
         backgroundImage: `url(${AuthBg})`,
+        backgroundColor: '#00F',
       }}>
       {/* Form */}
-      <div className="w-full lg:w-1/2 bg-white h-full flex items-center justify-center">
+      <div className="w-full bg-white lg:w-1/2 min-h-screen py-20 top-20 flex items-center justify-center">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col items-center p-7 lg:p-12 w-11/12 max-w-[650px] mx-auto bg-white gap-8 rounded-lg border border-gray-300 shadow-2xl">
+          className="flex flex-col items-center p-7 lg:p-12 w-11/12 max-w-[650px] flex-wrap mx-auto bg-white gap-8 rounded-lg border border-gray-300 shadow-2xl">
           <span className="text-4xl font-bold mb-5">Logo</span>
           {/* nom / prénom */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-4 gap-y-8 w-full">
@@ -194,6 +199,8 @@ export default function SignUp() {
                       'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial',
                   },
                 })}
+                onFocus={() => setShowPasswordStrength(true)}
+                onBlur={() => setShowPasswordStrength(false)}
                 placeholder="************"
               />
               <button
@@ -207,6 +214,10 @@ export default function SignUp() {
                   {errors.password.message}
                 </p>
               )}
+              <PasswordStrengthIndicator
+                password={password}
+                show={showPasswordStrength || password.length > 0}
+              />
             </div>
 
             <div className="flex flex-col relative">
@@ -243,14 +254,20 @@ export default function SignUp() {
             type="submit"
             disabled={isSubmitting}
             className="w-full text-base h-10 mt-4 disabled:cursor-not-allowed disabled:opacity-50">
-            {isSubmitting ? 'Chargement...' : `S'enregistrer`}
+            {isSubmitting ? 'Chargement...' : `Créer le compte`}
           </Button>
 
-          <span
-            onClick={() => navigate('/')}
-            className="hover:text-blue-400 hover:underline transition-all ease-in-out self-end font-medium cursor-pointer">
-            Se connecter
-          </span>
+          <div className="text-center">
+            <p className="text-gray-600">
+              Vous avez déjà un compte ?{' '}
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="text-blue-600 hover:text-blue-500 font-medium transition-colors">
+                Se connecter
+              </button>
+            </p>
+          </div>
         </form>
       </div>
     </section>
