@@ -4,12 +4,14 @@ import { ControlledTextarea } from '@/components/FormFeilds/ControlledTextarea/C
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import PagePath from '@/components/PagePath/PagePath'
 import { Button } from '@/components/ui/button'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import SendRequestModal from './componsnts/SendRequestModal'
 import { ControlledInput } from '@/components/FormFeilds/ControlledInput/ControlledInput'
 import SelectUser from './componsnts/SelectUser'
+import { countBusinessDaysInMonth } from '@/lib/countBusinessDaysInMonth'
+import axios from 'axios'
 
 export interface IRestauForm {
   user_id: string
@@ -29,11 +31,16 @@ export default function Add() {
   const [justificatif, setJustificatif] = useState<File>()
   const [activeSendRequestModal, setActiveSendRequestModal] =
     useState<boolean>(false)
+  const [totalAbsneceCurrentMonth, setTotalAbsneceCurrentMonth] =
+    useState<number>()
+  const [userId, setUserId] = useState<string>('')
 
   // react hook form
   const methods = useForm<IRestauForm>({
     mode: 'onBlur',
   })
+
+  console.log('totalAbsneceCurrentMonth', totalAbsneceCurrentMonth)
 
   const {
     register,
@@ -60,19 +67,65 @@ export default function Add() {
     return { label: year.toString(), value: year.toString() }
   })
 
+  // fetch
+  const fetchMonthTotalAbsences = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/absences/total-conge/${userId}?month=${9}&year=${2025}`
+      )
+      console.log(response)
+      setTotalAbsneceCurrentMonth(response.data.totalCongeApprouve)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [userId])
+
   useEffect(() => {
     register('justificatif', {
-      required: 'Ce champ est requis',
-      validate: {
-        size: (file: File) =>
-          file && file.size <= 10 * 1024 * 1024
-            ? true
-            : 'Le fichier doit faire moins de 10 Mo',
-      },
+      validate: (file: File | undefined) =>
+        !file ||
+        file.size <= 10 * 1024 * 1024 ||
+        'Le fichier doit faire moins de 10 Mo',
     })
 
     if (justificatif) setValue('justificatif', justificatif)
   }, [justificatif, register, setValue])
+
+  const watchedMonth = methods.watch('mois')
+  const watchedYear = methods.watch('annee')
+
+  useEffect(() => {
+    if (watchedMonth && watchedYear) {
+      const monthMap: Record<string, number> = {
+        janvier: 1,
+        fevrier: 2,
+        mars: 3,
+        avril: 4,
+        mai: 5,
+        juin: 6,
+        juillet: 7,
+        aout: 8,
+        septembre: 9,
+        octobre: 10,
+        novembre: 11,
+        decembre: 12,
+      }
+
+      const monthNum = monthMap[watchedMonth.toLowerCase()]
+      const yearNum = parseInt(watchedYear.toString(), 10)
+
+      if (monthNum && yearNum) {
+        const businessDays = countBusinessDaysInMonth(yearNum, monthNum)
+        const totalAbsences = totalAbsneceCurrentMonth ?? 0
+        const result = businessDays - totalAbsences
+        setValue('nbr_jr', result.toString())
+      }
+    }
+  }, [watchedMonth, watchedYear, setValue, totalAbsneceCurrentMonth])
+
+  useEffect(() => {
+    fetchMonthTotalAbsences() // Initial fetch
+  }, [fetchMonthTotalAbsences])
 
   return (
     <>
@@ -90,17 +143,7 @@ export default function Add() {
               isSubmitting={isSubmitting}
               clearErrors={clearErrors}
               setError={setError}
-            />
-            {/* Nombre de jours ouvrés */}
-            <ControlledInput
-              name="nbr_jr"
-              label="Nombre de jours ouvrés"
-              placeholder="Nombre de jours ouvrés"
-              register={register}
-              rules={{ required: true }}
-              error={errors.nbr_jr}
-              inputType="number"
-              inputDefaultValue=""
+              setUserId={setUserId}
             />
             {/* Mois */}
             <ControlledSelect
@@ -137,6 +180,17 @@ export default function Add() {
               error={errors.annee}
               selectDefaultValue=""
             />
+            {/* Nombre de jours ouvrés */}
+            <ControlledInput
+              name="nbr_jr"
+              label="Nombre de jours ouvrés"
+              placeholder="Nombre de jours ouvrés"
+              register={register}
+              rules={{ required: true }}
+              error={errors.nbr_jr}
+              inputType="number"
+              inputDefaultValue=""
+            />
             {/* Note */}
             <div className="lg:col-span-2">
               <ControlledTextarea
@@ -160,6 +214,7 @@ export default function Add() {
                     : undefined
                 }
                 defaultFile={justificatif ?? undefined}
+                required={false}
               />
             </div>
           </div>

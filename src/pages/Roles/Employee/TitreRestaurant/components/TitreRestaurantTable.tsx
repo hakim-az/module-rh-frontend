@@ -29,10 +29,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 
 export type ITitreRestau = {
   id: string
@@ -86,6 +87,13 @@ export default function TitreRestaurantTable() {
     },
   })
 
+  const currentYear = new Date().getFullYear()
+  const yearRange = useMemo(
+    () =>
+      Array.from({ length: 11 }, (_, i) => (currentYear - 5 + i).toString()),
+    [currentYear]
+  )
+
   // fetch absences
   const fetchRestaux = useCallback(async () => {
     try {
@@ -110,73 +118,82 @@ export default function TitreRestaurantTable() {
   return (
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* search */}
-      <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
-        {/* Filtrer par année */}
-        <Select
-          onValueChange={(value) => {
-            table
-              .getColumn('annee')
-              ?.setFilterValue(value === 'all' ? undefined : value)
-          }}
-          value={
-            table.getColumn('annee')?.getFilterValue() !== undefined
-              ? String(table.getColumn('annee')?.getFilterValue())
-              : 'all'
-          }>
-          <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
-            <SelectValue placeholder="Filtrer par année" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Toutes</SelectItem>
-            <SelectItem value="2025">2025</SelectItem>
-            <SelectItem value="2024">2024</SelectItem>
-            <SelectItem value="2023">2023</SelectItem>
-            <SelectItem value="2022">2022</SelectItem>
-          </SelectContent>
-        </Select>
-
+      <div className="w-full flex flex-wrap items-center gap-4 py-4 mb-5">
         {/* Filtrer par mois */}
-        <Select
-          onValueChange={(value) => {
-            table
-              .getColumn('mois')
-              ?.setFilterValue(value === 'all' ? undefined : value)
-          }}
-          value={
-            (table.getColumn('mois')?.getFilterValue() as string) ?? 'all'
-          }>
-          <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
-            <SelectValue placeholder="Filtrer par mois" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Tous</SelectItem>
-            {[
-              'Janvier',
-              'Février',
-              'Mars',
-              'Avril',
-              'Mai',
-              'Juin',
-              'Juillet',
-              'Août',
-              'Septembre',
-              'Octobre',
-              'Novembre',
-              'Décembre',
-            ].map((mois) => (
-              <SelectItem key={mois} value={mois}>
-                {mois}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <div className="w-full lg:max-w-[200px] lg:w-[200px]  flex flex-col gap-2">
+          <span className="text-sm font-medium">Mois</span>
+          <Select
+            onValueChange={(value) => {
+              table
+                .getColumn('mois')
+                ?.setFilterValue(value === 'all' ? undefined : value)
+            }}
+            value={
+              (table.getColumn('mois')?.getFilterValue() as string) ?? 'all'
+            }>
+            <SelectTrigger className="w-full bg-white">
+              <SelectValue placeholder="Filtrer par mois" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tous</SelectItem>
+              {[
+                'Janvier',
+                'Février',
+                'Mars',
+                'Avril',
+                'Mai',
+                'Juin',
+                'Juillet',
+                'Aout',
+                'Septembre',
+                'Octobre',
+                'Novembre',
+                'Décembre',
+              ].map((mois) => (
+                <SelectItem key={mois} value={mois}>
+                  {mois}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* Filtrer par année */}
+        <div className="w-full lg:max-w-[200px] lg:w-[200px]  flex flex-col gap-2">
+          <span className="text-sm font-medium">Année</span>
+          <Select
+            onValueChange={(value) => {
+              table
+                .getColumn('annee')
+                ?.setFilterValue(value === 'all' ? undefined : value)
+            }}
+            value={
+              table.getColumn('annee')?.getFilterValue() !== undefined
+                ? String(table.getColumn('annee')?.getFilterValue())
+                : 'all'
+            }>
+            <SelectTrigger className="w-full bg-white">
+              <SelectValue placeholder="Filtrer par année" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Toutes</SelectItem>
+              {yearRange.map((year) => (
+                <SelectItem key={year} value={year}>
+                  {year}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
       {/* table */}
       {isLoading ? (
-        <>Loading...</>
+        <div className="flex bg-white items-center justify-center w-full h-80 rounded border">
+          <LoadingSpinner />
+        </div>
       ) : (
-        <div className="rounded-md border bg-white">
+        <div className="flex flex-col items-center justify-between rounded-md border bg-white min-h-[350px] ">
           <Table>
             {/* Header */}
             <TableHeader>

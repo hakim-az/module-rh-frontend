@@ -11,9 +11,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import SendRequestModal from './componsnts/UpdateAbsenceModel'
 import type { IAbsence } from '../Home/components/AbsencesTable'
 import axios from 'axios'
-import { downloadFile } from '@/lib/downloadFile'
-import { Download } from 'lucide-react'
-import PDFIcon from '@/assets/icons/pdf-icon.png'
+import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
+import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 
 export interface IAbsenceForm {
   type: string
@@ -32,6 +31,8 @@ export default function Update() {
   const [justificatif, setJustificatif] = useState<File>()
   const [activeSendRequestModal, setActiveSendRequestModal] =
     useState<boolean>(false)
+  const [openPdfModal, setOpenPdfModal] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
   // react hook form
   const methods = useForm<IAbsenceForm>({
@@ -84,20 +85,6 @@ export default function Update() {
       console.log(error)
     }
   }, [absenceId])
-
-  // donload file
-  const handleDownload = useCallback(async () => {
-    if (!absenceDetails?.fichierJustificatifPdf) return
-
-    setIsLoading(true)
-    try {
-      await downloadFile(absenceDetails.fichierJustificatifPdf)
-    } catch (err) {
-      console.log(err)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [absenceDetails?.fichierJustificatifPdf])
 
   useEffect(() => {
     if (absenceDetails) {
@@ -185,21 +172,17 @@ export default function Update() {
                 />
               </div>
               {/* justificatif */}
-              {absenceDetails?.fichierJustificatifPdf !== 'undefined' && (
-                <div className="border h-[calc(100%-36px)] flex flex-col items-center justify-between p-4 border-gray-300 rounded shadow-2xs">
-                  <div className="flex items-center gap-4">
-                    <img src={PDFIcon} alt="pdf-icon" className="w-40" />
-                  </div>
-                  <div className="flex items-center justify-between w-full p-4">
-                    <span className="font-semibold">Justificatif</span>
-                    <Download
-                      onClick={() => handleDownload()}
-                      className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
-                      size={32}
-                    />
-                  </div>
-                </div>
-              )}
+              <DownloadJustificatif
+                file={absenceDetails?.fichierJustificatifPdf}
+                setFileUrl={setFileUrl}
+                setOpenPdfModal={setOpenPdfModal}
+              />
+
+              <DisplayPdf
+                openModal={openPdfModal}
+                setOpenModal={setOpenPdfModal}
+                fileUrl={fileUrl}
+              />
               <FileUploader
                 title="Pièce justificatif"
                 name="justificatif"

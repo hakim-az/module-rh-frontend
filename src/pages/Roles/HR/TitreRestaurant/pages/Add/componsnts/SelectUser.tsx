@@ -27,6 +27,7 @@ interface PropsType {
   clearErrors: UseFormClearErrors<IRestauForm>
   isSubmitting: boolean
   setError: UseFormSetError<IRestauForm>
+  setUserId: (val: string) => void
 }
 
 export default function SelectUser({
@@ -35,6 +36,7 @@ export default function SelectUser({
   clearErrors,
   isSubmitting,
   setError,
+  setUserId,
 }: PropsType) {
   const [allUsers, setAllUsers] = useState<ILightUser[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -71,6 +73,7 @@ export default function SelectUser({
   const handleChange = (selectedOption: SingleValue<IOption>) => {
     if (selectedOption) {
       setValue('user_id', selectedOption.value)
+      setUserId(selectedOption.value)
       setSelectedId(selectedOption.value)
       clearErrors('user_id')
     } else {

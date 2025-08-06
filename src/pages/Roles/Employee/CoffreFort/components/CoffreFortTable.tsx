@@ -33,6 +33,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import axios from 'axios'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
+import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 
 export type ICoffreFort = {
   id: string
@@ -144,9 +145,9 @@ export default function CoffreFortTable() {
   return (
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* search */}
-      <div className="flex flex-wrap items-end gap-4 py-4 mb-5">
+      <div className="w-full flex flex-wrap items-end gap-4 py-4 mb-5">
         {/* Filtrer par typeBulletin */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:max-w-[200px] lg:w-[200px] flex flex-col gap-2">
           <span className="text-sm font-medium">Type</span>
           <Select
             onValueChange={(value) => {
@@ -158,7 +159,7 @@ export default function CoffreFortTable() {
               (table.getColumn('typeBulletin')?.getFilterValue() as string) ??
               'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectTrigger className="w-full h-10 bg-white">
               <SelectValue placeholder="Filtrer par type" />
             </SelectTrigger>
             <SelectContent>
@@ -173,7 +174,7 @@ export default function CoffreFortTable() {
         </div>
 
         {/* Filtrer par mois */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:max-w-[200px] lg:w-[200px]  flex flex-col gap-2">
           <span className="text-sm font-medium">Mois</span>
           <Select
             onValueChange={(value) => {
@@ -184,7 +185,7 @@ export default function CoffreFortTable() {
             value={
               (table.getColumn('mois')?.getFilterValue() as string) ?? 'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Filtrer par mois" />
             </SelectTrigger>
             <SelectContent>
@@ -197,7 +198,7 @@ export default function CoffreFortTable() {
                 'Mai',
                 'Juin',
                 'Juillet',
-                'Août',
+                'Aout',
                 'Septembre',
                 'Octobre',
                 'Novembre',
@@ -212,7 +213,7 @@ export default function CoffreFortTable() {
         </div>
 
         {/* Filtrer par année */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:max-w-[200px] lg:w-[200px]  flex flex-col gap-2">
           <span className="text-sm font-medium">Année</span>
           <Select
             onValueChange={(value) => {
@@ -225,7 +226,7 @@ export default function CoffreFortTable() {
                 ? String(table.getColumn('annee')?.getFilterValue())
                 : 'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Filtrer par année" />
             </SelectTrigger>
             <SelectContent>
@@ -242,9 +243,11 @@ export default function CoffreFortTable() {
 
       {/* table */}
       {isLoading ? (
-        <>Loading...</>
+        <div className="flex bg-white items-center justify-center w-full h-80 rounded border">
+          <LoadingSpinner />
+        </div>
       ) : (
-        <div className="rounded-md border bg-white">
+        <div className="flex flex-col items-center justify-between rounded-md border bg-white min-h-[350px] ">
           <Table>
             {/* Header */}
             <TableHeader>

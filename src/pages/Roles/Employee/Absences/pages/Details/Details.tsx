@@ -8,6 +8,7 @@ import type { IAbsence } from '../Home/components/AbsencesTable'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 import { formatDateToLabel } from '@/lib/formatDate'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
+import DisplayTextarea from '@/components/DisplayTextarea/DisplayTextarea'
 
 export default function Details() {
   const { absenceId } = useParams()
@@ -65,7 +66,7 @@ export default function Details() {
     return (
       <>
         <PagePath />
-        <div className="w-11/12 mt-10 max-w-[1280px] flex items-center justify-center mx-auto h-80 bg-white border border-gray-300 rounded-lg">
+        <div className="w-11/12 mt-10 max-w-[1200px] flex items-center justify-center mx-auto h-80 bg-white border border-gray-300 rounded-lg">
           <LoadingSpinner />
         </div>
       </>
@@ -77,7 +78,7 @@ export default function Details() {
       <PagePath />
       {renderStatus()}
 
-      <div className="w-11/12 max-w-[1280px] mb-20 mt-5 mx-auto grid grid-cols-1 bg-white items-end lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md">
+      <div className="w-11/12 max-w-[1200px] mb-20 mt-5 mx-auto grid grid-cols-1 bg-white items-end lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md">
         <div className="col-span-1 lg:col-span-2">
           <DisplayInput
             label="Type d'absence"
@@ -95,8 +96,8 @@ export default function Details() {
           value={formatDateToLabel(absenceDetails?.dateFin) || '-'}
         />
 
-        <div className="lg:col-span-2">
-          <DisplayInput label="Note" value={absenceDetails?.note || '-'} />
+        <div className="col-span-1 lg:col-span-2">
+          <DisplayTextarea label="Note" value={absenceDetails?.note || '-'} />
         </div>
 
         <DownloadJustificatif

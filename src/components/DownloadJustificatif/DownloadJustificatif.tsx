@@ -34,7 +34,7 @@ export default function DownloadJustificatif({
   return (
     <>
       {file !== 'undefined' && (
-        <div className="flex flex-col gap-8 items-center p-5 justify-center border border-gray-300 rounded-md">
+        <div className="flex flex-col gap-8 items-center p-7 justify-center border border-gray-300 rounded-md">
           <img src={PdfIcon} alt="pdf-icon" className="w-40" />
           <div className="flex items-center justify-between w-full">
             <div className="flex flex-col">

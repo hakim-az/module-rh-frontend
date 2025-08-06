@@ -1,7 +1,15 @@
 import { downloadFile } from '@/lib/downloadFile'
-import { Download, Eye } from 'lucide-react'
+import { Download, Eye, MoreHorizontal } from 'lucide-react'
 import { useCallback, useState } from 'react'
 import { usePdfModal } from './PdfModalContext'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { Button } from '@/components/ui/button'
 
 interface ActionsCellProps {
   fileName: string
@@ -30,24 +38,39 @@ export default function ActionsCell({ fileName }: ActionsCellProps) {
 
   return (
     <div className="flex items-center justify-center">
-      <Eye
-        onClick={() => {
-          setOpenPdfModal(true)
-          setFileUrl(fileName)
-        }}
-        className="hover:text-blue-500 cursor-pointer  transition-all ease-in-out delay-75"
-      />
-      <Eye className="text-transparent" />
-      {isLoadingFile ? (
-        <>Loading...</>
-      ) : (
-        <Download
-          onClick={() => {
-            handleDownload(fileName)
-          }}
-          className="hover:text-blue-500 cursor-pointer  transition-all ease-in-out delay-75"
-        />
-      )}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <span className="sr-only">Open menu</span>
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem
+            className="cursor-pointer group flex items-center gap-2 py-2"
+            onClick={() => {
+              setOpenPdfModal(true)
+              setFileUrl(fileName)
+            }}>
+            <Eye className="w-4 h-4 group-hover:text-blue-500" />
+            <span className="group-hover:text-blue-500">
+              Détails du justificatif
+            </span>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            className="cursor-pointer group flex items-center gap-2 py-2"
+            disabled={isLoadingFile}
+            onClick={() => {
+              handleDownload(fileName)
+            }}>
+            <Download className="w-4 h-4 group-hover:text-blue-500" />
+            <span className="group-hover:text-blue-500">
+              Télécharger le justificatif
+            </span>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   )
 }

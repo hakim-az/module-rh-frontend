@@ -79,7 +79,30 @@ export const columns: ColumnDef<IAbsence>[] = [
       )
     },
   },
+  // total
+  {
+    accessorKey: 'total',
+    header: 'Nbr des jours',
+    cell: ({ row }) => {
+      return (
+        <span className="text-sm text-black font-medium">
+          {row.getValue('total')}
+        </span>
+      )
+    },
+    // 🔥 Ajout du filtre par plage de dates
+    filterFn: (row, columnId, filterValue) => {
+      const value = row.getValue(columnId) as string
+      const date = new Date(value)
+      const from = filterValue?.from ? new Date(filterValue.from) : null
+      const to = filterValue?.to ? new Date(filterValue.to) : null
 
+      if (from && to) return date >= from && date <= to
+      if (from) return date >= from
+      if (to) return date <= to
+      return true
+    },
+  },
   // statut
   {
     accessorKey: 'statut',
