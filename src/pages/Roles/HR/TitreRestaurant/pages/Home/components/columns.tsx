@@ -6,7 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { CircleUserRound, Info } from 'lucide-react'
+import { CircleUserRound, MessageCircleMoreIcon } from 'lucide-react'
 
 export const columns: ColumnDef<ITitreRestau>[] = [
   // id
@@ -88,11 +88,9 @@ export const columns: ColumnDef<ITitreRestau>[] = [
     header: 'Nbr de jours ouvrés',
     cell: ({ row }) => {
       return (
-        <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {row.getValue('nbrJours')}
-          </span>
-        </div>
+        <span className="text-sm font-medium text-black">
+          {row.getValue('nbrJours')}
+        </span>
       )
     },
   },
@@ -102,12 +100,24 @@ export const columns: ColumnDef<ITitreRestau>[] = [
     header: 'Note',
     cell: ({ row }) => {
       return (
-        <HoverCard>
-          <HoverCardTrigger className="flex cursor-pointer font-medium items-center justify-start gap-2">
-            Note <Info className="text-yellow-500" size={18} />
-          </HoverCardTrigger>
-          <HoverCardContent>{row.getValue('note')}</HoverCardContent>
-        </HoverCard>
+        <>
+          {row.getValue('note') === '' ? (
+            <MessageCircleMoreIcon
+              className="opacity-20 cursor-not-allowed"
+              size={24}
+            />
+          ) : (
+            <HoverCard>
+              <HoverCardTrigger className="flex cursor-pointer font-medium items-center justify-start gap-3">
+                <MessageCircleMoreIcon
+                  className="hover:text-blue-500"
+                  size={24}
+                />
+              </HoverCardTrigger>
+              <HoverCardContent>{row.getValue('note')}</HoverCardContent>
+            </HoverCard>
+          )}
+        </>
       )
     },
   },

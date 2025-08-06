@@ -10,6 +10,8 @@ import type { IAbsence } from '../Home/components/AbsencesTable'
 import axios from 'axios'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
+import DisplayTextarea from '@/components/DisplayTextarea/DisplayTextarea'
+import { formatDateToLabel } from '@/lib/formatDate'
 
 export default function Details() {
   const [activeApprouverAbsenceModal, setActiveApprouverAbsenceModal] =
@@ -62,7 +64,7 @@ export default function Details() {
             Refuser
           </span>
           <span className="inline-block w-full h-36 overflow-y-scroll no-scrollbar p-4 rounded border border-red-500 bg-white">
-            Motif de refus
+            {absenceDetails.motifDeRefus}
           </span>
         </div>
       )}
@@ -88,7 +90,7 @@ export default function Details() {
             label="Date de début"
             value={
               absenceDetails?.dateDebut
-                ? absenceDetails?.dateDebut.slice(0, 10)
+                ? formatDateToLabel(absenceDetails?.dateDebut)
                 : '-'
             }
           />
@@ -97,13 +99,13 @@ export default function Details() {
             label="Date de fin"
             value={
               absenceDetails?.dateFin
-                ? absenceDetails?.dateFin.slice(0, 10)
+                ? formatDateToLabel(absenceDetails?.dateFin)
                 : '-'
             }
           />
           {/* Note */}
           <div className="col-span-2">
-            <DisplayInput
+            <DisplayTextarea
               label="Note"
               value={absenceDetails?.note ? absenceDetails?.note : '-'}
             />

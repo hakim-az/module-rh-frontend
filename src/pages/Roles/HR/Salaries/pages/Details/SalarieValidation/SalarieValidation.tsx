@@ -1,9 +1,4 @@
 import { useState } from 'react'
-
-// components
-import CustomModal from '@/components/Headers/CustomModal/CustomModal'
-import IntegrateSalarieModel from '../components/Modals/IntegrateSalarieModel/IntegrateSalarieModel'
-
 import PagePath from '@/components/PagePath/PagePath'
 import StepperDisplay from '../components/StepperDisplay/StepperDisplay'
 import InfoPersoDispalyForm from '@/components/DisplayForms/InfoPersoDisplayForm/InfoPersoDisplayForm'
@@ -26,8 +21,6 @@ export default function SalarieValidation({ statusLabel }: IProps) {
   const { salarieDetails, isLoadingSalarieDetails } = useSalarieDetailsContext()
   // states
   const [currentStepIndex, setCurrentStepIndex] = useState(0)
-  const [activeValidateSalarieModal, setActiveValidateSalarieModal] =
-    useState<boolean>(false)
 
   // consts
   const labels = [
@@ -76,17 +69,6 @@ export default function SalarieValidation({ statusLabel }: IProps) {
               details={salarieDetails}
               loading={isLoadingSalarieDetails}
             />
-            {/* validation button */}
-            {salarieDetails?.statut === 'contract-signed' && (
-              <div className="flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={() => setActiveValidateSalarieModal(true)}
-                  className="mb-5 mr-5 flex items-center justify-center gap-3 hover:scale-110 transition-all ease delay-75 cursor-pointer bg-green-500 text-white px-8 py-2 rounded">
-                  Approuver le salarié
-                </button>
-              </div>
-            )}
           </section>
         )
       default:
@@ -108,13 +90,6 @@ export default function SalarieValidation({ statusLabel }: IProps) {
 
         <div className="w-full mx-auto py-20">{renderForm()}</div>
       </div>
-      <CustomModal
-        openModal={activeValidateSalarieModal}
-        setOpenModal={setActiveValidateSalarieModal}>
-        <IntegrateSalarieModel
-          setActiveValidateSalarieModal={setActiveValidateSalarieModal}
-        />
-      </CustomModal>
     </>
   )
 }

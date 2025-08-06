@@ -118,9 +118,9 @@ export default function TitreRestaurantTable() {
   return (
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* search */}
-      <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
+      <div className="flex flex-wrap items-end gap-4 py-4 mb-5">
         {/* Input de recherche globale */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:w-[250px] flex flex-col gap-2">
           <span className="text-sm font-medium">Salarié</span>
           <Input
             placeholder="Recherche par nom et prénom ..."
@@ -128,12 +128,12 @@ export default function TitreRestaurantTable() {
             onChange={(event) =>
               table.getColumn('user')?.setFilterValue(event.target.value)
             }
-            className="min-w-[250px] h-11 bg-white"
+            className="w-full h-11 bg-white"
           />
         </div>
 
         {/* Filtrer par mois */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:w-[180px] flex flex-col gap-2">
           <span className="text-sm font-medium">Mois</span>
           <Select
             onValueChange={(value) => {
@@ -144,7 +144,7 @@ export default function TitreRestaurantTable() {
             value={
               (table.getColumn('mois')?.getFilterValue() as string) ?? 'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Filtrer par mois" />
             </SelectTrigger>
             <SelectContent>
@@ -172,7 +172,7 @@ export default function TitreRestaurantTable() {
         </div>
 
         {/* Filtrer par année */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:w-[180px] flex flex-col gap-2">
           <span className="text-sm font-medium">Année</span>
           <Select
             onValueChange={(value) => {
@@ -185,7 +185,7 @@ export default function TitreRestaurantTable() {
                 ? String(table.getColumn('annee')?.getFilterValue())
                 : 'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Filtrer par année" />
             </SelectTrigger>
             <SelectContent>
@@ -204,7 +204,7 @@ export default function TitreRestaurantTable() {
           variant="default"
           size={'lg'}
           onClick={() => navigate('ajouter-un-titre-restaurant')}
-          className="ml-auto">
+          className="ml-auto w-full lg:w-[200px] mt-5 lg:mt-0">
           Ajouter un titre restaurant
         </Button>
       </div>
@@ -213,7 +213,7 @@ export default function TitreRestaurantTable() {
       {isLoading ? (
         <>Loading...</>
       ) : (
-        <div className="rounded-md border bg-white">
+        <div className="rounded-md border bg-white min-w-[350px] flex flex-col items-center justify-between">
           <Table>
             {/* Header */}
             <TableHeader>

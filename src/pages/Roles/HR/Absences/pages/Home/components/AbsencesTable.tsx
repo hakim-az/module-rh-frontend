@@ -44,6 +44,7 @@ export interface IAbsence {
   statut: string
   motifDeRefus: string
   fichierJustificatifPdf: string
+  total: number
   createdAt: string
   updatedAt: string
   user: {
@@ -114,7 +115,7 @@ export default function AbsencesTable() {
       {/* search */}
       <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
         {/* Input de recherche globale */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:min-w-[250px] lg:w-[250px] flex flex-col gap-2">
           <span className="text-sm font-medium">Salarié</span>
           <Input
             placeholder="Recherche par nom et prenom ..."
@@ -122,11 +123,11 @@ export default function AbsencesTable() {
             onChange={(event) =>
               table.getColumn('user')?.setFilterValue(event.target.value)
             }
-            className="min-w-[250px] h-11 bg-white"
+            className="w-full h-11 bg-white"
           />
         </div>
         {/* Filtrer par statut */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:min-w-[250px] lg:w-[250px]  flex flex-col gap-2">
           <span className="text-sm font-medium">Statut d'absence</span>
           <Select
             onValueChange={(value) =>
@@ -137,7 +138,7 @@ export default function AbsencesTable() {
             value={
               (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectTrigger className="w-full h-11 bg-white">
               <SelectValue placeholder="Filtrer par statut" />
             </SelectTrigger>
             <SelectContent>
@@ -148,7 +149,7 @@ export default function AbsencesTable() {
             </SelectContent>
           </Select>
         </div>
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:min-w-[250px] lg:w-[250px]  flex flex-col gap-2">
           <span className="text-sm font-medium">Date de début</span>
           <Input
             type="date"
@@ -158,11 +159,11 @@ export default function AbsencesTable() {
               setDateRange(updated)
               table.getColumn('dateDebut')?.setFilterValue(updated)
             }}
-            className="max-w-[200px] w-[200px] h-11 bg-white"
+            className="w-full h-11 bg-white"
           />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:min-w-[250px] lg:w-[250px]  flex flex-col gap-2">
           <span className="text-sm font-medium">Date de fin</span>
           <Input
             type="date"
@@ -172,7 +173,7 @@ export default function AbsencesTable() {
               setDateRange(updated)
               table.getColumn('dateDebut')?.setFilterValue(updated)
             }}
-            className="max-w-[200px] w-[200px] h-11 bg-white"
+            className="w-full h-11 bg-white"
           />
         </div>
       </div>
@@ -180,7 +181,7 @@ export default function AbsencesTable() {
       {isLoading ? (
         <>Loading...</>
       ) : (
-        <div className="rounded-md border bg-white">
+        <div className="rounded-md border bg-white min-h-[350px] flex flex-col items-center justify-between">
           <Table>
             {/* Header */}
             <TableHeader>

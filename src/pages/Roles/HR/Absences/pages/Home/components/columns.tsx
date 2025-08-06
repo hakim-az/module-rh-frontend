@@ -116,7 +116,18 @@ export const columns: ColumnDef<IAbsence>[] = [
       )
     },
   },
-
+  // nombre des jours
+  {
+    accessorKey: 'total',
+    header: 'Nbr des jours',
+    cell: ({ row }) => {
+      return (
+        <span className="text-sm font-medium text-black">
+          {row.getValue('total')}
+        </span>
+      )
+    },
+  },
   // statut
   {
     accessorKey: 'statut',

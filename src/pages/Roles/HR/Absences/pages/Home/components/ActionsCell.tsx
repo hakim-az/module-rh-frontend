@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal } from 'lucide-react'
+import { MoreHorizontal, InfoIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 interface ActionsCellProps {
@@ -28,8 +28,11 @@ export default function ActionsCell({ id }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => navigate(`details/${id}`)}>
-            Détails absence
+          <DropdownMenuItem
+            onClick={() => navigate(`details/${id}`)}
+            className="group cursor-pointer">
+            <InfoIcon className="group-hover:text-blue-500 " />
+            <span className="group-hover:text-blue-500">Détails absence</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

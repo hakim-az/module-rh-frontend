@@ -10,7 +10,6 @@ import {
   useReactTable,
   type VisibilityState,
 } from '@tanstack/react-table'
-import { ChevronDown } from 'lucide-react'
 import { columns } from './columns'
 
 import { Button } from '@/components/ui/button'
@@ -18,7 +17,6 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import {
@@ -99,7 +97,7 @@ export default function SalarieTable() {
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* search */}
       <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:min-w-[250px] lg:w-[250px] flex flex-col gap-2">
           <span className="text-sm font-medium">Salarié</span>
           <Input
             placeholder="Recherche par nom et prénom ..."
@@ -109,11 +107,11 @@ export default function SalarieTable() {
             onChange={(event) =>
               table.getColumn('salarie')?.setFilterValue(event.target.value)
             }
-            className="max-w-sm h-11 min-w-[250px] bg-white"
+            className="w-full h-10 bg-white"
           />
         </div>
         {/* Filtrer par statut */}
-        <div className="flex flex-col gap-2">
+        <div className="w-full lg:min-w-[250px] lg:w-[250px]  flex flex-col gap-2">
           <span className="text-sm font-medium">Statut</span>
           <Select
             onValueChange={(value) => {
@@ -125,12 +123,12 @@ export default function SalarieTable() {
             value={
               (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] min-h-11 bg-white">
+            <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Filtrer par statut" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Tous</SelectItem>
-              <SelectItem value="user-created">Compte créé</SelectItem>
+              <SelectItem value="user-registred">Compte créé</SelectItem>
               <SelectItem value="profile-completed">
                 Formulaire complété
               </SelectItem>
@@ -142,11 +140,11 @@ export default function SalarieTable() {
           </Select>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+          {/* <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto bg-white h-11">
               Columns <ChevronDown />
             </Button>
-          </DropdownMenuTrigger>
+          </DropdownMenuTrigger> */}
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
@@ -171,7 +169,7 @@ export default function SalarieTable() {
       {loading ? (
         <>Loading....</>
       ) : (
-        <div className="rounded-md border bg-white">
+        <div className="rounded-md border bg-white min-h-[350px] flex flex-col items-center justify-between">
           <Table>
             {/* Header */}
             <TableHeader>

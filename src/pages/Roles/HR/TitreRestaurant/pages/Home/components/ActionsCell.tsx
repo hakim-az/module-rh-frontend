@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal } from 'lucide-react'
+import { InfoIcon, MoreHorizontal, SquarePenIcon } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 interface ActionsCellProps {
@@ -27,11 +27,21 @@ export default function ActionsCell({ id }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => navigate(`details/${id}`)}>
-            Détails titre restau
+          <DropdownMenuItem
+            className="cursor-pointer group flex items-center gap-2 py-3"
+            onClick={() => navigate(`details/${id}`)}>
+            <InfoIcon className="w-4 h-4 group-hover:text-blue-500" />
+            <span className="group-hover:text-blue-500">
+              Détails titre restau
+            </span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => navigate(`modifier-un-titre/${id}`)}>
-            Modifier titre restau
+          <DropdownMenuItem
+            className="cursor-pointer group flex items-center gap-2 py-3"
+            onClick={() => navigate(`modifier-un-titre/${id}`)}>
+            <SquarePenIcon className="w-4 h-4 group-hover:text-blue-500" />
+            <span className="group-hover:text-blue-500">
+              Modifier titre restau
+            </span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
