@@ -43,7 +43,7 @@ function Header({ nameRoute }: PropsType) {
           ' bg-white': selectedLayout,
         }
       )}>
-      <div className="flex h-[80px] items-center justify-between px-10">
+      <div className="flex h-[80px] items-center justify-between px-6">
         <div className="flex items-center">
           <Link
             to="/"

@@ -108,7 +108,8 @@ export default function AbsencesTable() {
     <div className="w-11/12 mx-auto max-w-[1280px] pb-20">
       {/* Filters */}
       <div className="flex flex-wrap items-end gap-4 py-4 mb-5">
-        <div className="flex flex-col gap-2">
+        {/* statut */}
+        <div className="flex flex-col gap-2 w-full md:max-w-[180px] md:w-[180px]">
           <span className="text-sm font-medium">Statut d'absence</span>
           <Select
             onValueChange={(value) =>
@@ -119,7 +120,7 @@ export default function AbsencesTable() {
             value={
               (table.getColumn('statut')?.getFilterValue() as string) ?? 'all'
             }>
-            <SelectTrigger className="max-w-[200px] w-[200px] h-11 bg-white">
+            <SelectTrigger className="w-full bg-white">
               <SelectValue placeholder="Filtrer par statut" />
             </SelectTrigger>
             <SelectContent>
@@ -130,8 +131,8 @@ export default function AbsencesTable() {
             </SelectContent>
           </Select>
         </div>
-
-        <div className="flex flex-col gap-2">
+        {/* date de début */}
+        <div className="flex flex-col gap-2 w-full md:max-w-[180px] md:w-[180px]">
           <span className="text-sm font-medium">Date de début</span>
           <Input
             type="date"
@@ -141,11 +142,11 @@ export default function AbsencesTable() {
               setDateRange(updated)
               table.getColumn('dateDebut')?.setFilterValue(updated)
             }}
-            className="max-w-[200px] w-[200px] h-11 bg-white"
+            className="h-10 bg-white"
           />
         </div>
-
-        <div className="flex flex-col gap-2">
+        {/* date de fin */}
+        <div className="flex flex-col gap-2 w-full md:max-w-[180px] md:w-[180px]">
           <span className="text-sm font-medium">Date de fin</span>
           <Input
             type="date"
@@ -155,28 +156,28 @@ export default function AbsencesTable() {
               setDateRange(updated)
               table.getColumn('dateDebut')?.setFilterValue(updated)
             }}
-            className="max-w-[200px] w-[200px] h-11 bg-white"
+            className="h-10 bg-white"
           />
         </div>
-
+        {/* action btn */}
         <Button
           type="button"
           variant="default"
           size="lg"
           onClick={() => navigate('demander-une-absence')}
-          className="ml-auto">
+          className="ml-auto w-full md:max-w-[200px] md:w-[200px] mt-5 lg:mt-0 ">
           Demander une absence
         </Button>
       </div>
 
       {/* Table */}
-      <div className="rounded-md border bg-white">
+      <div className="rounded-md border bg-white ">
         {isLoading ? (
           <div className="flex items-center justify-center w-full h-80">
             <LoadingSpinner />
           </div>
         ) : (
-          <>
+          <div className="h-full min-h-[350px] flex flex-col items-center justify-between">
             <Table>
               {/* Header */}
               <TableHeader>
@@ -304,7 +305,7 @@ export default function AbsencesTable() {
             ) : (
               <></>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

@@ -9,7 +9,7 @@ function MenuToggle({ toggle }: PropsType) {
     <button
       type="button"
       onClick={toggle}
-      className="pointer-events-auto absolute right-4 top-[28px] z-30"
+      className="pointer-events-auto absolute right-6 top-[28px] z-30"
       aria-label="toggle button">
       <svg width="24" height="24" viewBox="0 0 23 23">
         <motion.path
