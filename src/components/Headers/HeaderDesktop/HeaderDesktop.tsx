@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import { CircleUserRound } from 'lucide-react'
+import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
 
 interface PropsType {
   nameRoute: string
@@ -18,6 +19,7 @@ interface PropsType {
 
 function Header({ nameRoute }: PropsType) {
   const { userDetails } = useDashboardContext()
+  const { logout } = useAuth()
   const scrolled = useScroll(5)
   const location = useLocation()
 
@@ -27,12 +29,6 @@ function Header({ nameRoute }: PropsType) {
   const beforeLocation = locationArr[locationArr.length - 2]
     .split('-')
     .join(' ')
-
-  // handleLogout
-  const handleLogout = () => {
-    localStorage.removeItem('userRole')
-    window.location.href = 'http://localhost:5173/'
-  }
 
   return (
     <div
@@ -76,7 +72,7 @@ function Header({ nameRoute }: PropsType) {
               <DropdownMenuContent className="p-3 mt-2 mr-6">
                 {/* Logout */}
                 <DropdownMenuItem
-                  onClick={() => handleLogout()}
+                  onClick={logout}
                   className="flex items-center cursor-pointer gap-x-5 font-robotoMedium text-primaryblack">
                   <ArrowLeftEndOnRectangleIcon className="w-5" /> Se déconnecter
                 </DropdownMenuItem>

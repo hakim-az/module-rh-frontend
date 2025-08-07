@@ -57,22 +57,24 @@ export default function InfoPersoDispalyForm({ details, loading }: IProps) {
             {/* Pays de naissance */}
             <DisplayInput
               label="Pays de naissance"
-              value={getCountryLabel(details?.naissance.paysDeNaissance) ?? '-'}
+              value={
+                getCountryLabel(details?.naissance?.paysDeNaissance) ?? '-'
+              }
             />
             {/* Départmemnt de naissance */}
             <DisplayInput
               label="Départmemnt de naissance"
-              value={details?.naissance.departementDeNaissance ?? '-'}
+              value={details?.naissance?.departementDeNaissance ?? '-'}
             />
             {/* commune de naissance */}
             <DisplayInput
               label="commune de naissance"
-              value={details?.naissance.communeDeNaissance ?? '-'}
+              value={details?.naissance?.communeDeNaissance ?? '-'}
             />
             {/* Pays de nationalité */}
             <DisplayInput
               label="Pays de nationalité"
-              value={getCountryLabel(details?.naissance.paysDeNaissance)}
+              value={getCountryLabel(details?.naissance?.paysDeNaissance)}
             />
           </div>
           {/* coordonnées & adresse */}
@@ -107,24 +109,27 @@ export default function InfoPersoDispalyForm({ details, loading }: IProps) {
             {/* Pays */}
             <DisplayInput
               label="Pays"
-              value={getCountryLabel(details?.adresse.pays)}
+              value={getCountryLabel(details?.adresse?.pays)}
             />
             {/* Code postal */}
             <DisplayInput
               label="Code postal"
-              value={details?.adresse.codePostal ?? '-'}
+              value={details?.adresse?.codePostal ?? '-'}
             />
             {/* Ville */}
-            <DisplayInput label="Ville" value={details?.adresse.ville ?? '-'} />
+            <DisplayInput
+              label="Ville"
+              value={details?.adresse?.ville ?? '-'}
+            />
             {/* Adresse */}
             <DisplayInput
               label="Adresse"
-              value={details?.adresse.adresse ?? '-'}
+              value={details?.adresse?.adresse ?? '-'}
             />
             {/* Complément d'adresse */}
             <DisplayInput
               label="Complément d'adresse"
-              value={details?.adresse.complementAdresse ?? '-'}
+              value={details?.adresse?.complementAdresse ?? '-'}
             />
           </div>
         </section>
