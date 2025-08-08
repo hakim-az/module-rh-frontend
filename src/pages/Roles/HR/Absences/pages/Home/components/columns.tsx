@@ -1,8 +1,8 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import type { IAbsence } from './AbsencesTable'
 import ActionsCell from './ActionsCell'
 import { formatDateToLabel } from '@/lib/formatDate'
 import { CircleUserRound } from 'lucide-react'
+import type { IAbsence } from '@/types/tables/rh'
 
 export const columns: ColumnDef<IAbsence>[] = [
   // id

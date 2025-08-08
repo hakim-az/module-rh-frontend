@@ -74,112 +74,6 @@ class KeycloakService {
     return this.adminToken
   }
 
-  // async signup(
-  //   userData: Omit<
-  //     SignupRequest,
-  //     | 'createdTimestamp'
-  //     | 'enabled'
-  //     | 'totp'
-  //     | 'emailVerified'
-  //     | 'disableableCredentialTypes'
-  //     | 'requiredActions'
-  //     | 'notBefore'
-  //     | 'access'
-  //     | 'realmRoles'
-  //   > & {
-  //     password: string
-  //     telephonePersonnel: string
-  //     avatar?: string
-  //     role?: string
-  //     statut?: string
-  //   }
-  // ): Promise<void> {
-  //   const adminToken = await this.getAdminToken()
-
-  //   const signupData: SignupRequest = {
-  //     createdTimestamp: Date.now(),
-  //     username: userData.username,
-  //     enabled: true,
-  //     totp: false,
-  //     emailVerified: true,
-  //     firstName: userData.firstName,
-  //     lastName: userData.lastName,
-  //     email: userData.email,
-  //     disableableCredentialTypes: [],
-  //     requiredActions: [],
-  //     notBefore: 0,
-  //     access: {
-  //       manageGroupMembership: true,
-  //       view: true,
-  //       mapRoles: true,
-  //       impersonate: true,
-  //       manage: true,
-  //     },
-  //     realmRoles: ['mb-user'],
-  //     credentials: [
-  //       {
-  //         type: 'password',
-  //         value: userData.password,
-  //         temporary: false,
-  //       },
-  //     ],
-  //   }
-
-  //   // 1. Create Keycloak user
-  //   const kcResponse = await fetch(
-  //     `${KEYCLOAK_BASE_URL}/admin/realms/${REALM}/users`,
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${adminToken}`,
-  //       },
-  //       body: JSON.stringify(signupData),
-  //     }
-  //   )
-
-  //   if (!kcResponse.ok) {
-  //     const error = await kcResponse
-  //       .json()
-  //       .catch(() => ({ error: 'Signup failed' }))
-  //     throw new Error(
-  //       error.errorMessage || error.error || 'Failed to create user'
-  //     )
-  //   }
-
-  //   // 2. Extract Keycloak user ID from Location header
-  //   const locationHeader = kcResponse.headers.get('Location')
-  //   if (!locationHeader) throw new Error('Keycloak did not return user ID')
-  //   const keycloakId = locationHeader.split('/').pop()
-
-  //   // 3. Register user in your database
-  //   const formData = new FormData()
-  //   formData.append('id', keycloakId!)
-  //   formData.append('role', userData.role || 'employee')
-  //   formData.append('statut', userData.statut || 'user-registred')
-  //   if (keycloakId) {
-  //     formData.append('avatar', '')
-  //   }
-  //   formData.append('emailPersonnel', userData.email)
-  //   formData.append('nomDeNaissance', userData.lastName)
-  //   formData.append('password', userData.password)
-  //   formData.append('prenom', userData.firstName)
-  //   formData.append('telephonePersonnel', '0777777777')
-
-  //   const apiResponse = await fetch(
-  //     `${import.meta.env.VITE_API_BASE_URL}/users`,
-  //     {
-  //       method: 'POST',
-  //       body: formData,
-  //     }
-  //   )
-
-  //   if (!apiResponse.ok) {
-  //     const errorText = await apiResponse.text()
-  //     throw new Error(`Failed to create user in app: ${errorText}`)
-  //   }
-  // }
-
   async signup(
     userData: Omit<
       SignupRequest,
@@ -221,7 +115,7 @@ class KeycloakService {
         impersonate: true,
         manage: true,
       },
-      realmRoles: ['mb-user'],
+      realmRoles: ['EMPLOYEE'],
       credentials: [
         {
           type: 'password',
@@ -262,9 +156,9 @@ class KeycloakService {
     try {
       const formData = new FormData()
       formData.append('id', keycloakId!)
-      formData.append('role', userData.role || 'employee')
-      formData.append('statut', userData.statut || 'user-registred')
-      formData.append('avatar', userData.avatar || '')
+      formData.append('role', 'employee')
+      formData.append('statut', 'user-registred')
+      formData.append('avatar', '')
       formData.append('emailPersonnel', userData.email)
       formData.append('nomDeNaissance', userData.lastName)
       formData.append('password', userData.password)

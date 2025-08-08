@@ -4,7 +4,7 @@ import { SignupForm } from './SignupForm'
 import { CheckCircle } from 'lucide-react'
 
 export const AuthPage: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
   const [showSuccess, setShowSuccess] = useState(false)
 
   const handleToggleForm = () => {
@@ -22,9 +22,7 @@ export const AuthPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 via-transparent to-purple-600/5"></div>
-
-      <div className="relative w-full max-w-md">
+      <div className="relative w-full max-w-md my-16">
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8">
           {showSuccess ? (
             <div className="text-center py-8">

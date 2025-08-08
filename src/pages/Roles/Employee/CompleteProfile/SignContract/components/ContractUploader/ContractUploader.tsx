@@ -1,12 +1,10 @@
 import FileUploader from '@/components/FileUploader/FileUploader'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
-import PagePath from '@/components/PagePath/PagePath'
 import { Button } from '@/components/ui/button'
 import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import SendSignedContractModal from './SendSignedContractModal'
-// import SendRequestModal from './componsnts/SendRequestModal'
 
 export interface IContractForm {
   justificatif: File
@@ -54,7 +52,6 @@ export default function ContractUploader() {
 
   return (
     <>
-      <PagePath />
       <FormProvider {...methods}>
         <form
           className="w-11/12 max-w-[1280px] pb-20 mt-5 mx-auto gap-10 flex flex-col "

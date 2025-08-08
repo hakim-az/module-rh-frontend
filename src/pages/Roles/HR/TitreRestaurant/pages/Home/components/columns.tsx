@@ -1,5 +1,4 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import type { ITitreRestau } from './TitreRestaurantTable'
 import ActionsCell from './ActionsCell'
 import {
   HoverCard,
@@ -7,6 +6,7 @@ import {
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
 import { CircleUserRound, MessageCircleMoreIcon } from 'lucide-react'
+import type { ITitreRestau } from '@/types/tables/rh'
 
 export const columns: ColumnDef<ITitreRestau>[] = [
   // id

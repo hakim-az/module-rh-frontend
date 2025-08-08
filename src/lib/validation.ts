@@ -26,6 +26,7 @@ export const signupSchema = z
       .min(3, "Le nom d'utilisateur doit contenir au moins 3 caractères"),
     firstName: z.string().min(1, 'Le prénom est requis'),
     lastName: z.string().min(1, 'Le nom de famille est requis'),
+    telephonePersonnel: z.string().min(1, 'Le numéro de téléphone est requis'),
     email: z.string().email('Veuillez saisir une adresse email valide'),
     password: passwordSchema,
     confirmPassword: z.string().min(1, 'Veuillez confirmer votre mot de passe'),

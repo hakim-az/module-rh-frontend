@@ -41,6 +41,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
         username: data.username,
         firstName: data.firstName,
         lastName: data.lastName,
+        telephonePersonnel: data.telephonePersonnel,
         email: data.email,
         password: data.password,
       })
@@ -98,6 +99,14 @@ export const SignupForm: React.FC<SignupFormProps> = ({
           placeholder="jean@exemple.com"
           error={errors.email?.message}
           {...register('email')}
+        />
+
+        <Input
+          label="Numéro de téléphone personnel"
+          type="number"
+          placeholder="07 77 77 77 77"
+          error={errors.telephonePersonnel?.message}
+          {...register('telephonePersonnel')}
         />
 
         <div className="relative">

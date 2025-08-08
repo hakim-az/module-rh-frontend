@@ -3,74 +3,17 @@ import InfoPersoDispalyForm from '@/components/DisplayForms/InfoPersoDisplayForm
 import { useState } from 'react'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import UploadAvatarModal from '../../components/UploadAvatarModal'
-import { CircleUserRound } from 'lucide-react'
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
-import { useLocation, useNavigate } from 'react-router-dom'
+import ProfileBanner from '../../components/ProfileBanner'
 
 export default function Display() {
   const { userDetails, isLoadingUser } = useDashboardContext()
   const [activeUploadAvatarModal, setActiveUploadAvatarModal] =
     useState<boolean>(false)
-  const navigate = useNavigate()
-  const location = useLocation()
-
-  const pathname = location.pathname
-
-  const isPersonalInfo = pathname.includes('informations-personnelles')
-  const isProfessionalInfo = pathname.includes('informations-professionnelles')
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-11/12 max-w-[1280px] mx-auto py-16 gap-x-8 gap-y-16 items-start">
       {/* banner */}
-      <div className="bg-[#4141D2] sticky top-36 rounded-md border border-gray-300 flex flex-col items-center justify-center p-8">
-        {/* avatar */}
-        <div className="relative">
-          {userDetails?.avatar === '' ? (
-            <CircleUserRound
-              width={144}
-              height={144}
-              className="bg-white rounded-full"
-            />
-          ) : (
-            <img
-              src={userDetails?.avatar}
-              alt="user-avatar"
-              className="h-48 object-cover bg-gray-300 border-2 border-black rounded-full"
-            />
-          )}
-          <PencilSquareIcon
-            onClick={() => setActiveUploadAvatarModal(true)}
-            className="w-8 p-1 rounded-md stroke-white bg-blue-500 hover:scale-110 transition-all ease-in-out delay-75 bottom-1 cursor-pointer right-2 absolute"
-          />
-        </div>
-        {/* content */}
-        <div className="flex text-white gap-2 flex-col items-center justify-center mt-10">
-          <span className="text-2xl font-semibold">
-            {userDetails?.nomDeNaissance} {userDetails?.prenom}
-          </span>
-          <span className="text-lg font-medium">
-            {userDetails?.contrat?.poste}{' '}
-          </span>
-        </div>
-        {/* update button */}
-        {isPersonalInfo && (
-          <button
-            type="button"
-            onClick={() => navigate('modifier-informations-personnelles')}
-            className=" bg-white mt-16 text-sm font-medium text-[#4141D2] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
-            Modifier mes informations personnelles
-          </button>
-        )}
-
-        {isProfessionalInfo && (
-          <button
-            type="button"
-            onClick={() => navigate('modifier-informations-professionnelles')}
-            className=" bg-blue-500 text-sm mt-16 text-white px-8 py-2 rounded hover:scale-105 transition-all ease-in-out delay-75">
-            Modifier mes informations professionnelles
-          </button>
-        )}
-      </div>
+      <ProfileBanner setActiveUploadAvatarModal={setActiveUploadAvatarModal} />
       <div className="col-span-1 lg:col-span-2">
         <InfoPersoDispalyForm loading={isLoadingUser} details={userDetails} />
       </div>

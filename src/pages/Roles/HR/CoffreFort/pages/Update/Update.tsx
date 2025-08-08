@@ -8,12 +8,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import UpdateCoffreModal from './componsnts/UpdateCoffreModal'
-import type { ICoffreFort } from '../Home/components/CoffreFortTable'
 import axios from 'axios'
 import { downloadFile } from '@/lib/downloadFile'
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import { Download } from 'lucide-react'
 import PDFIcon from '@/assets/icons/pdf-icon.png'
+import type { ICoffreFort } from '@/types/tables/rh'
 
 export interface ICoffre {
   salarie: number

@@ -3,49 +3,42 @@ import PagePath from '@/components/PagePath/PagePath'
 import { useParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import ApprouverAbsenceModal from './Modals/ApprouverAbsenceModal'
 import RefuserAbsenceModal from './Modals/RefuserAbsenceModal'
-import type { IAbsence } from '../Home/components/AbsencesTable'
 import axios from 'axios'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 import DisplayTextarea from '@/components/DisplayTextarea/DisplayTextarea'
 import { formatDateToLabel } from '@/lib/formatDate'
+import type { IAbsence } from '@/types/tables/rh'
+import { useQuery } from '@tanstack/react-query'
 
 export default function Details() {
+  const { absenceId } = useParams()
+  const [openPdfModal, setOpenPdfModal] = useState(false)
+  const [fileUrl, setFileUrl] = useState<string | undefined>('')
+
   const [activeApprouverAbsenceModal, setActiveApprouverAbsenceModal] =
     useState(false)
   const [activeRefuserAbsenceModal, setActiveRefuserAbsenceModal] =
     useState(false)
 
-  const { absenceId } = useParams()
-
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [absenceDetails, setAbsenceDetails] = useState<IAbsence>()
-  const [openPdfModal, setOpenPdfModal] = useState(false)
-  const [fileUrl, setFileUrl] = useState<string | undefined>('')
-
-  // fetch designs
-  const fetchAbsences = useCallback(async () => {
-    try {
-      setIsLoading(true)
+  // ✅ Fetch with React Query
+  const {
+    data: absenceDetails,
+    isLoading,
+    isError,
+  } = useQuery<IAbsence>({
+    queryKey: ['absence-details', absenceId],
+    queryFn: async () => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`
       )
-      console.log(response)
-      setAbsenceDetails(response.data)
-
-      setIsLoading(false)
-    } catch (error) {
-      setIsLoading(false)
-      console.log(error)
-    }
-  }, [absenceId])
-
-  useEffect(() => {
-    fetchAbsences()
-  }, [fetchAbsences])
+      return response.data
+    },
+    enabled: !!absenceId,
+  })
 
   return (
     <>
@@ -71,46 +64,53 @@ export default function Details() {
 
       {/* details */}
       {isLoading ? (
-        <>Loading...</>
+        <div className="text-center py-10 text-muted-foreground">
+          Chargement...
+        </div>
+      ) : isError ? (
+        <div className="text-center py-10 text-red-500">
+          Une erreur est survenue lors du chargement des détails de l’absence.
+        </div>
       ) : (
         <div className="w-11/12 max-w-[1280px] mb-20 mt-5 mx-auto grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md">
           {/* Type d'absence */}
-          <div className="col-span-2">
+          <div className="col-span-1 lg:col-span-2">
             <DisplayInput
               label="Type d'absence"
               value={
                 absenceDetails?.typeAbsence
-                  ? absenceDetails?.typeAbsence.replace(/_/g, ' ')
+                  ? absenceDetails.typeAbsence.replace(/_/g, ' ')
                   : '-'
               }
             />
           </div>
+
           {/* Date de début */}
           <DisplayInput
             label="Date de début"
             value={
               absenceDetails?.dateDebut
-                ? formatDateToLabel(absenceDetails?.dateDebut)
+                ? formatDateToLabel(absenceDetails.dateDebut)
                 : '-'
             }
           />
+
           {/* Date de fin */}
           <DisplayInput
             label="Date de fin"
             value={
               absenceDetails?.dateFin
-                ? formatDateToLabel(absenceDetails?.dateFin)
+                ? formatDateToLabel(absenceDetails.dateFin)
                 : '-'
             }
           />
+
           {/* Note */}
-          <div className="col-span-2">
-            <DisplayTextarea
-              label="Note"
-              value={absenceDetails?.note ? absenceDetails?.note : '-'}
-            />
+          <div className="col-span-1 lg:col-span-2">
+            <DisplayTextarea label="Note" value={absenceDetails?.note || '-'} />
           </div>
-          {/* justificatif */}
+
+          {/* Justificatif */}
           <DownloadJustificatif
             file={absenceDetails?.fichierJustificatifPdf}
             setFileUrl={setFileUrl}
@@ -118,7 +118,8 @@ export default function Details() {
           />
         </div>
       )}
-      {/* approuver : refuser */}
+
+      {/* Approuver / Refuser */}
       <div className="w-11/12 max-w-[1280px] mb-20 mx-auto">
         {absenceDetails?.statut === 'en-attente' && (
           <div className="flex items-center justify-center gap-8">
@@ -135,7 +136,8 @@ export default function Details() {
           </div>
         )}
       </div>
-      {/* approuver */}
+
+      {/* Approuver Modal */}
       <CustomModal
         openModal={activeApprouverAbsenceModal}
         setOpenModal={setActiveApprouverAbsenceModal}>
@@ -144,7 +146,8 @@ export default function Details() {
           absenceId={absenceDetails?.id}
         />
       </CustomModal>
-      {/* refuser */}
+
+      {/* Refuser Modal */}
       <CustomModal
         openModal={activeRefuserAbsenceModal}
         setOpenModal={setActiveRefuserAbsenceModal}>
@@ -153,6 +156,8 @@ export default function Details() {
           absenceId={absenceDetails?.id}
         />
       </CustomModal>
+
+      {/* PDF Viewer */}
       <DisplayPdf
         openModal={openPdfModal}
         setOpenModal={setOpenPdfModal}

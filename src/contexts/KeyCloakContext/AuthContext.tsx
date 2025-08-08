@@ -16,6 +16,7 @@ interface AuthContextType {
     username: string
     firstName: string
     lastName: string
+    telephonePersonnel: string
     email: string
     password: string
   }) => Promise<void>
@@ -86,12 +87,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     username: string
     firstName: string
     lastName: string
+    telephonePersonnel: string
     email: string
     password: string
   }) => {
     await keycloakService.signup({
       ...userData,
-      telephonePersonnel: '0777777777', // required
       avatar: '', // optional, can be customized
       role: 'employee', // optional
       statut: 'user-registred', // optional
