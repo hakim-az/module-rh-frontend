@@ -15,7 +15,6 @@ interface ActionsCellProps {
 
 export default function ActionsCell({ id }: ActionsCellProps) {
   const navigate = useNavigate()
-  console.log(id)
 
   return (
     <div className="flex items-center justify-center">

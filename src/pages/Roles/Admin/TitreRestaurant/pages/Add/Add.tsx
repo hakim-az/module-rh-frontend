@@ -46,7 +46,6 @@ export default function Add() {
   } = methods
 
   const onSubmit = (data: IRestauForm) => {
-    console.log(data)
     setFormData(data)
     setActiveSendRequestModal(true)
   }

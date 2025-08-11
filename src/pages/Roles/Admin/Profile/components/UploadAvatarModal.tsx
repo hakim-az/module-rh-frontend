@@ -84,7 +84,7 @@ export default function UploadAvatarModal({
           </h2>
           <div className="col-span-2">
             <ImageUploader
-              title="Photot de profil"
+              title="Photot de profile"
               name="avatar"
               required
               setValue={setValue}

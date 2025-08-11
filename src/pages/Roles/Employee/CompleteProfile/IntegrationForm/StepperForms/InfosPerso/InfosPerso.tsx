@@ -51,7 +51,6 @@ export default function InfosPerso({
 
   // handle form submit
   const onSubmit = (data: EmployeePersonalInformations) => {
-    console.log(data)
     setEmployeePersonalInfo(data)
     if (currentStepIndex === labels.length - 1) {
       setActiveValidateIntegrationModal(true)

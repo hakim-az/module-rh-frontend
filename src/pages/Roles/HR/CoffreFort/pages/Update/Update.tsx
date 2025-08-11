@@ -48,7 +48,6 @@ export default function Add() {
   } = methods
 
   const onSubmit = (data: ICoffre) => {
-    console.log(data)
     setFormData(data)
     setActiveUpdateCoffreModal(true)
   }

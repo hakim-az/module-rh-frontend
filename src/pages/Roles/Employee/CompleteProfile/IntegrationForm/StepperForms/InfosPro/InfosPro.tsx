@@ -39,7 +39,6 @@ export default function InfosPro({
 
   const onSubmit = (data: EmployeeProfesionalInformations) => {
     setEmployeeProfesionalInfo(data)
-    console.log(data)
     if (currentStepIndex === labels.length - 1) {
       setActiveValidateIntegrationModal(true)
     } else {

@@ -40,8 +40,6 @@ export default function Add() {
     mode: 'onBlur',
   })
 
-  console.log('totalAbsneceCurrentMonth', totalAbsneceCurrentMonth)
-
   const {
     register,
     handleSubmit,
@@ -53,7 +51,6 @@ export default function Add() {
   } = methods
 
   const onSubmit = (data: IRestauForm) => {
-    console.log(data)
     setFormData(data)
     setActiveSendRequestModal(true)
   }

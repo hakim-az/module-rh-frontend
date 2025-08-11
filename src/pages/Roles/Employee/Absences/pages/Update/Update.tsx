@@ -48,7 +48,6 @@ export default function Update() {
   } = methods
 
   const onSubmit = (data: IAbsenceForm) => {
-    console.log(data)
     setFormData(data)
     setActiveSendRequestModal(true)
   }

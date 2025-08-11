@@ -34,8 +34,6 @@ export default function RefuserAbsenceModal({
   } = methods
 
   const onSubmit = async (data: IForm) => {
-    console.log(data)
-
     setIsLoading(true)
     try {
       const formData = new FormData()

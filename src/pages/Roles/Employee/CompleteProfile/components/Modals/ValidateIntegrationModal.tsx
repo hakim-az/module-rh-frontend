@@ -1,7 +1,6 @@
 import { useIntegrationFormDataContext } from '@/contexts/CompleteProfile/IntegrationForm/useIntegrationFormDataContext'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import ToastNotification, { notify } from '@/lib/ToastNotification'
-import type { User } from '@/types/user.types'
 import { CheckCircleIcon } from '@heroicons/react/16/solid'
 import axios from 'axios'
 import { useState } from 'react'
@@ -11,7 +10,6 @@ interface PropsType {
   setActiveValidateIntegrationModal: (
     activeValidateIntegrationModal: boolean
   ) => void
-  onSuccess: (user: User) => void
 }
 
 export default function ValidateIntegrationModal({

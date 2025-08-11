@@ -1,14 +1,12 @@
 import { CircleUserRound, LogOut } from 'lucide-react'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import { useAuth } from '@/contexts/KeyCloakContext/AuthContext'
 
 export default function LogoutCard() {
   // consts
   const { wideNavbar, userDetails } = useDashboardContext()
+  const { logout } = useAuth()
 
-  const handleLogout = () => {
-    localStorage.removeItem('userRole')
-    window.location.href = 'http://localhost:5173/'
-  }
   return (
     <div
       className={`text-white flex items-center p-8 w-full ${wideNavbar ? 'justify-between' : 'justify-center'}`}>
@@ -32,7 +30,7 @@ export default function LogoutCard() {
       </div>
       {/* logout */}
       <LogOut
-        onClick={handleLogout}
+        onClick={logout}
         className={`text-white hover:text-red-500 cursor-pointer transition-all ease-in-out delay-75 ${wideNavbar ? 'block' : 'hidden'}`}
       />
     </div>

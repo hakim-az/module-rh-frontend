@@ -50,7 +50,7 @@ const variants = {
   },
 }
 
-function HeaderMobile({ navlinkMobile, nameRoute }: PropsType) {
+function HeaderMobile({ navlinkMobile }: PropsType) {
   const location = useLocation()
   const { pathname } = location
   const containerRef = useRef<HTMLDivElement>(null)
@@ -72,8 +72,6 @@ function HeaderMobile({ navlinkMobile, nameRoute }: PropsType) {
   }
 
   const { height } = useDimensions(containerRef)
-
-  console.log(nameRoute)
 
   return (
     <motion.nav

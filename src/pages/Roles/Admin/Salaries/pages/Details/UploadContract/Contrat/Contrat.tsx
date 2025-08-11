@@ -58,7 +58,6 @@ export default function Contrat({
 
   // handle form submit
   const onSubmit = (data: IContractInfo) => {
-    console.log(data)
     setContractInfo(data)
     setActiveValidateIntegrationModal(true)
   }

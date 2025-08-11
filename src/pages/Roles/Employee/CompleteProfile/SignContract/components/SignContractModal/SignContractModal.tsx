@@ -48,7 +48,7 @@ export default function SignContractModal({
         payload
       )
 
-      console.log('Réponse API signature:', response.data)
+      console.log(response)
 
       notify({
         message: 'Email envoyé avec succès',

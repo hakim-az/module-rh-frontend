@@ -45,7 +45,6 @@ export default function Update() {
   } = methods
 
   const onSubmit = (data: IFormData) => {
-    console.log(data)
     setFormData(data)
     setActiveSendRequestModal(true)
   }
