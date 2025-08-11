@@ -1,5 +1,5 @@
-import { AuthProvider } from './contexts/KeyCloakContext/AuthContext'
-import { useAuth } from './contexts/KeyCloakContext/useAuth'
+import { AuthProvider } from './contexts/KeyCloakContext/AuthProvider'
+import { useAuth } from './contexts/KeyCloakContext/AuthContext'
 import { AuthPage } from './pages/KeyCloakAuth/Pages/AuthPage'
 import Dashboard from './pages/Dashboard/Dashboard'
 import { ProtectedRoute } from './pages/KeyCloakAuth/ProtectedRoute'

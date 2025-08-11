@@ -32,7 +32,7 @@ export default function Cards({ dashboardData }: IProps) {
       {cards.map((card) => (
         <div
           key={card.id}
-          className="bg-[#09090B] border p-5 flex gap-14 max-w-[500px] flex-col items-end border-gray-300 shadow rounded-md text-white">
+          className="bg-[#09090B] border p-5 flex gap-14 lg:max-w-[500px] flex-col items-end border-gray-300 shadow rounded-md text-white">
           {/* icon */}
           <card.icon className="w-10 h-10" />
           {/* data */}

@@ -21,13 +21,12 @@ export default function SideNavbar({
   navlinkSidebar,
   navlinkSidebarProfile,
 }: PropsType) {
-  // consts
-  const { wideNavbar } = useDashboardContext()
+  const { wideNavbar, userDetails } = useDashboardContext()
 
-  const storedRole = localStorage.getItem('userRole') as UserRole
+  const role = userDetails?.role as UserRole | undefined
 
-  const sidebarBg = (storedRole: string) => {
-    switch (storedRole) {
+  const sidebarBg = (role?: UserRole) => {
+    switch (role) {
       case 'admin':
         return '#1E3A8A'
       case 'hr':
@@ -40,33 +39,34 @@ export default function SideNavbar({
   }
 
   return (
-    <>
-      <div
-        style={{ backgroundColor: sidebarBg(storedRole) }}
-        className={`side-navbar transition-all z-20 ease-in-out delay-150 font-poppins h-screen w-full flex-1 fixed hidden lg:flex flex-col items-center justify-between border-r ${wideNavbar ? 'md:w-[300px]' : 'md:w-[90px]'}`}>
-        {/* menu links */}
-        <div className="flex flex-col gap-8 w-full transition-all ease-in-out delay-200">
-          {/* logo */}
-          <LogoCard />
+    <div
+      style={{ backgroundColor: sidebarBg(role) }}
+      className={`side-navbar transition-all z-20 ease-in-out delay-150 font-poppins h-screen w-full flex-1 fixed hidden lg:flex flex-col items-center justify-between border-r ${
+        wideNavbar ? 'md:w-[300px]' : 'md:w-[90px]'
+      }`}>
+      {/* menu links */}
+      <div className="flex flex-col gap-8 w-full transition-all ease-in-out delay-200">
+        {/* logo */}
+        <LogoCard />
 
-          {/* button wide navbar */}
-          <ToggleSidebarButton />
+        {/* button wide navbar */}
+        <ToggleSidebarButton />
 
-          {/* platforme */}
-          <NavlinksContainer
-            navlinkSidebar={navlinkSidebar}
-            menuHeader="Platforme"
-          />
+        {/* platform */}
+        <NavlinksContainer
+          navlinkSidebar={navlinkSidebar}
+          menuHeader="Platform"
+        />
 
-          {/* platforme */}
-          <NavlinksContainer
-            navlinkSidebar={navlinkSidebarProfile}
-            menuHeader="Profile"
-          />
-        </div>
-        {/* logout card */}
-        <LogoutCard />
+        {/* profile */}
+        <NavlinksContainer
+          navlinkSidebar={navlinkSidebarProfile}
+          menuHeader="Profile"
+        />
       </div>
-    </>
+
+      {/* logout card */}
+      <LogoutCard />
+    </div>
   )
 }

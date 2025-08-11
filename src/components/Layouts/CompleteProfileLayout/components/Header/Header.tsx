@@ -8,7 +8,7 @@ const CLIENT_SECRET = import.meta.env.VITE_KEYCLOAK_CLIENT_SECRET
 
 // Fonction logout Keycloak
 async function keycloakLogout() {
-  const authUser = JSON.parse(localStorage.getItem('auth_user') || '{}')
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
   const refreshToken = authUser.refreshToken
 
   if (!refreshToken) {
@@ -44,7 +44,7 @@ async function keycloakLogout() {
   }
 
   // Nettoyage local
-  localStorage.removeItem('auth_user')
+  sessionStorage.removeItem('auth_user')
   window.location.href = 'http://localhost:5173/'
 }
 

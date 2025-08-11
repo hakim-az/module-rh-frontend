@@ -1,45 +1,61 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react'
+import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import { FormContext } from './SalariDetailsContext'
 import type { User } from '@/types/user.types'
 import axios from 'axios'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 type Props = {
   children: React.ReactNode
 }
 
+// API function
+async function fetchSalarieDetails(userId: string | undefined) {
+  if (!userId) return undefined // don't call API without userId
+  const { data } = await axios.get(
+    `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`
+  )
+  return data.data as User
+}
+
 export default function SalarieDetailsProvider({ children }: Props) {
-  const [isLoadingSalarieDetails, setIsLoadingSalarieDetails] = useState(false)
-  const [salarieDetails, setSalarieDetails] = useState<User>()
   const [userId, setUserId] = useState<string | undefined>(undefined)
+  const queryClient = useQueryClient()
 
-  const fetchSalarieDetails = useCallback(async (id: string) => {
-    setIsLoadingSalarieDetails(true)
-    try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/users/${id}`
-      )
-      setSalarieDetails(response.data.data)
-    } catch (error) {
-      console.error('Failed to fetch user details:', error)
-    } finally {
-      setIsLoadingSalarieDetails(false)
-    }
-  }, [])
+  // Fetch salarie details with React Query
+  const {
+    data: salarieDetails,
+    isLoading: isLoadingSalarieDetails,
+    error,
+  } = useQuery({
+    queryKey: ['salarieDetails', userId],
+    queryFn: () => fetchSalarieDetails(userId),
+    enabled: !!userId, // only fetch when userId is set
+    staleTime: 1000 * 60 * 5, // cache for 5 minutes
+  })
 
-  // Watch for changes to userId
   useEffect(() => {
-    if (userId) {
-      fetchSalarieDetails(userId)
+    if (error) {
+      console.error('Failed to fetch user details:', error)
     }
-  }, [userId, fetchSalarieDetails])
+  }, [error])
+
+  // Manual refresh
+  const refreshSalarieDetails = useCallback(() => {
+    if (userId) {
+      queryClient.invalidateQueries({
+        queryKey: ['salarieDetails', userId],
+      })
+    }
+  }, [queryClient, userId])
 
   const value = useMemo(
     () => ({
       isLoadingSalarieDetails,
       salarieDetails,
-      setUserId, // expose the setter
+      setUserId, // expose setter to trigger fetching
+      refreshSalarieDetails, // manual refetch
     }),
-    [isLoadingSalarieDetails, salarieDetails]
+    [isLoadingSalarieDetails, salarieDetails, refreshSalarieDetails]
   )
 
   return <FormContext value={value}>{children}</FormContext>
