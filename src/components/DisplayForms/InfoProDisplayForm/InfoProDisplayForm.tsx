@@ -12,16 +12,16 @@ export default function InfoProDisplayForm({ details, loading }: IProps) {
       {loading ? (
         <>Loading...</>
       ) : (
-        <section className="w-full mx-auto gap-10 flex flex-col ">
+        <section className="w-full mx-auto gap-10 flex flex-col">
           {/* Informations bancaire */}
           <div className="grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
             <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
               Informations bancaire :
             </span>
             {/* IBAN */}
-            <DisplayInput label="IBAN" value={details?.paiement.iban ?? '-'} />
+            <DisplayInput label="IBAN" value={details?.paiement?.iban ?? '-'} />
             {/* BIC */}
-            <DisplayInput label="BIC" value={details?.paiement.bic ?? '-'} />
+            <DisplayInput label="BIC" value={details?.paiement?.bic ?? '-'} />
           </div>
           {/* Contact d'urgence */}
           <div className="grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
@@ -31,17 +31,17 @@ export default function InfoProDisplayForm({ details, loading }: IProps) {
             {/* Nom complet */}
             <DisplayInput
               label="Nom complet"
-              value={details?.urgence.nomComplet ?? '-'}
+              value={details?.urgence?.nomComplet ?? '-'}
             />
             {/* Lien avec le salarié */}
             <DisplayInput
               label="Lien avec le salarié "
-              value={details?.urgence.lienAvecLeSalarie ?? '-'}
+              value={details?.urgence?.lienAvecLeSalarie ?? '-'}
             />
             {/* Téléphone */}
             <DisplayInput
               label="Téléphone"
-              value={details?.urgence.telephone ?? '-'}
+              value={details?.urgence?.telephone ?? '-'}
             />
           </div>
         </section>

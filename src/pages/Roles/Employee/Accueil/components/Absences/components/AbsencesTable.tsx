@@ -22,6 +22,7 @@ import { useState } from 'react'
 import type { DashboardData } from '../../../Accueil'
 import { useNavigate } from 'react-router-dom'
 import NotFoundTable from '@/components/NotFound/NotFoundTable/NotFoundTable'
+import { ChevronRight } from 'lucide-react'
 
 export interface IAbsence {
   id: string
@@ -85,8 +86,8 @@ export default function AbsencesTable({ dashboardData }: IProps) {
         <button
           type="button"
           onClick={() => navigate('absences')}
-          className="bg-blue-500 text-white px-6 py-1.5 rounded">
-          Voir tout
+          className="flex items-center justify-center gap-3 bg-black text-white px-5 py-1.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
+          Voir tout <ChevronRight className="w-5" />
         </button>
       </div>
       <div className="rounded-md border bg-white min-h-[350px]">

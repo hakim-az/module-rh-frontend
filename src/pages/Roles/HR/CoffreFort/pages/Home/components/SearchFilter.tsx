@@ -11,6 +11,8 @@ import type { Table } from '@tanstack/react-table'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
+import { CircleFadingPlus } from 'lucide-react'
+
 interface SearchFilterProps<T> {
   table: Table<T>
 }
@@ -166,8 +168,8 @@ export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {
         variant="default"
         size={'lg'}
         onClick={() => navigate('ajouter-un-document')}
-        className="ml-auto w-full mt-5 lg:mt-0 lg:min-w-[200px] lg:w-[200px]">
-        Ajouter un coffre fort
+        className="ml-auto bg-[#4141D2] w-full mt-5 lg:mt-0 lg:min-w-[200px] lg:w-[200px] gap-3">
+        Ajouter un coffre fort <CircleFadingPlus />
       </Button>
     </div>
   )

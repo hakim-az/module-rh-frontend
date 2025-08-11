@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import type { Table } from '@tanstack/react-table'
+import { CircleFadingPlus } from 'lucide-react'
 import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -111,8 +112,8 @@ export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {
         variant="default"
         size={'lg'}
         onClick={() => navigate('ajouter-un-titre-restaurant')}
-        className="ml-auto w-full lg:w-[200px] mt-5 lg:mt-0">
-        Ajouter un titre restaurant
+        className="ml-auto bg-[#4141D2] w-full mt-5 lg:mt-0 lg:min-w-[200px] lg:w-[220px] gap-3">
+        Ajouter un titre restaurant <CircleFadingPlus />
       </Button>
     </div>
   )

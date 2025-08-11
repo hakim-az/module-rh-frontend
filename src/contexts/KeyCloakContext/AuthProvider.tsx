@@ -1,4 +1,3 @@
-// src/contexts/AuthContext/AuthProvider.tsx
 import React, {
   useEffect,
   useState,
@@ -22,46 +21,45 @@ interface DecodedToken {
   email?: string
   given_name?: string
   family_name?: string
+  exp?: number
   [key: string]: unknown
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const refreshTimeoutId = useRef<NodeJS.Timeout | null>(null)
 
-  // Ref to hold latest refreshUserToken function to avoid circular deps
+  const refreshTimeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
   const refreshUserTokenRef = useRef<
     ((refreshToken: string) => Promise<void>) | undefined
   >(undefined)
 
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (refreshTimeoutId.current) clearTimeout(refreshTimeoutId.current)
+  const clearRefreshTimeout = () => {
+    if (refreshTimeoutId.current) {
+      clearTimeout(refreshTimeoutId.current)
+      refreshTimeoutId.current = null
     }
-  }, [])
+  }
 
   const logout = useCallback(() => {
     setUser(null)
     sessionStorage.removeItem('auth_user')
-    if (refreshTimeoutId.current) clearTimeout(refreshTimeoutId.current)
-    window.location.href = '/' // Adjust redirect URL if needed
+    clearRefreshTimeout()
+    window.location.href = '/'
   }, [])
 
-  // scheduleTokenRefresh: schedules token refresh 60s before expiry
   const scheduleTokenRefresh = useCallback(
     (expiresInSeconds: number, refreshToken: string) => {
-      if (refreshTimeoutId.current) clearTimeout(refreshTimeoutId.current)
+      clearRefreshTimeout()
 
-      refreshTimeoutId.current = setTimeout(
-        () => {
-          if (refreshUserTokenRef.current) {
-            refreshUserTokenRef.current(refreshToken)
-          }
-        },
-        (expiresInSeconds - 60) * 1000
-      )
+      const refreshInMs = (expiresInSeconds - 60) * 1000 // refresh 60s before expiry
+      if (refreshInMs <= 0) return
+
+      refreshTimeoutId.current = setTimeout(() => {
+        if (refreshUserTokenRef.current) {
+          refreshUserTokenRef.current(refreshToken)
+        }
+      }, refreshInMs)
     },
     []
   )
@@ -76,41 +74,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             logout()
             return null
           }
-
           const updatedUser = {
             ...currentUser,
             token: response.access_token,
             refreshToken: response.refresh_token,
           }
           sessionStorage.setItem('auth_user', JSON.stringify(updatedUser))
-
           scheduleTokenRefresh(response.expires_in, updatedUser.refreshToken)
           return updatedUser
         })
-      } catch {
+      } catch (err) {
+        console.error('Token refresh failed', err)
         logout()
       }
     },
     [logout, scheduleTokenRefresh]
   )
 
-  // Keep the ref updated with the latest refreshUserToken function
   useEffect(() => {
     refreshUserTokenRef.current = refreshUserToken
   }, [refreshUserToken])
 
-  // Load stored user on mount
+  // Load stored user on mount (no token expiry validation)
   useEffect(() => {
     const storedUser = sessionStorage.getItem('auth_user')
     if (storedUser) {
       try {
-        const parsedUser = JSON.parse(storedUser)
+        const parsedUser: AuthUser = JSON.parse(storedUser)
         setUser(parsedUser)
-
-        if (parsedUser?.refreshToken) {
-          // Optionally decode token expiry here, else fallback 300s
-          scheduleTokenRefresh(300, parsedUser.refreshToken)
-        }
+        scheduleTokenRefresh(300, parsedUser.refreshToken) // fallback 5min if unknown
       } catch {
         sessionStorage.removeItem('auth_user')
       }
@@ -135,7 +127,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setUser(authUser)
       sessionStorage.setItem('auth_user', JSON.stringify(authUser))
-
       scheduleTokenRefresh(response.expires_in, authUser.refreshToken)
     },
     [scheduleTokenRefresh]
@@ -154,7 +145,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         ...userData,
         avatar: '',
         role: 'employee',
-        statut: 'user-registred',
+        statut: 'user-registered',
       })
     },
     []

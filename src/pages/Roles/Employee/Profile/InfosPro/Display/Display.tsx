@@ -15,7 +15,7 @@ export default function InfosPro() {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-11/12 max-w-[1280px] mx-auto py-16 gap-x-8 gap-y-16 items-start">
       <ProfileBanner setActiveUploadAvatarModal={setActiveUploadAvatarModal} />
-      <div className="col-span-1 lg:col-span-2">
+      <div className="col-span-1 lg:col-span-2 flex flex-col gap-10">
         <InfoProDisplayForm loading={isLoadingUser} details={userDetails} />
         <JustificatifsDisplayForm
           loading={isLoadingUser}

@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import { ProtectedRoute } from './pages/KeyCloakAuth/ProtectedRoute'
 import DashboardProvider from './contexts/DashboardContext/DashboardProvider'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 
 function AppContent() {
   const { user, isLoading } = useAuth()
@@ -21,19 +22,22 @@ function AppContent() {
   }
 
   return user ? (
-    <Routes>
-      <Route path="/" element={<Navigate to="/accueil" replace />} />
-      <Route
-        path="/accueil/*"
-        element={
-          <ProtectedRoute>
-            <DashboardProvider>
-              <Dashboard />
-            </DashboardProvider>
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<Navigate to="/accueil" replace />} />
+        <Route
+          path="/accueil/*"
+          element={
+            <ProtectedRoute>
+              <DashboardProvider>
+                <Dashboard />
+              </DashboardProvider>
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </>
   ) : (
     <AuthPage />
   )

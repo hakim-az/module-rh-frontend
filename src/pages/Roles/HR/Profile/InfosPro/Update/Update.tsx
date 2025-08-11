@@ -65,7 +65,7 @@ export default function Update() {
               rules={{ required: true }}
               error={errors.iban}
               inputType="text"
-              inputDefaultValue={userDetails?.paiement.iban}
+              inputDefaultValue={userDetails?.paiement?.iban}
             />
             {/* BIC */}
             <ControlledInput
@@ -76,7 +76,7 @@ export default function Update() {
               rules={{ required: true }}
               error={errors.bic}
               inputType="text"
-              inputDefaultValue={userDetails?.paiement.bic}
+              inputDefaultValue={userDetails?.paiement?.bic}
             />
           </div>
           {/* Contact d'urgence */}
@@ -93,7 +93,7 @@ export default function Update() {
               rules={{ required: true }}
               error={errors.nom_complet}
               inputType="text"
-              inputDefaultValue={userDetails?.urgence.nomComplet}
+              inputDefaultValue={userDetails?.urgence?.nomComplet}
             />
             {/* Lien avec le salarié */}
             <ControlledSelect
@@ -123,7 +123,7 @@ export default function Update() {
               rules={{ required: true }}
               error={errors.tel}
               inputType="number"
-              inputDefaultValue={userDetails?.urgence.telephone}
+              inputDefaultValue={userDetails?.urgence?.telephone}
             />
           </div>
           <div className="w-full flex gap-16 justify-center">

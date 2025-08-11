@@ -9,6 +9,7 @@ import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 import type { ITitreRestau } from '@/types/tables/rh'
+import DisplayTextarea from '@/components/DisplayTextarea/DisplayTextarea'
 
 export default function Details() {
   const { idTitre } = useParams()
@@ -76,7 +77,7 @@ export default function Details() {
         <DisplayInput label="Année" value={absenceDetails?.annee ?? '-'} />
 
         <div className="lg:col-span-2">
-          <DisplayInput label="Note" value={absenceDetails?.note || '-'} />
+          <DisplayTextarea label="Note" value={absenceDetails?.note || '-'} />
         </div>
 
         {/* justificatif */}
