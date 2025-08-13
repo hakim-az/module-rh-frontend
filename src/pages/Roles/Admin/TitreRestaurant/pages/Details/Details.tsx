@@ -1,47 +1,53 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
+
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import PagePath from '@/components/PagePath/PagePath'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
-import type { ITitreRestau } from '../Home/components/TitreRestaurantTable'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
+import type { ITitreRestau } from '@/types/tables/rh'
+import DisplayTextarea from '@/components/DisplayTextarea/DisplayTextarea'
 
 export default function Details() {
   const { idTitre } = useParams()
-  const [isLoadingFetch, setIsLoadingFetch] = useState(false)
-  const [absenceDetails, setAbsenceDetails] = useState<ITitreRestau | null>(
-    null
-  )
-
   const [openPdfModal, setOpenPdfModal] = useState(false)
   const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
-  const fetchAbsenceDetails = useCallback(async () => {
-    setIsLoadingFetch(true)
-    try {
+  const {
+    data: absenceDetails,
+    isLoading,
+    isError,
+  } = useQuery<ITitreRestau>({
+    queryKey: ['restaux-details', idTitre],
+    queryFn: async () => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/restaux/${idTitre}`
       )
-      setAbsenceDetails(response.data)
-    } catch (error) {
-      console.error('Failed to fetch absence details:', error)
-    } finally {
-      setIsLoadingFetch(false)
-    }
-  }, [idTitre])
+      return response.data
+    },
+    enabled: !!idTitre,
+  })
 
-  useEffect(() => {
-    fetchAbsenceDetails()
-  }, [fetchAbsenceDetails])
-
-  if (isLoadingFetch) {
+  if (isLoading) {
     return (
       <>
         <PagePath />
         <div className="w-11/12 mt-10 max-w-[1280px] flex items-center justify-center mx-auto h-80 bg-white border border-gray-300 rounded-lg">
           <LoadingSpinner />
+        </div>
+      </>
+    )
+  }
+
+  if (isError) {
+    return (
+      <>
+        <PagePath />
+        <div className="w-11/12 mt-10 max-w-[1280px] text-center text-red-600 mx-auto h-20 flex items-center justify-center bg-white border border-gray-300 rounded-lg">
+          Erreur lors du chargement des détails.
         </div>
       </>
     )
@@ -56,7 +62,7 @@ export default function Details() {
           label="Salarié"
           value={
             absenceDetails?.user
-              ? `${absenceDetails?.user?.nomDeNaissance} ${absenceDetails?.user?.prenom}`
+              ? `${absenceDetails.user.nomDeNaissance} ${absenceDetails.user.prenom}`
               : '-'
           }
         />
@@ -71,7 +77,7 @@ export default function Details() {
         <DisplayInput label="Année" value={absenceDetails?.annee ?? '-'} />
 
         <div className="lg:col-span-2">
-          <DisplayInput label="Note" value={absenceDetails?.note || '-'} />
+          <DisplayTextarea label="Note" value={absenceDetails?.note || '-'} />
         </div>
 
         {/* justificatif */}

@@ -36,7 +36,9 @@ export interface SignupRequest {
     impersonate: boolean
     manage: boolean
   }
-  realmRoles: string[]
+  realmRoles?: string[]
+  groupIds?: string[]
+  groups?: string[]
   credentials?: Array<{
     type: string
     value: string
@@ -52,4 +54,18 @@ export interface AuthUser {
   lastName: string
   token: string
   refreshToken: string
+
+  // Keycloak specific
+  realmAccess: {
+    roles?: string[]
+  }
+  resourceAccess: {
+    [resource: string]: {
+      roles?: string[]
+    }
+  }
+  scope: string
+  emailVerified: boolean
+  fullName: string
+  groups: string[]
 }

@@ -2,12 +2,12 @@ import { ControlledTextarea } from '@/components/FormFeilds/ControlledTextarea/C
 import ToastNotification, { notify } from '@/lib/ToastNotification'
 import { XCircleIcon } from '@heroicons/react/16/solid'
 import axios from 'axios'
-import { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 interface PropsType {
-  setActiveRefuserAbsenceModal: (activeRefuserAbsenceModal: boolean) => void
+  setActiveRefuserAbsenceModal: (active: boolean) => void
   absenceId: string | undefined
 }
 
@@ -20,9 +20,8 @@ export default function RefuserAbsenceModal({
   absenceId,
 }: PropsType) {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  // react hook form
   const methods = useForm<IForm>({
     mode: 'onBlur',
   })
@@ -33,11 +32,9 @@ export default function RefuserAbsenceModal({
     formState: { errors },
   } = methods
 
-  const onSubmit = async (data: IForm) => {
-    setIsLoading(true)
-    try {
+  const { mutate: refuseAbsence, isPending } = useMutation({
+    mutationFn: async (data: IForm) => {
       const formData = new FormData()
-
       formData.append('statut', 'refuser')
       formData.append('motifDeRefus', data.note)
 
@@ -51,36 +48,36 @@ export default function RefuserAbsenceModal({
         }
       )
 
-      console.log(response)
-
+      return response.data
+    },
+    onSuccess: () => {
       notify({
-        message: 'Demande refuser avec success',
+        message: 'Demande refusée avec succès',
         type: 'success',
+      })
+
+      queryClient.invalidateQueries({
+        queryKey: ['absence-details', absenceId],
       })
 
       setTimeout(() => {
         navigate('/accueil/absences')
-        setIsLoading(false)
       }, 200)
-    } catch (error) {
-      console.error(error)
-
+    },
+    onError: () => {
       notify({
-        message: 'Echec',
+        message: 'Échec du refus',
         type: 'error',
       })
+    },
+  })
 
-      setIsLoading(false)
-    }
-  }
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit((data) => refuseAbsence(data))}
         className="relative flex flex-col items-center justify-center w-full h-full section-email">
-        {/* Hero icon */}
         <XCircleIcon className="w-1/3 md:w-1/4 lg:w-1/5 fill-red-500" />
-        {/* content */}
         <div className="w-full h-full section-title ">
           <h2 className="my-4 text-xl text-center font-semibold sm:text-2xl lg:text-4xl text-primaryblack">
             Refuser l'absence
@@ -94,20 +91,21 @@ export default function RefuserAbsenceModal({
             error={errors.note}
           />
         </div>
+
         {/* buttons */}
         <div className="flex flex-col items-center justify-around w-full gap-4 mt-10 mb-6 md:flex-row md:justify-center md:gap-10">
           <button
             type="button"
-            disabled={isLoading}
+            disabled={isPending}
             onClick={() => setActiveRefuserAbsenceModal(false)}
             className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
             Annuler
           </button>
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-red-500 bg-red-500">
-            {isLoading ? 'Loading...' : 'Valider'}
+            {isPending ? 'Chargement...' : 'Valider'}
           </button>
         </div>
       </form>

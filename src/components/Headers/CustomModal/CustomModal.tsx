@@ -19,7 +19,7 @@ function NewCustomModal({
     <Transition show={openModal} as={Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 z-[100] overflow-y-auto lg:py-20 bg-[#A0AEC0]/60"
+        className="fixed inset-0 z-[100] overflow-y-auto bg-[#A0AEC0]/60"
         onClose={setOpenModal}>
         <div className="flex items-center justify-center min-h-screen pt-4 pb-20 text-center sm:block sm:p-0">
           {/* This element is to trick the browser into centering the modal contents. */}

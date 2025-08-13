@@ -7,7 +7,6 @@ import {
   Lock,
   CreditCard,
   FileText,
-  Briefcase,
 } from 'lucide-react'
 
 import Header from '../Headers/HeaderDesktop/HeaderDesktop'
@@ -66,11 +65,6 @@ export default function AdminLayout({ children }: IPramasAdminLayout) {
       name: 'Informations personnelles',
       path: '/accueil/informations-personnelles',
       icon: FileText,
-    },
-    {
-      name: 'Informations Professionnelles',
-      path: '/accueil/informations-professionnelles',
-      icon: Briefcase,
     },
   ]
   return (

@@ -1,7 +1,5 @@
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
-// import WaitContract from './WaitContract/WaitContract'
 import SignContract from './SignContract/SignContract'
-// import WaitValidation from './WaitValidation/WaitValidation'
 import Pending from './Pending/Pending'
 
 export default function CompleteProfile() {
@@ -20,8 +18,4 @@ export default function CompleteProfile() {
   ) {
     return <SignContract />
   }
-
-  // if (userDetails?.statut === 'contract-signed') {
-  //   return <WaitValidation />
-  // }
 }

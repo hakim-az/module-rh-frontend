@@ -8,13 +8,14 @@ import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ControlledInput } from '@/components/FormFeilds/ControlledInput/ControlledInput'
-import type { ITitreRestau } from '../Home/components/TitreRestaurantTable'
+
 import axios from 'axios'
 import { downloadFile } from '@/lib/downloadFile'
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import { Download } from 'lucide-react'
 import PDFIcon from '@/assets/icons/pdf-icon.png'
 import UpdateTitreRestau from './componsnts/UpdateTitreRestau'
+import type { ITitreRestau } from '@/types/tables/rh'
 
 export interface IRestauForm {
   salarie: number

@@ -62,6 +62,22 @@ export const columns: ColumnDef<User>[] = [
       )
     },
   },
+  // role
+  {
+    id: 'role',
+    header: 'role',
+    accessorFn: (row) => row.role,
+    cell: ({ row }) => {
+      const role = row.original.role
+      return (
+        <div className="capitalize">
+          <span className="text-sm capitalize text-black">
+            {role ? role : '-'}
+          </span>
+        </div>
+      )
+    },
+  },
   // matricule
   {
     id: 'matricule',

@@ -5,10 +5,12 @@ import { ControlledTextarea } from '@/components/FormFeilds/ControlledTextarea/C
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import PagePath from '@/components/PagePath/PagePath'
 import { Button } from '@/components/ui/button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import SendRequestModal from './componsnts/SendRequestModal'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import AbsenceStats from '@/components/AbsenceStats/AbsenceStats'
 
 export interface IAbsenceForm {
   type: string
@@ -19,16 +21,13 @@ export interface IAbsenceForm {
 }
 
 export default function Add() {
-  // naviagte
+  const { userDetails } = useDashboardContext()
   const navigate = useNavigate()
 
-  // states
   const [formData, setFormData] = useState<IAbsenceForm | undefined>()
   const [justificatif, setJustificatif] = useState<File>()
-  const [activeSendRequestModal, setActiveSendRequestModal] =
-    useState<boolean>(false)
+  const [activeSendRequestModal, setActiveSendRequestModal] = useState(false)
 
-  // react hook form
   const methods = useForm<IAbsenceForm>({
     mode: 'onBlur',
   })
@@ -46,17 +45,38 @@ export default function Add() {
     setActiveSendRequestModal(true)
   }
 
+  useEffect(() => {
+    register('justificatif', {
+      required: 'Ce champ est requis',
+      validate: {
+        size: (file: File) =>
+          file && file.size <= 10 * 1024 * 1024
+            ? true
+            : 'Le fichier doit faire moins de 10 Mo',
+      },
+    })
+
+    if (justificatif) setValue('justificatif', justificatif)
+  }, [justificatif, register, setValue])
+
   return (
     <>
       <PagePath />
+
+      {/* Stats Section */}
+      <AbsenceStats
+        userId={userDetails?.id}
+        entryDate={userDetails?.contrat?.dateDebut}
+      />
+
+      {/* Form */}
       <FormProvider {...methods}>
         <form
-          className="w-11/12 max-w-[1280px] pb-20 mt-5 mx-auto gap-10 flex flex-col "
+          className="w-11/12 max-w-[1280px] pb-20 mt-10 mx-auto gap-10 flex flex-col"
           onSubmit={handleSubmit(onSubmit)}>
-          {/* Informations bancaire : */}
           <div className="grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md w-full">
             {/* Type d'absence */}
-            <div className="col-span-2">
+            <div className="col-span-1 lg:col-span-2">
               <ControlledSelect
                 name="type"
                 label="Type d'absence"
@@ -64,7 +84,6 @@ export default function Add() {
                 control={control}
                 rules={{ required: true }}
                 items={[
-                  // 🏛 Absences légales / réglementaires
                   { label: 'Congés payés (CP)', value: 'conges_payes' },
                   { label: 'Congés sans solde', value: 'conges_sans_solde' },
                   { label: 'Congé maternité', value: 'conge_maternite' },
@@ -110,8 +129,6 @@ export default function Add() {
                     label: 'Congé de proche aidant',
                     value: 'conge_proche_aidant',
                   },
-
-                  // 🕘 Absences liées à la gestion du temps de travail
                   {
                     label: 'Repos compensateur de remplacement (RC)',
                     value: 'repos_compensateur',
@@ -137,8 +154,6 @@ export default function Add() {
                     label: 'Télétravail (absence du bureau)',
                     value: 'teletravail',
                   },
-
-                  // 🏢 Absences spécifiques à l’entreprise / internes
                   {
                     label:
                       'Congés exceptionnels supplémentaires (convention collective)',
@@ -170,6 +185,7 @@ export default function Add() {
                 selectDefaultValue=""
               />
             </div>
+
             {/* Date de début */}
             <ControlledInput
               name="date_debut"
@@ -181,6 +197,7 @@ export default function Add() {
               inputType="date"
               inputDefaultValue=""
             />
+
             {/* Date de fin */}
             <ControlledInput
               name="date_fin"
@@ -192,8 +209,9 @@ export default function Add() {
               inputType="date"
               inputDefaultValue=""
             />
+
             {/* Note */}
-            <div className="col-span-2">
+            <div className="col-span-1 lg:col-span-2">
               <ControlledTextarea
                 name="note"
                 label="Note"
@@ -202,8 +220,9 @@ export default function Add() {
                 error={errors.note}
               />
             </div>
+
             {/* justificatif */}
-            <div className="col-span-2">
+            <div className="col-span-1 lg:col-span-2">
               <FileUploader
                 title="Pièce justificatif"
                 name="justificatif"
@@ -215,12 +234,12 @@ export default function Add() {
                     : undefined
                 }
                 defaultFile={justificatif ?? undefined}
-                required={false}
+                required={true}
               />
             </div>
           </div>
+
           <div className="w-full flex gap-16 justify-center">
-            {/* revenir */}
             <Button
               type="button"
               variant="outline"
@@ -228,13 +247,13 @@ export default function Add() {
               onClick={() => navigate('/accueil/absences')}>
               Annuler
             </Button>
-            {/* continuer */}
             <Button type="submit" variant="default" size={'lg'}>
               Demander
             </Button>
           </div>
         </form>
       </FormProvider>
+
       <CustomModal
         openModal={activeSendRequestModal}
         setOpenModal={setActiveSendRequestModal}>

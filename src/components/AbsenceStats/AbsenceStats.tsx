@@ -1,0 +1,114 @@
+// src/components/AbsenceStats/AbsenceStats.tsx
+import { CalendarDays, CheckCircle, Clock } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
+import { format } from 'date-fns'
+import axios from 'axios'
+import { useState } from 'react'
+
+interface AbsenceStatsProps {
+  userId: string | undefined
+  entryDate: string | undefined
+  defaultCurrentDate?: string
+}
+
+export default function AbsenceStats({
+  userId,
+  entryDate,
+  defaultCurrentDate,
+}: AbsenceStatsProps) {
+  const [currentDate, setCurrentDate] = useState(
+    defaultCurrentDate || format(new Date(), 'yyyy-MM-dd')
+  )
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['absenceStats', userId, currentDate],
+    queryFn: async () => {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_BASE_URL}/absences/calculate-holidays/${userId}`,
+        {
+          params: {
+            entryDate,
+            currentDate,
+          },
+        }
+      )
+      return response.data
+    },
+    enabled: !!userId,
+  })
+
+  return (
+    <div className="w-full max-w-[1280px] mx-auto">
+      {/* Header + Date Selector */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <h2 className="text-xl font-semibold">Mes jours de congés</h2>
+
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          {entryDate && (
+            <div className="text-sm text-gray-600 bg-gray-100 px-3 py-2 rounded-lg shadow-sm">
+              <span className="font-medium">Date d'entrée :</span>{' '}
+              {format(new Date(entryDate), 'yyyy-MM-dd')}
+            </div>
+          )}
+
+          <input
+            type="date"
+            value={currentDate}
+            onChange={(e) => setCurrentDate(e.target.value)}
+            className="border bg-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+      </div>
+
+      {/* States */}
+      {isLoading && (
+        <p className="text-center text-gray-500">Chargement des données...</p>
+      )}
+      {isError && (
+        <p className="text-center text-red-500">
+          Impossible de charger les détails d&apos;absence.
+        </p>
+      )}
+
+      {/* Stats */}
+      {data && (
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Jours acquis */}
+          <div className="bg-white gap-14 p-6 flex flex-col items-start justify-between rounded-xl shadow hover:shadow-lg transition">
+            <CalendarDays className="w-20 h-20 text-blue-500 mb-2" />
+            <div className="flex items-center justify-between w-full">
+              <p className="text-gray-600 text-xl font-medium">Jours acquis</p>
+              <p className="text-2xl font-bold text-blue-600">
+                {data.earnedDays}
+              </p>
+            </div>
+          </div>
+          {/*  Jours utilisés */}
+          <div className="bg-white gap-14 p-6 flex flex-col items-start justify-between rounded-xl shadow hover:shadow-lg transition">
+            <Clock className="w-20 h-20 text-orange-500 mb-2" />
+            <div className="flex items-center justify-between w-full">
+              <p className="text-gray-600 text-xl font-medium">
+                Jours utilisés
+              </p>
+              <p className="text-2xl font-bold text-orange-600">
+                {data.usedDays}
+              </p>
+            </div>
+          </div>
+          {/* Jours restants */}
+          <div className="bg-white gap-14 p-6 flex flex-col items-start justify-between rounded-xl shadow hover:shadow-lg transition">
+            <CheckCircle className="w-20 h-20 text-green-500 mb-2" />
+            <div className="flex items-center justify-between w-full">
+              <p className="text-gray-600 text-xl font-medium">
+                Jours restants
+              </p>
+              <p className="text-2xl font-bold text-green-600">
+                {data.remainingDays}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

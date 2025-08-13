@@ -1,12 +1,12 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import type { ICoffreFort } from './CoffreFortTable'
 import ActionsCell from './ActionsCell'
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
-import { CircleUserRound, Info } from 'lucide-react'
+import { CircleUserRound, MessageCircleMoreIcon } from 'lucide-react'
+import type { ICoffreFort } from '@/types/tables/rh'
 
 export const columns: ColumnDef<ICoffreFort>[] = [
   // id
@@ -112,12 +112,24 @@ export const columns: ColumnDef<ICoffreFort>[] = [
     header: 'Note',
     cell: ({ row }) => {
       return (
-        <HoverCard>
-          <HoverCardTrigger className="flex cursor-pointer font-medium items-center justify-start gap-2">
-            Note <Info className="text-yellow-500" size={18} />
-          </HoverCardTrigger>
-          <HoverCardContent>{row.getValue('note')}</HoverCardContent>
-        </HoverCard>
+        <>
+          {row.getValue('note') === '' ? (
+            <MessageCircleMoreIcon
+              className="opacity-20 cursor-not-allowed"
+              size={24}
+            />
+          ) : (
+            <HoverCard>
+              <HoverCardTrigger className="flex cursor-pointer font-medium items-center justify-start gap-3">
+                <MessageCircleMoreIcon
+                  className="hover:text-blue-500"
+                  size={24}
+                />
+              </HoverCardTrigger>
+              <HoverCardContent>{row.getValue('note')}</HoverCardContent>
+            </HoverCard>
+          )}
+        </>
       )
     },
   },

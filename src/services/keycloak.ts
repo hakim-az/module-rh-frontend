@@ -115,7 +115,7 @@ class KeycloakService {
         impersonate: true,
         manage: true,
       },
-      realmRoles: ['EMPLOYEE'],
+      groups: ['Users'],
       credentials: [
         {
           type: 'password',
@@ -125,7 +125,7 @@ class KeycloakService {
       ],
     }
 
-    // 1. Create Keycloak user
+    // 1. Create Keycloak user in the correct realm
     const kcResponse = await fetch(
       `${KEYCLOAK_BASE_URL}/admin/realms/${REALM}/users`,
       {
@@ -143,25 +143,54 @@ class KeycloakService {
         .json()
         .catch(() => ({ error: 'Signup failed' }))
       throw new Error(
-        error.errorMessage || error.error || 'Failed to create user'
+        error.errorMessage || error.error || 'Failed to create user in Keycloak'
       )
     }
 
-    // 2. Extract Keycloak user ID from Location header
+    // 2. Extract Keycloak user ID
     const locationHeader = kcResponse.headers.get('Location')
-    if (!locationHeader) throw new Error('Keycloak did not return user ID')
-    const keycloakId = locationHeader.split('/').pop()
+    console.log('📬 Keycloak Location header:', locationHeader) // Debug log
 
-    // 3. Register user in your backend database
+    if (!locationHeader) {
+      throw new Error(
+        'Keycloak did not return a Location header with the new user ID'
+      )
+    }
+
+    const keycloakId = locationHeader.split('/').pop()
+    if (!keycloakId) {
+      throw new Error('Could not extract Keycloak user ID from Location header')
+    }
+
+    // 3. Trigger verify email immediately via execute-actions-email
+    const verifyEmailResponse = await fetch(
+      `${KEYCLOAK_BASE_URL}/admin/realms/${REALM}/users/${keycloakId}/execute-actions-email`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${adminToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(['VERIFY_EMAIL']), // required actions to execute
+      }
+    )
+
+    if (!verifyEmailResponse.ok) {
+      const errText = await verifyEmailResponse.text()
+      console.error('❌ Failed to send verification email:', errText)
+    } else {
+      console.log('✅ Verification email triggered successfully')
+    }
+
+    // 4. Register user in your backend database
     try {
       const formData = new FormData()
-      formData.append('id', keycloakId!)
-      formData.append('role', 'employee')
-      formData.append('statut', 'user-registred')
+      formData.append('id', keycloakId)
+      formData.append('role', 'hr')
+      formData.append('statut', 'user-approuved')
       formData.append('avatar', '')
       formData.append('emailPersonnel', userData.email)
       formData.append('nomDeNaissance', userData.lastName)
-      formData.append('password', userData.password)
       formData.append('prenom', userData.firstName)
       formData.append('telephonePersonnel', userData.telephonePersonnel)
 
@@ -176,7 +205,7 @@ class KeycloakService {
       if (!apiResponse.ok) {
         const errorText = await apiResponse.text()
 
-        // ❌ Cleanup: Delete Keycloak user on API failure
+        // Cleanup Keycloak user if backend registration fails
         await fetch(
           `${KEYCLOAK_BASE_URL}/admin/realms/${REALM}/users/${keycloakId}`,
           {

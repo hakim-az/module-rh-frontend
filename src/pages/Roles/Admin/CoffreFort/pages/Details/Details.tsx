@@ -1,37 +1,34 @@
-import { useCallback, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
+
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import PagePath from '@/components/PagePath/PagePath'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
-import type { ICoffreFort } from '../Home/components/CoffreFortTable'
 import DownloadJustificatif from '@/components/DownloadJustificatif/DownloadJustificatif'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
+import type { ICoffreFort } from '@/types/tables/rh'
+import { useState } from 'react'
 
 export default function Details() {
   const { idCoffre } = useParams()
-  const [isLoading, setIsLoading] = useState(false)
-  const [absenceDetails, setAbsenceDetails] = useState<ICoffreFort | null>(null)
   const [openPdfModal, setOpenPdfModal] = useState(false)
   const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
-  const fetchAbsenceDetails = useCallback(async () => {
-    setIsLoading(true)
-    try {
-      const response = await axios.get(
+  const {
+    data: absenceDetails,
+    isLoading,
+    isError,
+  } = useQuery<ICoffreFort>({
+    queryKey: ['coffre-details', idCoffre],
+    queryFn: async () => {
+      const { data } = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/coffres/${idCoffre}`
       )
-      setAbsenceDetails(response.data)
-    } catch (error) {
-      console.error('Failed to fetch absence details:', error)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [idCoffre])
-
-  useEffect(() => {
-    fetchAbsenceDetails()
-  }, [fetchAbsenceDetails])
+      return data
+    },
+    enabled: !!idCoffre, // avoid running if no id
+  })
 
   if (isLoading) {
     return (
@@ -39,6 +36,17 @@ export default function Details() {
         <PagePath />
         <div className="w-11/12 mt-10 max-w-[1280px] flex items-center justify-center mx-auto h-80 bg-white border border-gray-300 rounded-lg">
           <LoadingSpinner />
+        </div>
+      </>
+    )
+  }
+
+  if (isError) {
+    return (
+      <>
+        <PagePath />
+        <div className="w-11/12 mt-10 max-w-[1280px] text-center text-red-500 mx-auto h-80 bg-white border border-gray-300 rounded-lg flex items-center justify-center">
+          Erreur lors du chargement des détails du coffre.
         </div>
       </>
     )
@@ -53,7 +61,7 @@ export default function Details() {
           label="Salarié"
           value={
             absenceDetails?.user
-              ? `${absenceDetails?.user?.nomDeNaissance} ${absenceDetails?.user?.prenom}`
+              ? `${absenceDetails.user.nomDeNaissance} ${absenceDetails.user.prenom}`
               : '-'
           }
         />

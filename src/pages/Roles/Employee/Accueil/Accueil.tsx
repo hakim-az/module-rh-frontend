@@ -7,6 +7,7 @@ import Absences from './components/Absences/Absences'
 import TitreRestaurant from './components/TitreRestaurant/TitreRestaurant'
 import AbsencesChart from './components/Charts/AbsencesChart'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
+import AbsenceStats from '@/components/AbsenceStats/AbsenceStats'
 
 export interface DashboardData {
   totals: {
@@ -59,6 +60,10 @@ export default function Accueil() {
         <Cards dashboardData={dashboardData} />
         <AbsencesChart />
       </div>
+      <AbsenceStats
+        userId={userDetails?.id}
+        entryDate={userDetails?.contrat?.dateDebut}
+      />
       <Absences dashboardData={dashboardData} />
       <CoffreFort dashboardData={dashboardData} />
       <TitreRestaurant dashboardData={dashboardData} />

@@ -185,6 +185,7 @@ export default function Add() {
                     : undefined
                 }
                 defaultFile={justificatif ?? undefined}
+                required={true}
               />
             </div>
           </div>

@@ -16,7 +16,7 @@ export const columns: ColumnDef<User>[] = [
     id: 'salarie',
     header: 'Salarié',
     accessorFn: (row) =>
-      `${row.nomDeNaissance} ${row.prenom} ${row.emailProfessionnel}`,
+      `${row.nomDeNaissance} ${row.prenom} ${row.emailPersonnel}`,
     filterFn: (row, columnId, filterValue) => {
       const fullName = (row.getValue(columnId) as string)
         .toLowerCase()
@@ -40,7 +40,7 @@ export const columns: ColumnDef<User>[] = [
             <span className="text-sm font-bold">
               {row.original.nomDeNaissance} {row.original.prenom}
             </span>
-            <span className="text-xs">{row.original.emailProfessionnel}</span>
+            <span className="text-xs">{row.original.emailPersonnel}</span>
           </div>
         </div>
       )

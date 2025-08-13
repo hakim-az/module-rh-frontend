@@ -39,7 +39,7 @@ export default function UploadAvatarModal({
 
       formData.append('avatar', data.avatar)
 
-      const response = await axios.patch(
+      const response = await axios.put(
         `${import.meta.env.VITE_API_BASE_URL}/users/${userDetails?.id}/avatar`,
         formData,
         {
@@ -84,7 +84,7 @@ export default function UploadAvatarModal({
           </h2>
           <div className="col-span-2">
             <ImageUploader
-              title="Photot de profile"
+              title="Photot de profil"
               name="avatar"
               required
               setValue={setValue}

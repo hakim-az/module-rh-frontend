@@ -2,10 +2,10 @@ import React from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
 import CompleteProfileLayout from '@/components/Layouts/CompleteProfileLayout/CompleteProfileLayout'
-import CompleteProfile from './CompleteProfile/CompleteProfile'
+import CompleteProfile from '../../CompleteProfile/CompleteProfile'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import IntegrationFormProvider from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormProvider'
-import IntegrationForm from './CompleteProfile/IntegrationForm/IntegrationForm'
+import IntegrationForm from '../../CompleteProfile/IntegrationForm/IntegrationForm'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
@@ -20,11 +20,12 @@ const InfosPro = React.lazy(() => import('./Profile/InfosPro/InfosPro'))
 
 export default function Employee() {
   const { userDetails } = useDashboardContext()
+  const statut = userDetails?.statut
 
-  if (userDetails?.statut == 'user-registred') {
+  // Handle "user not approved" and "user registered" in a single switch
+  if (statut === 'user-registred') {
     return (
       <Routes>
-        {/* Home page */}
         <Route
           index
           element={
@@ -35,33 +36,12 @@ export default function Employee() {
             </CompleteProfileLayout>
           }
         />
-
-        {/* Redirect any other route to index */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     )
   }
 
-  if (userDetails?.statut !== 'user-approuved') {
-    return (
-      <Routes>
-        {/* Home page */}
-        <Route
-          index
-          element={
-            <CompleteProfileLayout>
-              <CompleteProfile />
-            </CompleteProfileLayout>
-          }
-        />
-
-        {/* Redirect any other route to index */}
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    )
-  }
-
-  if (userDetails?.statut === 'user-approuved') {
+  if (statut === 'user-approuved') {
     return (
       <Routes>
         <Route
@@ -84,4 +64,19 @@ export default function Employee() {
       </Routes>
     )
   }
+
+  // Fallback: any other statut
+  return (
+    <Routes>
+      <Route
+        index
+        element={
+          <CompleteProfileLayout>
+            <CompleteProfile />
+          </CompleteProfileLayout>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
 }

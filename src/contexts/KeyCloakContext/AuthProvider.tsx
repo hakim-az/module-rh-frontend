@@ -114,7 +114,17 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     async (username: string, password: string) => {
       const response = await keycloakService.login(username, password)
 
-      const decodedToken = jwtDecode<DecodedToken>(response.access_token)
+      const decodedToken = jwtDecode<
+        DecodedToken & {
+          realm_access?: { roles?: string[] }
+          resource_access?: Record<string, { roles?: string[] }>
+          scope?: string
+          email_verified?: boolean
+          name?: string
+          groups?: string[]
+        }
+      >(response.access_token)
+
       const authUser: AuthUser = {
         id: decodedToken.sub,
         username: decodedToken.preferred_username || username,
@@ -123,6 +133,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         lastName: decodedToken.family_name || '',
         token: response.access_token,
         refreshToken: response.refresh_token,
+
+        // New fields from token
+        realmAccess: decodedToken.realm_access ?? { roles: [] },
+        resourceAccess: decodedToken.resource_access ?? {},
+        scope: decodedToken.scope ?? '',
+        emailVerified: decodedToken.email_verified ?? false,
+        fullName: decodedToken.name ?? '',
+        groups: decodedToken.groups ?? [],
       }
 
       setUser(authUser)
