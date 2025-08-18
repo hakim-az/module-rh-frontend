@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import type { ICoffreFort } from './CoffreFortTable'
+import type { ITitreRestau } from './TitreRestaurant'
 import {
   HoverCard,
   HoverCardContent,
@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/hover-card'
 import { CircleUserRound, MessageCircleMoreIcon } from 'lucide-react'
 
-export const columns: ColumnDef<ICoffreFort>[] = [
+export const columns: ColumnDef<ITitreRestau>[] = [
   // id
   {
     accessorKey: 'id',
@@ -52,30 +52,6 @@ export const columns: ColumnDef<ICoffreFort>[] = [
       )
     },
   },
-  // type
-  {
-    accessorKey: 'typeBulletin',
-    header: 'Type',
-    cell: ({ row }) => {
-      const rawType = row.getValue('typeBulletin') as string | undefined
-
-      const formatType = (type?: string) => {
-        if (!type || typeof type !== 'string') return '-'
-        return type
-          .split('_')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ')
-      }
-
-      return (
-        <div>
-          <span className="text-sm font-medium text-black">
-            {formatType(rawType)}
-          </span>
-        </div>
-      )
-    },
-  },
   // Année
   {
     accessorKey: 'annee',
@@ -100,6 +76,20 @@ export const columns: ColumnDef<ICoffreFort>[] = [
         <div className="capitalize">
           <span className="text-sm capitalize text-black">
             {row.getValue('mois')}
+          </span>
+        </div>
+      )
+    },
+  },
+  // Nbr de jours ouvrés
+  {
+    accessorKey: 'nbrJours',
+    header: 'Nbr de jours ouvrés',
+    cell: ({ row }) => {
+      return (
+        <div className="capitalize">
+          <span className="text-sm capitalize text-black">
+            {row.getValue('nbrJours')}
           </span>
         </div>
       )

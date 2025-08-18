@@ -97,6 +97,19 @@ export default function UsersChart() {
     return chartData.reduce((acc, curr) => acc + (curr?.visitors ?? 0), 0)
   }, [chartData])
 
+  const isEmpty = totalStatus === 0
+
+  // If empty, show one gray slice as placeholder
+  const displayChartData = isEmpty
+    ? [
+        {
+          browser: 'Salariés',
+          visitors: 1,
+          fill: '#e0e0e0',
+        },
+      ]
+    : chartData
+
   // fetch designs
   const fetchAbsences = React.useCallback(async () => {
     try {
@@ -125,7 +138,7 @@ export default function UsersChart() {
       ) : (
         <Card className="flex flex-col">
           <CardHeader className="items-center pb-0">
-            <CardTitle>Statut des utilisateurs</CardTitle>
+            <CardTitle>Statut des salariés</CardTitle>
             <CardDescription>
               État d'avancement de janvier à décembre 2025
             </CardDescription>
@@ -140,7 +153,7 @@ export default function UsersChart() {
                   content={<ChartTooltipContent hideLabel />}
                 />
                 <Pie
-                  data={chartData}
+                  data={displayChartData}
                   dataKey="visitors"
                   nameKey="browser"
                   innerRadius={90}

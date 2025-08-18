@@ -23,13 +23,21 @@ function getRoleFromSession(): UserRole {
     // Check groups or realmAccess.roles to determine role
     if (user.groups?.includes('Users')) return 'employee'
     if (
+      // prospection
+      user.groups?.includes('Prospection-Admin') ||
       user.groups?.includes('Prospection-Commercial') ||
-      user.groups?.includes('Prospection-Admin')
+      user.groups?.includes('Prospection-Directeur') ||
+      user.groups?.includes('Prospection-Gestionnaire') ||
+      user.groups?.includes('Prospection-Manager') ||
+      // vente
+      user.groups?.includes('Vente-Admin') ||
+      user.groups?.includes('Vente-Commercial') ||
+      user.groups?.includes('Vente-Manager')
     ) {
       return 'employee'
     }
     if (user.groups?.includes('RH-Manager')) return 'hr'
-    if (user.groups?.includes('Admins')) return 'admin'
+    if (user.groups?.includes('RH-Admin')) return 'admin'
 
     // Fallback: check realmAccess roles
     const roles: string[] = user.realmAccess?.roles || []

@@ -27,7 +27,7 @@ import TablePagination from '@/components/TablePagination/TablePagination'
 import SearchFilter from './SearchFilter'
 import type { ITitreRestau } from '@/types/tables/rh'
 
-// 👇 Fetcher function
+// Fetch function
 const fetchTitreRestaux = async (): Promise<ITitreRestau[]> => {
   const response = await axios.get(
     `${import.meta.env.VITE_API_BASE_URL}/restaux`
@@ -41,7 +41,6 @@ export default function TitreRestaurantTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
-  // ✅ React Query usage
   const {
     data: restaux = [],
     isLoading,
@@ -81,70 +80,83 @@ export default function TitreRestaurantTable() {
       <SearchFilter table={table} />
 
       {/* Table */}
-      {isLoading ? (
-        <div className="text-center py-10 text-muted-foreground">
-          Chargement...
-        </div>
-      ) : isError ? (
-        <div className="text-center py-10 text-red-500">
-          Une erreur est survenue lors du chargement des titres restaurant.
-        </div>
-      ) : (
-        <div className="rounded-md border bg-white min-w-[350px] flex flex-col items-center justify-between">
-          <Table>
-            {/* Header */}
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="py-5">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
+      <div className="rounded-md border bg-white min-h-[350px] flex flex-col items-center justify-between">
+        <Table>
+          {/* Header */}
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="py-5">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+
+          {/* Body */}
+          <TableBody>
+            {isLoading ? (
+              // Loading skeleton
+              Array.from({ length: 5 }).map((_, idx) => (
+                <TableRow key={`skeleton-${idx}`}>
+                  {columns.map((col) => (
+                    <TableCell key={col.id} className="py-6">
+                      <div className="h-4 bg-gray-200 rounded animate-pulse w-full"></div>
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
+              ))
+            ) : isError ? (
+              // Error row
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-[300px]">
+                  <div className="flex items-center justify-center w-full h-full text-red-500 text-xl">
+                    Une erreur est survenue lors du chargement des titres
+                    restaurant.
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
+              // Data rows
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="py-4">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              // Not found
+              <NotFoundTable
+                columns={columns.length}
+                title="Titre restaurant introuvable"
+                content="Aucun titre restaurant trouvé pour l'utilisateur sélectionné."
+              />
+            )}
+          </TableBody>
+        </Table>
 
-            {/* Data */}
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && 'selected'}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="py-4">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <NotFoundTable
-                  columns={columns.length}
-                  title="Titre restaurant introuvable"
-                  content="Aucun titre restaurant trouvé pour l'utilisateur sélectionné."
-                />
-              )}
-            </TableBody>
-          </Table>
-
-          {/* Pagination */}
-          {table.getRowModel().rows?.length ? (
-            <div className="flex items-center justify-center py-8">
-              <TablePagination table={table} />
-            </div>
-          ) : null}
-        </div>
-      )}
+        {/* Pagination */}
+        {!isLoading && !isError && table.getRowModel().rows?.length ? (
+          <div className="flex items-center justify-center py-8">
+            <TablePagination table={table} />
+          </div>
+        ) : null}
+      </div>
     </div>
   )
 }

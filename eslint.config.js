@@ -33,6 +33,7 @@ export default tseslint.config(
       ...reactDom.configs.recommended.rules,
       semi: ['error', 'never'],
       'prettier/prettier': ['error', { semi: false, endOfLine: 'auto' }],
+      'react-x/no-array-index-key': 'off',
     },
   }
 )

@@ -44,7 +44,7 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
           {userDetails?.nomDeNaissance} {userDetails?.prenom}
         </span>
         <span className="text-lg font-medium">
-          {userDetails?.contrat?.poste}{' '}
+          {userDetails?.emailProfessionnel}
         </span>
       </div>
       {/* update button */}
@@ -52,7 +52,7 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
         <button
           type="button"
           onClick={() => navigate('modifier-informations-personnelles')}
-          className=" bg-white mt-16 text-sm font-medium text-[#4141D2] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
+          className=" bg-white mt-24 text-sm font-medium text-[#4141D2] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
           Modifier mes informations personnelles
         </button>
       )}
@@ -61,7 +61,7 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
         <button
           type="button"
           onClick={() => navigate('modifier-informations-professionnelles')}
-          className=" bg-white mt-16 text-sm font-medium text-[#4141D2] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
+          className=" bg-white mt-24 text-sm font-medium text-[#4141D2] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
           Modifier mes informations professionnelles
         </button>
       )}

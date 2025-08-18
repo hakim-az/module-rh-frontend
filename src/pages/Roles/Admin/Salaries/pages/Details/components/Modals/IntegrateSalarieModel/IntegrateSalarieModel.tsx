@@ -26,6 +26,7 @@ export default function IntegrateSalarieModel({
   const REALM = 'master'
 
   const GROUP_OPTIONS: GroupOption[] = [
+    // prospection
     {
       value: '0f3c0500-aee8-4548-af3e-1109392cfc77',
       label: 'Prospection commercial',
@@ -41,6 +42,28 @@ export default function IntegrateSalarieModel({
     {
       value: 'a1808de1-597f-43ef-9e35-de2073aabd78',
       label: 'Prospection Admin',
+    },
+    // rh
+    {
+      value: 'd662844e-7cfc-44df-aec1-9db763b0f324',
+      label: 'RH Assistant',
+    },
+    {
+      value: 'bf1dde96-eb99-46b4-8920-27ccb67723c9',
+      label: 'RH Manager',
+    },
+    // vente
+    {
+      value: '86e493f7-7a78-4e7d-ac1a-9bced2037da9',
+      label: 'Vente Admin',
+    },
+    {
+      value: 'ab894891-23fb-4cd5-bc48-a776b6611bf3',
+      label: 'Vente Commercial',
+    },
+    {
+      value: '65888698-c0fc-493a-8c80-93fb620eca66',
+      label: 'Vente Manager',
     },
   ]
 

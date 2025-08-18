@@ -101,12 +101,14 @@ class KeycloakService {
       username: userData.username,
       enabled: true,
       totp: false,
-      emailVerified: true,
+      emailVerified: false,
+      // emailVerified: true,
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
       disableableCredentialTypes: [],
-      requiredActions: [],
+      requiredActions: ['VERIFY_EMAIL'],
+      // requiredActions: [],
       notBefore: 0,
       access: {
         manageGroupMembership: true,
@@ -123,6 +125,9 @@ class KeycloakService {
           temporary: false,
         },
       ],
+      attributes: {
+        phoneNumber: [userData.telephonePersonnel],
+      },
     }
 
     // 1. Create Keycloak user in the correct realm
@@ -186,8 +191,8 @@ class KeycloakService {
     try {
       const formData = new FormData()
       formData.append('id', keycloakId)
-      formData.append('role', 'hr')
-      formData.append('statut', 'user-approuved')
+      formData.append('role', 'employee')
+      formData.append('statut', 'user-registred')
       formData.append('avatar', '')
       formData.append('emailPersonnel', userData.email)
       formData.append('nomDeNaissance', userData.lastName)

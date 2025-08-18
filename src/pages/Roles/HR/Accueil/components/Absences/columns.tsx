@@ -1,5 +1,5 @@
 import type { ColumnDef } from '@tanstack/react-table'
-import type { IAbsence } from './AbsencesTable'
+import type { IAbsence } from './Absences'
 import { CircleUserRound } from 'lucide-react'
 
 export const columns: ColumnDef<IAbsence>[] = [

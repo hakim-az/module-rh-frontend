@@ -20,6 +20,7 @@ export interface AuthResponse {
 export interface SignupRequest {
   createdTimestamp?: number
   username: string
+  // PhoneNumber: string
   enabled: boolean
   totp: boolean
   emailVerified: boolean
@@ -44,6 +45,7 @@ export interface SignupRequest {
     value: string
     temporary: boolean
   }>
+  attributes?: Record<string, string[]>
 }
 
 export interface AuthUser {

@@ -6,6 +6,7 @@ import { ProtectedRoute } from './pages/KeyCloakAuth/ProtectedRoute'
 import DashboardProvider from './contexts/DashboardContext/DashboardProvider'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
+import NotFound from './pages/NotFound/NotFound'
 
 function AppContent() {
   const { user, isLoading } = useAuth()
@@ -36,6 +37,7 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   ) : (

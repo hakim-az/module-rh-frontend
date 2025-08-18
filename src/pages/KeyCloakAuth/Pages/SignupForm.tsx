@@ -95,7 +95,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
 
         <Input
           label="Adresse email"
-          type="email"
+          type="text"
           placeholder="jean@exemple.com"
           error={errors.email?.message}
           {...register('email')}

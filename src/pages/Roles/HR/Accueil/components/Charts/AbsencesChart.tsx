@@ -76,7 +76,7 @@ export default function AbsencesChart() {
   const displayChartData = isEmpty
     ? [
         {
-          browser: 'empty',
+          browser: 'Absences',
           visitors: 1,
           fill: '#e0e0e0',
         },

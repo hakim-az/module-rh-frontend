@@ -103,7 +103,6 @@ export default function InfosPerso({
             label="Nom usuel"
             placeholder="Entrer un nom usuel"
             register={register}
-            rules={{ required: true }}
             error={errors.nom_usuel}
             inputType="text"
             inputDefaultValue={employeePersonalInfo.nom_usuel}
@@ -309,7 +308,6 @@ export default function InfosPerso({
             label="Complément d'adresse "
             placeholder="Entrer un complément d'adresse "
             register={register}
-            rules={{ required: true }}
             error={errors.complement_adresse}
             inputType="text"
             inputDefaultValue={employeePersonalInfo.complement_adresse}
