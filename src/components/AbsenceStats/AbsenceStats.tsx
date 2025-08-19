@@ -1,5 +1,5 @@
 // src/components/AbsenceStats/AbsenceStats.tsx
-import { Award, CalendarDays, CheckCircle, Clock } from 'lucide-react'
+import { Award, BarChart, CalendarDays, CheckCircle, Clock } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import axios from 'axios'
@@ -73,7 +73,7 @@ export default function AbsenceStats({
 
       {/* Stats */}
       {data && (
-        <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {/* Jours acquis */}
           <div className="bg-white gap-14 p-6 flex flex-col items-start justify-between rounded-xl shadow hover:shadow-lg transition">
             <CalendarDays className="w-20 h-20 text-blue-500 mb-2" />
@@ -115,6 +115,18 @@ export default function AbsenceStats({
               </p>
               <p className="text-2xl font-bold text-purple-600">
                 {data.totalAcquisDepuisDebut}
+              </p>
+            </div>
+          </div>
+          {/* Jours consommés totaux depuis le début */}
+          <div className="bg-white gap-14 p-6 flex flex-col items-start justify-between rounded-xl shadow hover:shadow-lg transition">
+            <BarChart className="w-20 h-20 text-red-500 mb-2" />
+            <div className="flex items-center justify-between w-full">
+              <p className="text-gray-600 text-xl font-medium">
+                Total jours utilisés
+              </p>
+              <p className="text-2xl font-bold text-red-600">
+                {data.totalConsommesDepuisDebut}
               </p>
             </div>
           </div>
