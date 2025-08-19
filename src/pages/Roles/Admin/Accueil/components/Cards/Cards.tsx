@@ -52,7 +52,7 @@ export default function Cards({ dashboardData, isLoading }: IProps) {
         : cards.map((card) => (
             <div
               key={card.id}
-              className="bg-[#1E3A8A] border p-5 flex gap-20 flex-col items-end border-gray-300 shadow rounded-md">
+              className="bg-[#1B86CB] border p-5 flex gap-20 flex-col items-end border-gray-300 shadow rounded-md">
               <card.icon className="w-10 h-10 text-white" />
               <div className="w-full flex text-white items-center justify-between">
                 <span className="text-lg font-medium">{card.title}</span>

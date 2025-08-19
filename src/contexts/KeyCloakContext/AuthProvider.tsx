@@ -169,6 +169,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     []
   )
 
+  /**
+   * 🔒 Ban a user (disable login in Keycloak)
+   */
+  const banUser = useCallback(async (userId: string) => {
+    await keycloakService.banUser(userId)
+  }, [])
+
+  /**
+   * 🔓 Enable a user (allow login in Keycloak)
+   */
+  const enableUser = useCallback(async (userId: string) => {
+    await keycloakService.enableUser(userId)
+  }, [])
+
   const value = useMemo(
     () => ({
       user,
@@ -176,8 +190,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       login,
       signup,
       logout,
+      banUser,
+      enableUser,
     }),
-    [user, isLoading, login, signup, logout]
+    [user, isLoading, login, signup, logout, banUser, enableUser]
   )
 
   return <AuthContext value={value}>{children}</AuthContext>

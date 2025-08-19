@@ -74,6 +74,90 @@ class KeycloakService {
     return this.adminToken
   }
 
+  /**
+   * 🔒 Ban user in Keycloak and update your API
+   */
+  async banUser(userId: string): Promise<void> {
+    const adminToken = await this.getAdminToken()
+
+    // 1️⃣ Disable user in Keycloak
+    const kcResponse = await fetch(
+      `${KEYCLOAK_BASE_URL}/admin/realms/${REALM}/users/${userId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify({ enabled: false }),
+      }
+    )
+
+    if (!kcResponse.ok) {
+      const error = await kcResponse.text()
+      throw new Error(error || 'Failed to ban user in Keycloak')
+    }
+
+    // 2️⃣ Update your own API to set statut = "user-banned"
+    const apiResponse = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`,
+      {
+        method: 'PATCH', // or PATCH if your API supports partial update
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ statut: 'user-banned' }),
+      }
+    )
+
+    if (!apiResponse.ok) {
+      const error = await apiResponse.text()
+      throw new Error(error || 'Failed to update user statut in API')
+    }
+  }
+
+  /**
+   * 🔓 Enable user in Keycloak and update your API
+   */
+  async enableUser(userId: string): Promise<void> {
+    const adminToken = await this.getAdminToken()
+
+    // 1️⃣ Enable user in Keycloak
+    const kcResponse = await fetch(
+      `${KEYCLOAK_BASE_URL}/admin/realms/${REALM}/users/${userId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminToken}`,
+        },
+        body: JSON.stringify({ enabled: true }),
+      }
+    )
+
+    if (!kcResponse.ok) {
+      const error = await kcResponse.text()
+      throw new Error(error || 'Failed to enable user in Keycloak')
+    }
+
+    // 2️⃣ Update your own API to set statut = "active" (or your default)
+    const apiResponse = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`,
+      {
+        method: 'PATCH', // or PATCH if your API supports partial update
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ statut: 'user-approuved' }),
+      }
+    )
+
+    if (!apiResponse.ok) {
+      const error = await apiResponse.text()
+      throw new Error(error || 'Failed to update user statut in API')
+    }
+  }
+
   async signup(
     userData: Omit<
       SignupRequest,

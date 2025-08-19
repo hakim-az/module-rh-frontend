@@ -28,7 +28,7 @@ export default function SideNavbar({
   const sidebarBg = (role?: UserRole) => {
     switch (role) {
       case 'admin':
-        return '#1E3A8A'
+        return '#1B86CB'
       case 'hr':
         return '#4141D2'
       case 'employee':

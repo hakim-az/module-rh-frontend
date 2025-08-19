@@ -20,15 +20,21 @@ export default function AbsenceStats({
     defaultCurrentDate || format(new Date(), 'yyyy-MM-dd')
   )
 
+  const initialStartDate = entryDate
+    ? format(new Date(entryDate), 'yyyy-MM-dd')
+    : `${new Date().getFullYear()}-06-01`
+
+  const [startDate, setStartDate] = useState(initialStartDate)
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['absenceStats', userId, currentDate],
+    queryKey: ['absenceStats', userId, currentDate, startDate],
     queryFn: async () => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_BASE_URL}/absences/holidays-cumulative`,
         {
           params: {
             userId: userId, // <- corrige ici
-            dateDebut: entryDate?.split('T')[0],
+            dateDebut: startDate,
             dateFin: currentDate,
           },
         }
@@ -44,20 +50,52 @@ export default function AbsenceStats({
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <h2 className="text-xl font-semibold">Mes jours de congés</h2>
 
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-          {entryDate && (
+        <div className="flex flex-col sm:flex-row sm:items-end gap-8">
+          {/* {entryDate && (
             <div className="text-sm text-gray-600 bg-gray-100 px-3 py-2 rounded-lg shadow-sm">
               <span className="font-medium">Date d'entrée :</span>{' '}
               {format(new Date(entryDate), 'yyyy-MM-dd')}
             </div>
-          )}
+          )} */}
 
-          <input
-            type="date"
-            value={currentDate}
-            onChange={(e) => setCurrentDate(e.target.value)}
-            className="border bg-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex items-end gap-2">
+            <div className="flex flex-col gap-2">
+              <span>Début de contrat</span>
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="border bg-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+
+            {entryDate && (
+              <button
+                type="button"
+                onClick={() => setStartDate(initialStartDate)}
+                className="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm"
+                title="Retour à la date d'entrée">
+                ↺
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-2">
+            {/* Current Date Input + Reset */}
+            <input
+              type="date"
+              value={currentDate}
+              onChange={(e) => setCurrentDate(e.target.value)}
+              className="border bg-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="button"
+              onClick={() => setCurrentDate(format(new Date(), 'yyyy-MM-dd'))}
+              className="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm"
+              title="Réinitialiser à aujourd'hui">
+              ↺
+            </button>
+          </div>
         </div>
       </div>
 

@@ -14,6 +14,8 @@ interface AuthContextType {
     password: string
   }) => Promise<void>
   logout: () => void
+  banUser: (userId: string) => Promise<void>
+  enableUser: (userId: string) => Promise<void>
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)

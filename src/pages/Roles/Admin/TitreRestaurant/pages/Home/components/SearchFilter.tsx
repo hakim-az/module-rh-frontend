@@ -112,7 +112,7 @@ export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {
         variant="default"
         size={'lg'}
         onClick={() => navigate('ajouter-un-titre-restaurant')}
-        className="ml-auto bg-[#1E3A8A] w-full mt-5 lg:mt-0 lg:min-w-[200px] lg:w-[220px] gap-3">
+        className="ml-auto bg-[#1B86CB] w-full mt-5 lg:mt-0 lg:min-w-[200px] lg:w-[220px] gap-3">
         Ajouter un titre restaurant <CircleFadingPlus />
       </Button>
     </div>

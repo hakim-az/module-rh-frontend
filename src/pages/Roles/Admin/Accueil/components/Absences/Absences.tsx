@@ -92,7 +92,7 @@ export default function AbsencesTable({
         <button
           type="button"
           onClick={() => navigate('absences')}
-          className="flex items-center justify-center gap-3 bg-[#4141D2] text-white px-5 py-2 rounded hover:scale-110 transition-all ease-in-out delay-75">
+          className="flex items-center justify-center gap-3 bg-[#1B86CB] text-white px-5 py-2 rounded hover:scale-110 transition-all ease-in-out delay-75">
           Voir tout <ChevronRight className="w-5" />
         </button>
       </div>

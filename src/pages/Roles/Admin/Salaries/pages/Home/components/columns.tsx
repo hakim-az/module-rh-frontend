@@ -40,7 +40,7 @@ export const columns: ColumnDef<User>[] = [
             <span className="text-sm font-bold">
               {row.original.nomDeNaissance} {row.original.prenom}
             </span>
-            <span className="text-xs">{row.original.emailProfessionnel}</span>
+            <span className="text-xs">{row.original.emailPersonnel}</span>
           </div>
         </div>
       )
@@ -69,15 +69,22 @@ export const columns: ColumnDef<User>[] = [
     accessorFn: (row) => row.role,
     cell: ({ row }) => {
       const role = row.original.role
+
+      const displayRole =
+        role === 'employee'
+          ? 'salarié'
+          : role === 'hr'
+            ? 'ressource humaine'
+            : role || '-'
+
       return (
         <div className="capitalize">
-          <span className="text-sm capitalize text-black">
-            {role ? role : '-'}
-          </span>
+          <span className="text-sm text-black">{displayRole}</span>
         </div>
       )
     },
   },
+
   // matricule
   {
     id: 'matricule',
@@ -88,7 +95,7 @@ export const columns: ColumnDef<User>[] = [
       return (
         <div className="capitalize">
           <span className="text-sm capitalize text-black">
-            {matricule ? matricule : '-'}
+            {matricule ? matricule : '/'}
           </span>
         </div>
       )
@@ -100,11 +107,9 @@ export const columns: ColumnDef<User>[] = [
     header: 'Téléphone',
     cell: ({ row }) => {
       return (
-        <div className="capitalize">
-          <span className="text-sm text-black lowercase">
-            {row.getValue('telephonePersonnel') ?? '-'}
-          </span>
-        </div>
+        <span className="text-sm text-black lowercase">
+          {row.getValue('telephonePersonnel') ?? '-'}
+        </span>
       )
     },
   },
@@ -127,6 +132,8 @@ export const columns: ColumnDef<User>[] = [
             return '#EC4899'
           case 'user-approuved':
             return '#10B981'
+          case 'user-banned':
+            return '#f00'
           default:
             return '#000000'
         }
@@ -146,6 +153,8 @@ export const columns: ColumnDef<User>[] = [
             return 'Contrat signé'
           case 'user-approuved':
             return 'Accès validé'
+          case 'user-banned':
+            return 'Banner'
           default:
             return '-'
         }
@@ -154,13 +163,11 @@ export const columns: ColumnDef<User>[] = [
       const statut = row.getValue('statut') as string
 
       return (
-        <div className="capitalize">
-          <span
-            style={{ backgroundColor: renderStatusBg(statut) }}
-            className="text-white w-32 inline-block text-center py-1.5 rounded text-xs">
-            {getShortStatusFR(statut)}
-          </span>
-        </div>
+        <span
+          style={{ backgroundColor: renderStatusBg(statut) }}
+          className="text-white w-32 inline-block text-center py-1.5 rounded text-xs">
+          {getShortStatusFR(statut)}
+        </span>
       )
     },
   },

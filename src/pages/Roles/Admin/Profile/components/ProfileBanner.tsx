@@ -17,7 +17,7 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
   const isPersonalInfo = pathname.includes('informations-personnelles')
   const isProfessionalInfo = pathname.includes('informations-professionnelles')
   return (
-    <div className="bg-[#1E3A8A] md:sticky md:top-36 rounded-md border border-gray-300 flex flex-col items-center justify-center p-8">
+    <div className="bg-[#1B86CB] md:sticky md:top-36 rounded-md border border-gray-300 flex flex-col items-center justify-center p-8">
       {/* avatar */}
       <div className="relative">
         {userDetails?.avatar === '' ? (
@@ -52,7 +52,7 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
         <button
           type="button"
           onClick={() => navigate('modifier-informations-personnelles')}
-          className=" bg-white mt-24 text-sm font-medium text-[#1E3A8A] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
+          className=" bg-white mt-24 text-sm font-medium text-[#1B86CB] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
           Modifier mes informations personnelles
         </button>
       )}
@@ -61,7 +61,7 @@ export default function ProfileBanner({ setActiveUploadAvatarModal }: IProps) {
         <button
           type="button"
           onClick={() => navigate('modifier-informations-professionnelles')}
-          className=" bg-white mt-24 text-sm font-medium text-[#1E3A8A] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
+          className=" bg-white mt-24 text-sm font-medium text-[#1B86CB] px-8 py-3.5 rounded hover:scale-105 transition-all ease-in-out delay-75">
           Modifier mes informations professionnelles
         </button>
       )}
