@@ -13,12 +13,11 @@ import { useMutation } from '@tanstack/react-query'
 
 interface ActionsCellProps {
   id: string // l'ID de l'utilisateur
-  statut: string
+  statut: 'user-registred' | 'user-approuved' | 'user-banned' // typage strict
 }
 
 export default function ActionsCell({ id, statut }: ActionsCellProps) {
   const navigate = useNavigate()
-
   const { banUser, enableUser } = useAuth()
 
   // Mutation pour bannir un utilisateur
@@ -26,7 +25,7 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
     mutationFn: () => banUser(id),
     onSuccess: () => {
       console.log(`✅ Utilisateur ${id} banni avec succès`)
-      window.location.reload() // rafraîchit la page
+      window.location.reload()
     },
     onError: (error) => {
       console.error('❌ Échec du bannissement de l’utilisateur :', error)
@@ -38,7 +37,7 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
     mutationFn: () => enableUser(id),
     onSuccess: () => {
       console.log(`✅ Utilisateur ${id} réactivé avec succès`)
-      window.location.reload() // rafraîchit la page
+      window.location.reload()
     },
     onError: (error) => {
       console.error('❌ Échec de la réactivation de l’utilisateur :', error)
@@ -59,39 +58,40 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
 
           {/* Action détails */}
           <DropdownMenuItem
-            disabled={statut === 'user-registred' || statut === 'user-banned'}
+            disabled={statut === 'user-registred'}
             className="group cursor-pointer"
             onClick={() => navigate(`details/${id}`)}>
             <InfoIcon className="mr-2 h-4 w-4 group-hover:text-blue-500" />
             <span className="group-hover:text-blue-500">Détails salarié</span>
           </DropdownMenuItem>
 
-          {/* Bannir / Réactiver */}
-          {statut === 'user-banned' ? (
-            <DropdownMenuItem
-              className="group cursor-pointer"
-              disabled={enableUserMutation.isPending}
-              onClick={() => enableUserMutation.mutate()}>
-              <Ban className="mr-2 h-4 w-4 group-hover:text-green-500" />
-              <span className="group-hover:text-green-500">
-                {enableUserMutation.isPending
-                  ? 'Activation...'
-                  : `Réactiver l'utilisateur`}
-              </span>
-            </DropdownMenuItem>
-          ) : (
-            <DropdownMenuItem
-              className="group cursor-pointer"
-              disabled={banUserMutation.isPending}
-              onClick={() => banUserMutation.mutate()}>
-              <Ban className="mr-2 h-4 w-4 group-hover:text-red-500" />
-              <span className="group-hover:text-red-500">
-                {banUserMutation.isPending
-                  ? 'Bannissement...'
-                  : `Bannir l'utilisateur`}
-              </span>
-            </DropdownMenuItem>
-          )}
+          {/* Bannir / Réactiver seulement si approuvé ou banni */}
+          {(statut === 'user-approuved' || statut === 'user-banned') &&
+            (statut === 'user-banned' ? (
+              <DropdownMenuItem
+                className="group cursor-pointer"
+                disabled={enableUserMutation.isPending}
+                onClick={() => enableUserMutation.mutate()}>
+                <Ban className="mr-2 h-4 w-4 group-hover:text-green-500" />
+                <span className="group-hover:text-green-500">
+                  {enableUserMutation.isPending
+                    ? 'Activation...'
+                    : 'Réactiver l’utilisateur'}
+                </span>
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                className="group cursor-pointer"
+                disabled={banUserMutation.isPending}
+                onClick={() => banUserMutation.mutate()}>
+                <Ban className="mr-2 h-4 w-4 group-hover:text-red-500" />
+                <span className="group-hover:text-red-500">
+                  {banUserMutation.isPending
+                    ? 'Bannissement...'
+                    : 'Bannir l’utilisateur'}
+                </span>
+              </DropdownMenuItem>
+            ))}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

@@ -57,6 +57,7 @@ export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {
             <SelectItem value="email-sent">Email envoyé</SelectItem>
             <SelectItem value="contract-signed">Contrat signé</SelectItem>
             <SelectItem value="user-approuved">Accès validé</SelectItem>
+            <SelectItem value="user-banned">Utilisateur banner</SelectItem>
           </SelectContent>
         </Select>
       </div>
