@@ -33,8 +33,12 @@ export const AuthPage: React.FC = () => {
                 Compte créé !
               </h2>
               <p className="text-gray-600 mb-4">
-                Votre compte a été créé avec succès. Vous pouvez maintenant vous
-                connecter.
+                Votre compte a été créé avec succès. Un{' '}
+                <span className="font-semibold text-gray-900">
+                  email de confirmation
+                </span>{' '}
+                vous a été envoyé. Veuillez confirmer votre adresse email pour
+                activer votre compte et pouvoir vous connecter.
               </p>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div

@@ -1,5 +1,5 @@
 // src/components/AbsenceStats/AbsenceStats.tsx
-import { CalendarDays, CheckCircle, Clock } from 'lucide-react'
+import { Award, CalendarDays, CheckCircle, Clock } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import axios from 'axios'
@@ -24,11 +24,12 @@ export default function AbsenceStats({
     queryKey: ['absenceStats', userId, currentDate],
     queryFn: async () => {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/calculate-holidays/${userId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/absences/holidays-cumulative`,
         {
           params: {
-            entryDate,
-            currentDate,
+            userId: userId, // <- corrige ici
+            dateDebut: entryDate?.split('T')[0],
+            dateFin: currentDate,
           },
         }
       )
@@ -72,15 +73,13 @@ export default function AbsenceStats({
 
       {/* Stats */}
       {data && (
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Jours acquis */}
           <div className="bg-white gap-14 p-6 flex flex-col items-start justify-between rounded-xl shadow hover:shadow-lg transition">
             <CalendarDays className="w-20 h-20 text-blue-500 mb-2" />
             <div className="flex items-center justify-between w-full">
               <p className="text-gray-600 text-xl font-medium">Jours acquis</p>
-              <p className="text-2xl font-bold text-blue-600">
-                {data.earnedDays}
-              </p>
+              <p className="text-2xl font-bold text-blue-600">{data.acquis}</p>
             </div>
           </div>
           {/*  Jours utilisés */}
@@ -91,7 +90,7 @@ export default function AbsenceStats({
                 Jours utilisés
               </p>
               <p className="text-2xl font-bold text-orange-600">
-                {data.usedDays}
+                {data.consommes}
               </p>
             </div>
           </div>
@@ -103,7 +102,19 @@ export default function AbsenceStats({
                 Jours restants
               </p>
               <p className="text-2xl font-bold text-green-600">
-                {data.remainingDays}
+                {data.restants}
+              </p>
+            </div>
+          </div>
+          {/* Totla jours acquis */}
+          <div className="bg-white gap-14 p-6 flex flex-col items-start justify-between rounded-xl shadow hover:shadow-lg transition">
+            <Award className="w-20 h-20 text-purple-500 mb-2" />
+            <div className="flex items-center justify-between w-full">
+              <p className="text-gray-600 text-xl font-medium">
+                Total jours acquis
+              </p>
+              <p className="text-2xl font-bold text-purple-600">
+                {data.totalAcquisDepuisDebut}
               </p>
             </div>
           </div>
