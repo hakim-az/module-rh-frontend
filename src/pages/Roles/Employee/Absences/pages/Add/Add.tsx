@@ -40,10 +40,23 @@ export default function Add() {
     control,
     setValue,
     watch,
+    unregister,
   } = methods
 
   const dateDebut = watch('date_debut')
   const dateFin = watch('date_fin')
+  const typeAbsence = watch('type')
+
+  // ✅ Types d'absences où le justificatif n'est pas obligatoire
+  const typesJustificatifNonObligatoire = [
+    'conges_payes',
+    'jours_rtt',
+    'teletravail',
+    'jour_pont',
+  ]
+
+  const isJustificatifRequired =
+    !typesJustificatifNonObligatoire.includes(typeAbsence)
 
   const onSubmit = (data: IAbsenceForm) => {
     setFormData(data)
@@ -51,18 +64,33 @@ export default function Add() {
   }
 
   useEffect(() => {
-    register('justificatif', {
-      required: 'Ce champ est requis',
-      validate: {
-        size: (file: File) =>
-          file && file.size <= 10 * 1024 * 1024
-            ? true
-            : 'Le fichier doit faire moins de 10 Mo',
-      },
-    })
+    // ✅ Validation conditionnelle du justificatif selon le type d'absence
+    if (isJustificatifRequired) {
+      register('justificatif', {
+        required: 'Ce champ est requis',
+        validate: {
+          size: (file: File) =>
+            file && file.size <= 10 * 1024 * 1024
+              ? true
+              : 'Le fichier doit faire moins de 10 Mo',
+        },
+      })
+    } else {
+      // Si le justificatif n'est pas requis, on l'enregistre sans validation obligatoire
+      unregister('justificatif')
+      register('justificatif', {
+        required: false,
+        validate: {
+          size: (file: File) =>
+            !file || file.size <= 10 * 1024 * 1024
+              ? true
+              : 'Le fichier doit faire moins de 10 Mo',
+        },
+      })
+    }
 
     if (justificatif) setValue('justificatif', justificatif)
-  }, [justificatif, register, setValue])
+  }, [justificatif, register, setValue, unregister, isJustificatifRequired])
 
   return (
     <>
@@ -259,8 +287,14 @@ export default function Add() {
                     : undefined
                 }
                 defaultFile={justificatif ?? undefined}
-                required={true}
+                required={isJustificatifRequired} // ✅ Dynamique selon le type d'absence
               />
+              {/* ✅ Message informatif pour les types non obligatoires */}
+              {!isJustificatifRequired && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Le justificatif est optionnel pour ce type d'absence
+                </p>
+              )}
             </div>
           </div>
 
