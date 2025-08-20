@@ -28,6 +28,7 @@ export default function SendRequestModal({
         formData.append('typeAbsence', data.type)
         formData.append('dateDebut', data.date_debut.toString())
         formData.append('dateFin', data.date_fin.toString())
+        formData.append('partieDeJour', data.partieDeJour)
         formData.append('note', data.note)
         formData.append('statut', 'en-attente')
         formData.append('motifDeRefus', '')

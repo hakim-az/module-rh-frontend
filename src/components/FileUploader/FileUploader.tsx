@@ -63,10 +63,6 @@ export default function FileUploader<T extends FieldValues>({
     maxSize: 10 * 1024 * 1024,
     accept: {
       'application/pdf': ['.pdf'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
-        ['.docx'],
-      'image/jpeg': ['.jpeg', '.jpg'],
-      'image/png': ['.png'],
     },
   })
 

@@ -1,9 +1,9 @@
-// src/components/AbsenceStats/AbsenceStats.tsx
 import { Award, BarChart, CalendarDays, CheckCircle, Clock } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import axios from 'axios'
 import { useState } from 'react'
+import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 
 interface AbsenceStatsProps {
   userId: string | undefined
@@ -19,6 +19,8 @@ export default function AbsenceStats({
   const [currentDate, setCurrentDate] = useState(
     defaultCurrentDate || format(new Date(), 'yyyy-MM-dd')
   )
+
+  const { userDetails } = useDashboardContext()
 
   const initialStartDate = entryDate
     ? format(new Date(entryDate), 'yyyy-MM-dd')
@@ -51,34 +53,40 @@ export default function AbsenceStats({
         <h2 className="text-xl font-semibold">Mes jours de congés</h2>
 
         <div className="flex flex-col sm:flex-row sm:items-end gap-8">
-          {/* {entryDate && (
-            <div className="text-sm text-gray-600 bg-gray-100 px-3 py-2 rounded-lg shadow-sm">
-              <span className="font-medium">Date d'entrée :</span>{' '}
-              {format(new Date(entryDate), 'yyyy-MM-dd')}
-            </div>
-          )} */}
+          {userDetails?.role === 'employee' && (
+            <>
+              {entryDate && (
+                <div className="text-sm text-gray-600 bg-gray-100 px-3 py-2 rounded-lg shadow-sm">
+                  <span className="font-medium">Date d'entrée :</span>{' '}
+                  {format(new Date(entryDate), 'yyyy-MM-dd')}
+                </div>
+              )}
+            </>
+          )}
 
-          <div className="flex items-end gap-2">
-            <div className="flex flex-col gap-2">
-              <span>Début de contrat</span>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="border bg-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
+          {userDetails?.role === 'hr' && (
+            <div className="flex items-end gap-2">
+              <div className="flex flex-col gap-2">
+                <span>Début de contrat</span>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="border bg-white rounded-lg px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
 
-            {entryDate && (
-              <button
-                type="button"
-                onClick={() => setStartDate(initialStartDate)}
-                className="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm"
-                title="Retour à la date d'entrée">
-                ↺
-              </button>
-            )}
-          </div>
+              {entryDate && (
+                <button
+                  type="button"
+                  onClick={() => setStartDate(initialStartDate)}
+                  className="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 text-sm"
+                  title="Retour à la date d'entrée">
+                  ↺
+                </button>
+              )}
+            </div>
+          )}
 
           <div className="flex items-center gap-2">
             {/* Current Date Input + Reset */}

@@ -21,25 +21,25 @@ export default function InfoPersoDispalyForm({ details, loading }: IProps) {
               Identité :
             </span>
             {/* civilité */}
-            <DisplayInput label="Civilité" value={details?.civilite ?? '-'} />
+            <DisplayInput label="Civilité" value={details?.civilite || '-'} />
             {/* Prénom */}
-            <DisplayInput label="Prénom" value={details?.prenom ?? '-'} />
+            <DisplayInput label="Prénom" value={details?.prenom || '-'} />
             {/* Nom de naissance */}
             <DisplayInput
               label="Nome de naissance"
-              value={details?.nomDeNaissance ?? '-'}
+              value={details?.nomDeNaissance || '-'}
             />
             {/* Nom usuel */}
-            <DisplayInput label="Nom usuel" value={details?.nomUsuel ?? '-'} />
+            <DisplayInput label="Nom usuel" value={details?.nomUsuel || '-'} />
             {/* Situation familiale */}
             <DisplayInput
               label="Situation familiale"
-              value={details?.situationFamiliale ?? '-'}
+              value={details?.situationFamiliale || '-'}
             />
             {/* Numéro de sécurité sociale */}
             <DisplayInput
               label="Numéro de sécurité sociale"
-              value={details?.numeroSecuriteSociale ?? '-'}
+              value={details?.numeroSecuriteSociale || '-'}
             />
           </div>
           {/* Naissance et nationalité : */}
@@ -51,25 +51,25 @@ export default function InfoPersoDispalyForm({ details, loading }: IProps) {
             <DisplayInput
               label="Date de naissance"
               value={
-                formatDateToLabel(details?.naissance?.dateDeNaissance) ?? '-'
+                formatDateToLabel(details?.naissance?.dateDeNaissance) || '-'
               }
             />
             {/* Pays de naissance */}
             <DisplayInput
               label="Pays de naissance"
               value={
-                getCountryLabel(details?.naissance?.paysDeNaissance) ?? '-'
+                getCountryLabel(details?.naissance?.paysDeNaissance) || '-'
               }
             />
             {/* Départmemnt de naissance */}
             <DisplayInput
               label="Départmemnt de naissance"
-              value={details?.naissance?.departementDeNaissance ?? '-'}
+              value={details?.naissance?.departementDeNaissance || '-'}
             />
             {/* commune de naissance */}
             <DisplayInput
               label="commune de naissance"
-              value={details?.naissance?.communeDeNaissance ?? '-'}
+              value={details?.naissance?.communeDeNaissance || '-'}
             />
             {/* Pays de nationalité */}
             <DisplayInput
@@ -85,22 +85,22 @@ export default function InfoPersoDispalyForm({ details, loading }: IProps) {
             {/* E-mail personnelle */}
             <DisplayInput
               label="E-mail personnelle"
-              value={details?.emailPersonnel ?? '-'}
+              value={details?.emailPersonnel || '-'}
             />
             {/* E-mail professionnel */}
             <DisplayInput
               label="E-mail professionnel"
-              value={details?.emailProfessionnel ?? '-'}
+              value={details?.emailProfessionnel || '-'}
             />
             {/* Téléphone portable personnelle */}
             <DisplayInput
               label="Téléphone portable personnelle"
-              value={details?.telephonePersonnel ?? '-'}
+              value={details?.telephonePersonnel || '-'}
             />
             {/* Téléphone portable professionnel */}
             <DisplayInput
               label="Téléphone portable professionnel"
-              value={details?.telephoneProfessionnel ?? '-'}
+              value={details?.telephoneProfessionnel || '-'}
             />
             {/* adresse */}
             <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
@@ -114,22 +114,22 @@ export default function InfoPersoDispalyForm({ details, loading }: IProps) {
             {/* Code postal */}
             <DisplayInput
               label="Code postal"
-              value={details?.adresse?.codePostal ?? '-'}
+              value={details?.adresse?.codePostal || '-'}
             />
             {/* Ville */}
             <DisplayInput
               label="Ville"
-              value={details?.adresse?.ville ?? '-'}
+              value={details?.adresse?.ville || '-'}
             />
             {/* Adresse */}
             <DisplayInput
               label="Adresse"
-              value={details?.adresse?.adresse ?? '-'}
+              value={details?.adresse?.adresse || '-'}
             />
             {/* Complément d'adresse */}
             <DisplayInput
               label="Complément d'adresse"
-              value={details?.adresse?.complementAdresse ?? '-'}
+              value={details?.adresse?.complementAdresse || '-'}
             />
           </div>
         </section>

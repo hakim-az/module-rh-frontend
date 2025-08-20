@@ -16,6 +16,7 @@ export interface IAbsenceForm {
   type: string
   date_debut: Date
   date_fin: Date
+  partieDeJour: string
   note: string
   justificatif: File
 }
@@ -38,7 +39,11 @@ export default function Add() {
     formState: { errors },
     control,
     setValue,
+    watch,
   } = methods
+
+  const dateDebut = watch('date_debut')
+  const dateFin = watch('date_fin')
 
   const onSubmit = (data: IAbsenceForm) => {
     setFormData(data)
@@ -209,6 +214,26 @@ export default function Add() {
               inputType="date"
               inputDefaultValue=""
             />
+
+            {/* Partie de jour (affiché uniquement si les dates sont identiques) */}
+            {dateDebut && dateFin && dateDebut === dateFin && (
+              <div className="col-span-1 lg:col-span-2">
+                <ControlledSelect
+                  name="partieDeJour"
+                  label="Partie de jour"
+                  placeholder="Partie de jour"
+                  control={control}
+                  rules={{ required: true }}
+                  items={[
+                    { label: 'Matin', value: 'matin' },
+                    { label: 'Après midi', value: 'apres_midi' },
+                    { label: 'Journée entière', value: 'journee_entiere' },
+                  ]}
+                  error={errors.partieDeJour}
+                  selectDefaultValue=""
+                />
+              </div>
+            )}
 
             {/* Note */}
             <div className="col-span-1 lg:col-span-2">

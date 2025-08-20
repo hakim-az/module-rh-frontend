@@ -13,7 +13,7 @@ import { useMutation } from '@tanstack/react-query'
 
 interface ActionsCellProps {
   id: string // l'ID de l'utilisateur
-  statut: 'user-registred' | 'user-approuved' | 'user-banned' // typage strict
+  statut: string
 }
 
 export default function ActionsCell({ id, statut }: ActionsCellProps) {
