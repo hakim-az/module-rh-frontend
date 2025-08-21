@@ -7,6 +7,8 @@ import DashboardProvider from './contexts/DashboardContext/DashboardProvider'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import NotFound from './pages/NotFound/NotFound'
+import ToastNotification from '@/lib/ToastNotification'
+import NotificationListener from './lib/NotificationListenner'
 
 function AppContent() {
   const { user, isLoading } = useAuth()
@@ -39,6 +41,11 @@ function AppContent() {
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {/* le container pour les toasts */}
+      <ToastNotification />
+
+      {/* le listener websocket */}
+      <NotificationListener />
     </>
   ) : (
     <AuthPage />
