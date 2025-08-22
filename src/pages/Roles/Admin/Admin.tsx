@@ -12,7 +12,6 @@ const CoffreFort = React.lazy(() => import('./CoffreFort/CoffreFort'))
 const TitreRestaurant = React.lazy(
   () => import('./TitreRestaurant/TitreRestaurant')
 )
-const InfoPerso = React.lazy(() => import('./Profile/InfosPerso/InfoPerso'))
 
 export default function Admin() {
   return (
@@ -28,7 +27,6 @@ export default function Admin() {
         <Route path="salariés/*" element={<Salaries />} />
         <Route path="coffre-fort/*" element={<CoffreFort />} />
         <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
-        <Route path="informations-personnelles/*" element={<InfoPerso />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

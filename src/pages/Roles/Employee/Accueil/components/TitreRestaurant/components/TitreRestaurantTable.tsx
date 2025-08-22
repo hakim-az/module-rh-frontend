@@ -132,7 +132,7 @@ export default function TitreRestaurantTable({ dashboardData }: IProps) {
               <NotFoundTable
                 columns={columns.length}
                 title="Titre restaurant introuvable"
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                content="Aucun titre restaurant n'a encore été enregistré."
               />
             )}
           </TableBody>

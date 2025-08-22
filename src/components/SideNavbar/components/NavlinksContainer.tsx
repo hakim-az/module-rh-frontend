@@ -3,7 +3,7 @@ import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContex
 import type { NavLinkType } from '../SideNavbar'
 
 interface PropsType {
-  navlinkSidebar: NavLinkType[]
+  navlinkSidebar?: NavLinkType[]
   menuHeader: string
 }
 
@@ -27,7 +27,7 @@ function NavlinksContainer({ navlinkSidebar, menuHeader }: PropsType) {
         className={`text-white font-semibold text-xl mb-3.5  ${wideNavbar ? 'inline-block' : 'hidden'}`}>
         {menuHeader}
       </span>
-      {navlinkSidebar.map((navlink) => (
+      {navlinkSidebar?.map((navlink) => (
         <div
           className="relative flex items-center justify-end"
           key={navlink.path}>

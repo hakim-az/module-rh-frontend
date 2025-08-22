@@ -1,14 +1,6 @@
 // compoenets
 import { useLocation } from 'react-router-dom'
-import {
-  Home,
-  Users,
-  CalendarOff,
-  Lock,
-  CreditCard,
-  FileText,
-  Briefcase,
-} from 'lucide-react'
+import { Home, Users, CalendarOff, Lock, CreditCard } from 'lucide-react'
 
 import Header from '../Headers/HeaderDesktop/HeaderDesktop'
 import HeaderMobile from '../Headers/HeaderMobile/HeaderMobile'
@@ -61,24 +53,9 @@ export default function HrLayout({ children }: IPramasHrLayout) {
     },
   ]
 
-  const navlinkSidebarProfile: NavLinkType[] = [
-    {
-      name: 'Informations personnelles',
-      path: '/accueil/informations-personnelles',
-      icon: FileText,
-    },
-    {
-      name: 'Informations Professionnelles',
-      path: '/accueil/informations-professionnelles',
-      icon: Briefcase,
-    },
-  ]
   return (
     <div className="flex bg-[#f6f9ff] font-poppins">
-      <SideNavBarInfluencer
-        navlinkSidebar={navlinks}
-        navlinkSidebarProfile={navlinkSidebarProfile}
-      />
+      <SideNavBarInfluencer navlinkSidebar={navlinks} />
       <main className="flex-1">
         <MarginWidthWrapper>
           <Header nameRoute={nameRoute} />

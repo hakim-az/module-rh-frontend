@@ -131,7 +131,7 @@ export default function CoffreFortTable({ dashboardData }: IProps) {
               <NotFoundTable
                 columns={columns.length}
                 title="Coffre fort introuvable"
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                content="Aucun bulletin n'a encore été déposé dans le coffre-fort."
               />
             )}
           </TableBody>

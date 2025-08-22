@@ -132,7 +132,7 @@ export default function AbsencesTable({ dashboardData }: IProps) {
               <NotFoundTable
                 columns={columns.length}
                 title="Absences introuvable"
-                content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                content="Aucune absence n'a encore été enregistrée."
               />
             )}
           </TableBody>

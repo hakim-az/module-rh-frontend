@@ -1,35 +1,17 @@
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import { Link } from 'react-router-dom'
-
-type UserRole = 'employee' | 'hr' | 'admin'
+import LogoText from '@/assets/icons/logo-horizontal.svg?react'
+import LogoSimple from '@/assets/icons/logo-simple.svg?react'
 
 function LogoCard() {
-  const { wideNavbar, userDetails } = useDashboardContext()
-  const role = userDetails?.role as UserRole | undefined
-
-  const findRole = (role?: UserRole) => {
-    switch (role) {
-      case 'admin':
-        return 'Admin'
-      case 'hr':
-        return 'RH'
-      case 'employee':
-        return 'Salarié'
-      default:
-        return undefined
-    }
-  }
+  const { wideNavbar } = useDashboardContext()
 
   return (
-    <Link to="/" className="flex items-center justify-center h-28">
+    <Link to="/" className="flex items-center justify-center">
       {wideNavbar ? (
-        <span className="flex capitalize w-full px-8 text-white items-start justify-start text-3xl font-medium gap-x-5 text-primaryBlue">
-          {findRole(role)}
-        </span>
+        <LogoText className="h-26 mx-auto mt-6 fill-transparent" />
       ) : (
-        <span className="flex capitalize text-white items-center justify-center w-full">
-          {findRole(role)}
-        </span>
+        <LogoSimple className="h-16 mt-6 mx-auto fill-transparent" />
       )}
     </Link>
   )

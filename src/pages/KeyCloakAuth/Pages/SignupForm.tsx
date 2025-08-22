@@ -5,8 +5,9 @@ import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
 import { Input } from '../ui/Input'
 import { Button } from '../ui/Button'
 import { PasswordStrengthIndicator } from '../ui/PasswordStrengthIndicator'
-import { Eye, EyeOff, UserPlus } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 import { signupSchema, type SignupFormData } from '@/lib/validation'
+import Logo from '@/assets/icons/logo-text.svg?react'
 
 interface SignupFormProps {
   onToggleForm: () => void
@@ -54,9 +55,7 @@ export const SignupForm: React.FC<SignupFormProps> = ({
   return (
     <div className="w-full max-w-md">
       <div className="text-center mb-8">
-        <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-4">
-          <UserPlus className="w-6 h-6 text-green-600" />
-        </div>
+        <Logo className="w-40 fill-transparent mx-auto mb-4" />
         <h2 className="text-3xl font-bold text-gray-900">Créer un compte</h2>
         <p className="text-gray-600 mt-2">Rejoignez-nous aujourd'hui</p>
       </div>

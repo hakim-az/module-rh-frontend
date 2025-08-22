@@ -14,7 +14,7 @@ export interface NavLinkType {
 
 interface PropsType {
   navlinkSidebar: NavLinkType[]
-  navlinkSidebarProfile: NavLinkType[]
+  navlinkSidebarProfile?: NavLinkType[]
 }
 
 export default function SideNavbar({
@@ -57,12 +57,13 @@ export default function SideNavbar({
           navlinkSidebar={navlinkSidebar}
           menuHeader="Platform"
         />
-
         {/* profile */}
-        <NavlinksContainer
-          navlinkSidebar={navlinkSidebarProfile}
-          menuHeader="Profile"
-        />
+        {navlinkSidebarProfile && (
+          <NavlinksContainer
+            navlinkSidebar={navlinkSidebarProfile}
+            menuHeader="Profile"
+          />
+        )}
       </div>
 
       {/* logout card */}
