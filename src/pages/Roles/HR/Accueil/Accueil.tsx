@@ -7,8 +7,6 @@ import Absences from './components/Absences/Absences'
 import TitreRestaurant from './components/TitreRestaurant/TitreRestaurant'
 import AbsencesChart from './components/Charts/AbsencesChart'
 import UsersChart from './components/Charts/UsersChart'
-import AbsenceStats from '@/components/AbsenceStats/AbsenceStats'
-import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import { useQuery } from '@tanstack/react-query'
 
 export interface DashboardData {
@@ -35,8 +33,6 @@ const fetchDashboard = async (): Promise<DashboardData> => {
 }
 
 export default function Accueil() {
-  const { userDetails } = useDashboardContext()
-
   // ✅ React Query hook
   const {
     data: dashboardData,
@@ -55,10 +51,6 @@ export default function Accueil() {
         <UsersChart />
         <AbsencesChart />
       </div>
-      <AbsenceStats
-        userId={userDetails?.id}
-        entryDate={userDetails?.contrat?.dateDebut}
-      />
       <Salaries
         dashboardData={dashboardData}
         isLoading={isLoading}

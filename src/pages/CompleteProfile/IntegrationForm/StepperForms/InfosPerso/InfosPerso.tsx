@@ -233,7 +233,7 @@ export default function InfosPerso({
           {/* Téléphone portable professionnel */}
           <ControlledInput
             name="tel_pro"
-            label="Téléphone portable personnelle "
+            label="Téléphone portable professionnel "
             placeholder="0 7 77 77 77 77"
             register={register}
             rules={{
