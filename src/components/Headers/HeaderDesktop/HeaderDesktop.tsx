@@ -9,77 +9,79 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
-import { CircleUserRound, Bell } from 'lucide-react'
+import { CircleUserRound } from 'lucide-react'
 import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
-import { useEffect } from 'react'
-import { io, Socket } from 'socket.io-client'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
-import axios from 'axios'
+// import { useEffect } from 'react'
+// import { io, Socket } from 'socket.io-client'
+// import { useQuery, useQueryClient } from '@tanstack/react-query'
+// import axios from 'axios'
 
 interface PropsType {
   nameRoute: string
 }
 
-interface Notification {
-  id: string
-  title: string
-  message: string
-  read?: boolean
-}
+// interface Notification {
+//   id: string
+//   title: string
+//   message: string
+//   read?: boolean
+// }
 
 function Header({ nameRoute }: PropsType) {
   const { userDetails } = useDashboardContext()
   const { logout } = useAuth()
   const scrolled = useScroll(5)
   const location = useLocation()
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
 
   // Fetch notifications using React Query
-  const { data: notifications = [] } = useQuery<Notification[]>({
-    queryKey: ['notifications', userDetails?.id],
-    queryFn: async () => {
-      if (!userDetails?.id) return []
-      const res = await axios.get(
-        `http://192.168.1.116:3000/notifications/${userDetails.id}`
-      )
-      return res.data
-    },
-    enabled: !!userDetails?.id,
-  })
+  // const { data: notifications = [] } = useQuery<Notification[]>({
+  //   queryKey: ['notifications', userDetails?.id],
+  //   queryFn: async () => {
+  //     if (!userDetails?.id) return []
+  //     const res = await axios.get(
+  //       `${import.meta.env.VITE_API_BASE_URL}/notifications/${userDetails.id}`
+  //     )
+  //     return res.data
+  //   },
+  //   enabled: !!userDetails?.id,
+  // })
 
-  useEffect(() => {
-    if (!userDetails?.id) return
+  // useEffect(() => {
+  //   if (!userDetails?.id) return
 
-    const socket: Socket = io('http://192.168.1.116:3000')
+  //   const socket: Socket = io('${import.meta.env.VITE_API_BASE_URL}')
 
-    socket.on('connect', () => {
-      console.log('Connected to notifications socket')
-      socket.emit('join', userDetails.id) // join user-specific room
-    })
+  //   socket.on('connect', () => {
+  //     console.log('Connected to notifications socket')
+  //     socket.emit('join', userDetails.id) // join user-specific room
+  //   })
 
-    socket.on('notification', (notif: Notification) => {
-      console.log('New notification received', notif)
-      queryClient.setQueryData<Notification[]>(
-        ['notifications', userDetails.id],
-        (old = []) => [notif, ...old]
-      )
-    })
+  //   socket.on('notification', (notif: Notification) => {
+  //     console.log('New notification received', notif)
+  //     queryClient.setQueryData<Notification[]>(
+  //       ['notifications', userDetails.id],
+  //       (old = []) => [notif, ...old]
+  //     )
+  //   })
 
-    return () => {
-      socket.disconnect()
-    }
-  }, [queryClient, userDetails?.id])
+  //   return () => {
+  //     socket.disconnect()
+  //   }
+  // }, [queryClient, userDetails?.id])
 
   // Mark a notification as read
-  const markAsRead = async (id: string) => {
-    await axios.patch(`http://192.168.1.116:3000/notifications/${id}/read`)
-    queryClient.setQueryData<Notification[]>(
-      ['notifications', userDetails?.id],
-      (old = []) => old.map((n) => (n.id === id ? { ...n, read: true } : n))
-    )
-  }
+  // const markAsRead = async (id: string) => {
+  //   await axios.patch(
+  //     `${import.meta.env.VITE_API_BASE_URL}/notifications/${id}/read`
+  //   )
+  //   queryClient.setQueryData<Notification[]>(
+  //     ['notifications', userDetails?.id],
+  //     (old = []) => old.map((n) => (n.id === id ? { ...n, read: true } : n))
+  //   )
+  // }
 
-  const unreadCount = notifications.filter((n) => !n.read).length
+  // const unreadCount = notifications.filter((n) => !n.read).length
 
   const selectedLayout = location.pathname.split('/')[1]
   const locationArr = location.pathname.split('/')
@@ -113,7 +115,7 @@ function Header({ nameRoute }: PropsType) {
           </span>
 
           {/* Notifications Dropdown */}
-          <DropdownMenu>
+          {/* <DropdownMenu>
             <DropdownMenuTrigger>
               <div className="relative">
                 <Bell className="text-red-600" />
@@ -141,7 +143,7 @@ function Header({ nameRoute }: PropsType) {
                 ))
               )}
             </DropdownMenuContent>
-          </DropdownMenu>
+          </DropdownMenu> */}
 
           <div className="flex items-center gap-8">
             {/* User Avatar Dropdown */}
