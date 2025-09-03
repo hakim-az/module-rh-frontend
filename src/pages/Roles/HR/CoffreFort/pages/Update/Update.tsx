@@ -28,6 +28,10 @@ export default function Add() {
   // naviagte
   const navigate = useNavigate()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   // states
   const [formData, setFormData] = useState<ICoffre | undefined>()
   const [justificatif, setJustificatif] = useState<File>()
@@ -82,7 +86,13 @@ export default function Add() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/coffres/${idCoffre}`
+        `${import.meta.env.VITE_API_BASE_URL}/coffres/${idCoffre}`,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       console.log(response)
       setCoffreDetails(response.data)
@@ -92,7 +102,7 @@ export default function Add() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [idCoffre])
+  }, [idCoffre, token])
 
   // donload file
   const handleDownload = useCallback(async () => {

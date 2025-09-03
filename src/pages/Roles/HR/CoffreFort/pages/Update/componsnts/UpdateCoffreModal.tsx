@@ -17,6 +17,10 @@ export default function UpdateCoffreModal({
   const navigate = useNavigate()
   const { idCoffre } = useParams()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   // Mutation function to update the coffre
   const updateCoffre = async (data: ICoffre) => {
     const formData = new FormData()
@@ -34,6 +38,7 @@ export default function UpdateCoffreModal({
       {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
         },
       }
     )

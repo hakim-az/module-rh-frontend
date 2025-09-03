@@ -29,8 +29,17 @@ import type { ICoffreFort } from '@/types/tables/rh'
 
 // 👇 Query function
 const fetchCoffres = async (): Promise<ICoffreFort[]> => {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const response = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/coffres`
+    `${import.meta.env.VITE_API_BASE_URL}/coffres`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   )
   return response.data
 }

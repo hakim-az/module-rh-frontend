@@ -15,6 +15,10 @@ export default function Details() {
   const [openPdfModal, setOpenPdfModal] = useState(false)
   const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const {
     data: absenceDetails,
     isLoading,
@@ -23,7 +27,12 @@ export default function Details() {
     queryKey: ['coffre-details', idCoffre],
     queryFn: async () => {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/coffres/${idCoffre}`
+        `${import.meta.env.VITE_API_BASE_URL}/coffres/${idCoffre}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       return data
     },

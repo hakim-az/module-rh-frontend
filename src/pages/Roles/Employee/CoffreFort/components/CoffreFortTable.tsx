@@ -56,6 +56,10 @@ export default function CoffreFortTable() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [coffres, setCoffres] = useState<ICoffreFort[]>()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const table = useReactTable({
     data: coffres ?? [],
     columns,
@@ -85,7 +89,12 @@ export default function CoffreFortTable() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/coffres/user/${userDetails?.id}`
+        `${import.meta.env.VITE_API_BASE_URL}/coffres/user/${userDetails?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       console.log(response)
       setCoffres(response.data)
@@ -95,7 +104,7 @@ export default function CoffreFortTable() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [userDetails?.id])
+  }, [token, userDetails?.id])
 
   useEffect(() => {
     fetchCoffres()
