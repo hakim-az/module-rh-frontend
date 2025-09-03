@@ -28,8 +28,17 @@ import { columns } from './columns'
 
 // 👇 Fetcher function
 const fetchSalaries = async (): Promise<User[]> => {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const response = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/users/admin`
+    `${import.meta.env.VITE_API_BASE_URL}/users/admin`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   )
   return response.data.data
 }

@@ -80,6 +80,10 @@ class KeycloakService {
   async banUser(userId: string): Promise<void> {
     const adminToken = await this.getAdminToken()
 
+    // token
+    const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+    const token = authUser?.token
+
     // 1️⃣ Disable user in Keycloak
     const kcResponse = await fetch(
       `${KEYCLOAK_BASE_URL}/admin/realms/${REALM}/users/${userId}`,
@@ -105,6 +109,7 @@ class KeycloakService {
         method: 'PATCH', // or PATCH if your API supports partial update
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ statut: 'user-banned' }),
       }
@@ -121,6 +126,10 @@ class KeycloakService {
    */
   async enableUser(userId: string): Promise<void> {
     const adminToken = await this.getAdminToken()
+
+    // token
+    const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+    const token = authUser?.token
 
     // 1️⃣ Enable user in Keycloak
     const kcResponse = await fetch(
@@ -147,6 +156,7 @@ class KeycloakService {
         method: 'PATCH', // or PATCH if your API supports partial update
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ statut: 'user-approuved' }),
       }
@@ -284,7 +294,7 @@ class KeycloakService {
       formData.append('telephonePersonnel', userData.telephonePersonnel)
 
       const apiResponse = await fetch(
-        `${import.meta.env.VITE_API_BASE_URL}/users`,
+        `${import.meta.env.VITE_API_BASE_URL}/signup`,
         {
           method: 'POST',
           body: formData,

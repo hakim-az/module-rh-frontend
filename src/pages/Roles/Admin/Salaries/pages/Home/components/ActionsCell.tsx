@@ -87,8 +87,8 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
                 <Ban className="mr-2 h-4 w-4 group-hover:text-red-500" />
                 <span className="group-hover:text-red-500">
                   {banUserMutation.isPending
-                    ? 'Bannissement...'
-                    : 'Bannir l’utilisateur'}
+                    ? 'Désactivation...'
+                    : 'Désactiver l’utilisateur'}
                 </span>
               </DropdownMenuItem>
             ))}
