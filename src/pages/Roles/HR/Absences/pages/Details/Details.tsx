@@ -14,14 +14,17 @@ import { formatDateToLabel } from '@/lib/formatDate'
 import type { IAbsence } from '@/types/tables/rh'
 import { useQuery } from '@tanstack/react-query'
 import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
-import AbsenceStats from '@/components/AbsenceStats/AbsenceStats'
 
 export default function Details() {
   const { absenceId } = useParams()
   const [openPdfModal, setOpenPdfModal] = useState(false)
   const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
-  const { salarieDetails, setUserId } = useSalarieDetailsContext()
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
+  const { setUserId } = useSalarieDetailsContext()
 
   const [activeApprouverAbsenceModal, setActiveApprouverAbsenceModal] =
     useState(false)
@@ -37,7 +40,12 @@ export default function Details() {
     queryKey: ['absence-details', absenceId],
     queryFn: async () => {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       return response.data
     },
@@ -83,15 +91,6 @@ export default function Details() {
         </div>
       ) : (
         <>
-          {absenceDetails?.statut === 'en-attente' && (
-            <div className="w-11/12 mx-auto flex items-center justify-center py-10">
-              <AbsenceStats
-                userId={salarieDetails?.id}
-                entryDate={salarieDetails?.contrat?.dateDebut}
-              />
-            </div>
-          )}
-
           <div className="w-11/12 max-w-[1280px] mb-20 mt-5 mx-auto grid grid-cols-1 bg-white items-start lg:grid-cols-2 p-7 gap-x-10 gap-y-8 rounded-md border border-gray-200 shadow-md">
             {/* Type d'absence */}
             <div className="col-span-1 lg:col-span-2">

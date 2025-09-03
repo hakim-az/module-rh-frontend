@@ -34,6 +34,10 @@ export default function Update() {
   const [openPdfModal, setOpenPdfModal] = useState(false)
   const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   // react hook form
   const methods = useForm<IAbsenceForm>({
     mode: 'onBlur',
@@ -73,7 +77,12 @@ export default function Update() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       console.log(response)
       setAbsenceDetails(response.data)
@@ -83,7 +92,7 @@ export default function Update() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [absenceId])
+  }, [absenceId, token])
 
   useEffect(() => {
     if (absenceDetails) {
@@ -122,7 +131,7 @@ export default function Update() {
                   control={control}
                   rules={{ required: true }}
                   items={[
-                    { label: 'Congé payé', value: 'conge_paye' },
+                    { label: 'Congé payé', value: 'conges_payes' },
                     { label: 'Congé maladie', value: 'conge_maladie' },
                     {
                       label: 'Congé maternité/paternité',

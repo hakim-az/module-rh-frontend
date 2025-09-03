@@ -16,6 +16,10 @@ export default function ApprouverAbsenceModal({
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const { mutate: approveAbsence, isPending } = useMutation({
     mutationFn: async () => {
       const formData = new FormData()
@@ -27,6 +31,7 @@ export default function ApprouverAbsenceModal({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )

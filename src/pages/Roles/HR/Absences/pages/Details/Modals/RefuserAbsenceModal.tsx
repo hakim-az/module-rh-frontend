@@ -22,6 +22,10 @@ export default function RefuserAbsenceModal({
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const methods = useForm<IForm>({
     mode: 'onBlur',
   })
@@ -44,6 +48,7 @@ export default function RefuserAbsenceModal({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )

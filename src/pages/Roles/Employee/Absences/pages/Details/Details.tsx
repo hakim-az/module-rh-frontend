@@ -16,13 +16,22 @@ export default function Details() {
   const [openPdfModal, setOpenPdfModal] = useState(false)
   const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const [absenceDetails, setAbsenceDetails] = useState<IAbsence | null>(null)
 
   const fetchAbsenceDetails = useCallback(async () => {
     setIsLoading(true)
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       setAbsenceDetails(response.data)
     } catch (error) {
@@ -30,7 +39,7 @@ export default function Details() {
     } finally {
       setIsLoading(false)
     }
-  }, [absenceId])
+  }, [absenceId, token])
 
   useEffect(() => {
     fetchAbsenceDetails()

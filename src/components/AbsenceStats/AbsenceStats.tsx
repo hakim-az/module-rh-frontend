@@ -22,6 +22,10 @@ export default function AbsenceStats({
 
   const { userDetails } = useDashboardContext()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const initialStartDate = entryDate
     ? format(new Date(entryDate), 'yyyy-MM-dd')
     : `${new Date().getFullYear()}-06-01`
@@ -38,6 +42,9 @@ export default function AbsenceStats({
             userId: userId, // <- corrige ici
             dateDebut: startDate,
             dateFin: currentDate,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
           },
         }
       )

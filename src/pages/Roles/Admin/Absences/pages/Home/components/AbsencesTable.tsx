@@ -29,8 +29,17 @@ import type { IAbsence } from '@/types/tables/rh'
 
 // 👇 Query function
 const fetchAbsences = async (): Promise<IAbsence[]> => {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const response = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/absences`
+    `${import.meta.env.VITE_API_BASE_URL}/absences`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   )
   return response.data
 }

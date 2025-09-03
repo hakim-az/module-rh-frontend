@@ -50,6 +50,10 @@ export default function AbsencesTable() {
   const [isLoading, setIsLoading] = useState(false)
   const [absences, setAbsences] = useState<IAbsence[]>([])
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const table = useReactTable({
     data: absences,
     columns,
@@ -79,7 +83,12 @@ export default function AbsencesTable() {
       setIsLoading(true)
 
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/user/${userDetails?.id}`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/user/${userDetails?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       setAbsences(response.data ?? [])
     } catch (error) {
@@ -87,7 +96,7 @@ export default function AbsencesTable() {
     } finally {
       setIsLoading(false)
     }
-  }, [userDetails?.id])
+  }, [token, userDetails?.id])
 
   useEffect(() => {
     fetchAbsences()

@@ -18,6 +18,10 @@ export default function UpdateAbsenceModel({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { absenceId } = useParams()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const UpdateAbsence = async () => {
     setIsLoading(true)
     try {
@@ -38,6 +42,7 @@ export default function UpdateAbsenceModel({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )
