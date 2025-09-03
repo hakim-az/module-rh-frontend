@@ -28,6 +28,10 @@ export default function ValidateIntegrationModal({
 
   const { userDetails } = useDashboardContext()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -151,6 +155,7 @@ export default function ValidateIntegrationModal({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )

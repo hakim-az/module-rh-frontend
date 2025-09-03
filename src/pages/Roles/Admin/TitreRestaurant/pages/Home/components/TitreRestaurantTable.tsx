@@ -29,8 +29,17 @@ import type { ITitreRestau } from '@/types/tables/rh'
 
 // Fetch function
 const fetchTitreRestaux = async (): Promise<ITitreRestau[]> => {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const response = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/restaux`
+    `${import.meta.env.VITE_API_BASE_URL}/restaux`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   )
   return response.data
 }

@@ -22,6 +22,10 @@ export default function IntegrateSalarieModel({
   const [isLoading, setIsLoading] = useState(false)
   const [selectedGroups, setSelectedGroups] = useState<GroupOption[]>([])
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const USERS_GROUP_ID = 'e4ac33c7-a458-4d0d-8102-9844aa04204d'
   const REALM = 'master'
 
@@ -117,7 +121,12 @@ export default function IntegrateSalarieModel({
       await axios.patch(
         `${import.meta.env.VITE_API_BASE_URL}/users/${idSalarie}`,
         formData,
-        { headers: { 'Content-Type': 'multipart/form-data' } }
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
 
       notify({ message: 'Contrat envoyé avec succès', type: 'success' })

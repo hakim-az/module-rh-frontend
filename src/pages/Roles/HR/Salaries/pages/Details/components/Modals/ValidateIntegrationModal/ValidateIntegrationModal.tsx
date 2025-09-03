@@ -20,6 +20,10 @@ export default function ValidateIntegrationModal({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { idSalarie } = useParams()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const SendContract = async () => {
     setIsLoading(true)
     try {
@@ -43,6 +47,7 @@ export default function ValidateIntegrationModal({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )

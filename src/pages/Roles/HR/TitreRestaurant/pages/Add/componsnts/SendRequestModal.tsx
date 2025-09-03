@@ -17,6 +17,10 @@ export default function SendRequestModal({
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const AddRestau = async () => {
     setIsLoading(true)
     try {
@@ -35,6 +39,7 @@ export default function SendRequestModal({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )

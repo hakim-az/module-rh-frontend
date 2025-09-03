@@ -52,6 +52,10 @@ export default function TitreRestaurantTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = useState({})
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [restaux, setRestaux] = useState<ITitreRestau[]>()
 
@@ -84,7 +88,12 @@ export default function TitreRestaurantTable() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/restaux/user/${userDetails?.id}`
+        `${import.meta.env.VITE_API_BASE_URL}/restaux/user/${userDetails?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       console.log(response)
       setRestaux(response.data)
@@ -94,7 +103,7 @@ export default function TitreRestaurantTable() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [userDetails?.id])
+  }, [token, userDetails?.id])
 
   useEffect(() => {
     fetchRestaux()

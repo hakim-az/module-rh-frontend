@@ -9,9 +9,18 @@ type Props = {
 }
 
 async function fetchUserDetails(userId: string | null) {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   if (!userId) return undefined // use undefined, not null
   const { data } = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`
+    `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   )
   return data.data as User
 }

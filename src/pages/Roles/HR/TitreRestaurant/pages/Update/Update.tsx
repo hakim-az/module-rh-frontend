@@ -27,6 +27,10 @@ export interface IRestauForm {
 }
 
 export default function Add() {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   // naviagte
   const navigate = useNavigate()
 
@@ -85,7 +89,12 @@ export default function Add() {
     try {
       setIsLoadingFetch(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/restaux/${idTitre}`
+        `${import.meta.env.VITE_API_BASE_URL}/restaux/${idTitre}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       setTitreRestauDetails(response.data)
 
@@ -94,7 +103,7 @@ export default function Add() {
       setIsLoadingFetch(false)
       console.log(error)
     }
-  }, [idTitre])
+  }, [idTitre, token])
 
   // donload file
   const handleDownload = useCallback(async () => {

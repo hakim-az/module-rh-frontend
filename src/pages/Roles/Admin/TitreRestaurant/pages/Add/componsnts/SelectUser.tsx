@@ -42,6 +42,10 @@ export default function SelectUser({
   const [isLoading, setIsLoading] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const fetchAllUsers = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -50,6 +54,7 @@ export default function SelectUser({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )
@@ -59,7 +64,7 @@ export default function SelectUser({
     } finally {
       setIsLoading(false)
     }
-  }, [])
+  }, [token])
 
   useEffect(() => {
     fetchAllUsers()

@@ -10,9 +10,17 @@ type Props = {
 
 // API function
 async function fetchSalarieDetails(userId: string | undefined) {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
   if (!userId) return undefined // don't call API without userId
   const { data } = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`
+    `${import.meta.env.VITE_API_BASE_URL}/users/${userId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   )
   return data.data as User
 }
