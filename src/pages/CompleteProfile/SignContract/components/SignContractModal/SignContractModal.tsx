@@ -17,6 +17,10 @@ export default function SignContractModal({
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const SendSignatureRequest = async () => {
     setIsLoading(true)
     try {
@@ -45,7 +49,12 @@ export default function SignContractModal({
 
       const response = await axios.post(
         `${import.meta.env.VITE_API_BASE_URL}/signature`,
-        payload
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
 
       console.log(response)

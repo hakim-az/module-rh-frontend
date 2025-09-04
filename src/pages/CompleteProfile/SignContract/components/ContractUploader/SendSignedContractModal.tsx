@@ -21,6 +21,10 @@ export default function SendSignedContractModal({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const { userDetails } = useDashboardContext()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const AddAbsence = async () => {
     setIsLoading(true)
     try {
@@ -35,6 +39,7 @@ export default function SendSignedContractModal({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )
