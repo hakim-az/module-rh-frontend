@@ -22,8 +22,10 @@ export default function ValidateIntegrationModal({
     justificatifDomicile,
     carteVitale,
     pieceIdentite,
+    pieceIdentiteVerso,
     rib,
     ameli,
+    autreFichier,
   } = useIntegrationFormDataContext()
 
   const { userDetails } = useDashboardContext()
@@ -116,11 +118,18 @@ export default function ValidateIntegrationModal({
         if (rib && rib instanceof File) {
           formData.append('justificatif[fichierRibPdf]', rib)
         }
-        // pièce identité
+        // pièce identité recto
         if (pieceIdentite && pieceIdentite instanceof File) {
           formData.append(
             'justificatif[fichierPieceIdentitePdf]',
             pieceIdentite
+          )
+        }
+        // pièce identité verso
+        if (pieceIdentiteVerso && pieceIdentiteVerso instanceof File) {
+          formData.append(
+            'justificatif[fichierPieceIdentitePdfVerso]',
+            pieceIdentiteVerso
           )
         }
         // justificatif de domicile
@@ -134,14 +143,20 @@ export default function ValidateIntegrationModal({
         if (ameli && ameli instanceof File) {
           formData.append('justificatif[fichierAmeli]', ameli)
         }
+        // autreFichier
+        if (autreFichier && autreFichier instanceof File) {
+          formData.append('justificatif[autreFichier]', autreFichier)
+        }
 
         // Only add justificatif section if at least one file exists
         const hasAnyFile = [
           carteVitale,
           rib,
           pieceIdentite,
+          pieceIdentiteVerso,
           justificatifDomicile,
           ameli,
+          autreFichier,
         ].some((file) => file instanceof File)
 
         if (hasAnyFile) {

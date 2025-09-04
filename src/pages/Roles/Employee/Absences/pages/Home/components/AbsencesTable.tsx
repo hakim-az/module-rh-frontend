@@ -153,7 +153,7 @@ export default function AbsencesTable() {
                   <NotFoundTable
                     columns={columns.length}
                     title="Absence introuvable"
-                    content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                    content="Aucune absence correspondant à votre recherche n'a été trouvée."
                   />
                 )}
               </TableBody>

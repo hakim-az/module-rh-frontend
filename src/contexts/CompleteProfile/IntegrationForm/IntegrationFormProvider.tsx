@@ -48,6 +48,10 @@ export default function IntegrationFormProvider({ children }: Props) {
     null
   )
   const [ameli, setAmeli] = useState<File | null>(null)
+  const [pieceIdentiteVerso, setPieceIdentiteVerso] = useState<File | null>(
+    null
+  )
+  const [autreFichier, setAutreFichier] = useState<File | null>(null)
 
   const contextValue = useMemo(
     () => ({
@@ -65,14 +69,20 @@ export default function IntegrationFormProvider({ children }: Props) {
       setJustificatifDomicile,
       ameli,
       setAmeli,
+      pieceIdentiteVerso,
+      setPieceIdentiteVerso,
+      autreFichier,
+      setAutreFichier,
     }),
     [
       ameli,
+      autreFichier,
       carteVitale,
       employeePersonalInfo,
       employeeProfesionalInfo,
       justificatifDomicile,
       pieceIdentite,
+      pieceIdentiteVerso,
       rib,
     ]
   )

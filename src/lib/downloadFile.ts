@@ -9,10 +9,17 @@ export const downloadFile = async (fileName: string) => {
   try {
     const encodedFileName = encodeURIComponent(fileName)
 
+    // token
+    const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+    const token = authUser?.token
+
     const response = await axios.get(
       `${import.meta.env.VITE_API_BASE_URL}/files/download/${encodedFileName}`,
       {
         responseType: 'blob',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     )
 

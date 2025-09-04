@@ -31,6 +31,10 @@ export default function Justificatifs({
     setJustificatifDomicile,
     ameli,
     setAmeli,
+    pieceIdentiteVerso,
+    setPieceIdentiteVerso,
+    autreFichier,
+    setAutreFichier,
   } = useIntegrationFormDataContext()
   // states
   const {
@@ -95,12 +99,31 @@ export default function Justificatifs({
             : 'Le fichier doit faire moins de 10 Mo',
       },
     })
+    register('pieceIdentiteVerso', {
+      required: 'Ce champ est requis',
+      validate: {
+        size: (file: File) =>
+          file && file.size <= 10 * 1024 * 1024
+            ? true
+            : 'Le fichier doit faire moins de 10 Mo',
+      },
+    })
+    register('autreFichier', {
+      validate: {
+        size: (file: File) =>
+          !file || file.size <= 10 * 1024 * 1024
+            ? true
+            : 'Le fichier doit faire moins de 10 Mo',
+      },
+    })
     if (carteVitale) setValue('carteVitale', carteVitale)
     if (rib) setValue('rib', rib)
     if (pieceIdentite) setValue('pieceIdentite', pieceIdentite)
     if (justificatifDomicile)
       setValue('justificatifDomicile', justificatifDomicile)
     if (ameli) setValue('ameli', ameli)
+    if (pieceIdentite) setValue('pieceIdentite', pieceIdentite)
+    if (autreFichier) setValue('autreFichier', autreFichier)
   }, [
     carteVitale,
     justificatifDomicile,
@@ -109,6 +132,7 @@ export default function Justificatifs({
     register,
     rib,
     setValue,
+    autreFichier,
   ])
 
   return (
@@ -144,7 +168,7 @@ export default function Justificatifs({
           />
 
           <FileUploader
-            title="Pièce d'identité"
+            title="Pièce d'identité Recto"
             name="pieceIdentite"
             setValue={setValue}
             onFileSelect={setPieceIdentite}
@@ -154,6 +178,20 @@ export default function Justificatifs({
                 : undefined
             }
             defaultFile={pieceIdentite ?? undefined}
+            required
+          />
+
+          <FileUploader
+            title="Pièce d'identité Verso"
+            name="pieceIdentiteVerso"
+            setValue={setValue}
+            onFileSelect={setPieceIdentiteVerso}
+            error={
+              typeof errors.pieceIdentiteVerso?.message === 'string'
+                ? errors.pieceIdentiteVerso.message
+                : undefined
+            }
+            defaultFile={pieceIdentiteVerso ?? undefined}
             required
           />
 
@@ -183,6 +221,20 @@ export default function Justificatifs({
             }
             defaultFile={ameli ?? undefined}
             required
+          />
+
+          <FileUploader
+            title="Autre fichier"
+            name="autreFichier"
+            setValue={setValue}
+            onFileSelect={setAutreFichier}
+            error={
+              typeof errors.autreFichier?.message === 'string'
+                ? errors.autreFichier.message
+                : undefined
+            }
+            defaultFile={autreFichier ?? undefined}
+            required={false}
           />
         </div>
 

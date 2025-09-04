@@ -161,7 +161,7 @@ export default function TitreRestaurantTable() {
                 <NotFoundTable
                   columns={columns.length}
                   title="Titre restaurant introuvable"
-                  content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                  content="Aucun restaurant correspondant à votre recherche n'a été trouvé."
                 />
               )}
             </TableBody>

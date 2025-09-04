@@ -50,6 +50,10 @@ export interface IntegrationFormContextType {
   setJustificatifDomicile: React.Dispatch<React.SetStateAction<File | null>>
   ameli: File | null
   setAmeli: React.Dispatch<React.SetStateAction<File | null>>
+  pieceIdentiteVerso: File | null
+  setPieceIdentiteVerso: React.Dispatch<React.SetStateAction<File | null>>
+  autreFichier: File | null
+  setAutreFichier: React.Dispatch<React.SetStateAction<File | null>>
 }
 
 export const IntegrationFormContext = createContext<

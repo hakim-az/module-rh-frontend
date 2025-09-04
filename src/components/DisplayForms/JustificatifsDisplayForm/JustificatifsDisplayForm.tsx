@@ -20,8 +20,12 @@ const documents = [
     key: 'fichierRibPdf',
   },
   {
-    label: "Pièce d'identité",
+    label: "Pièce d'identité Recto",
     key: 'fichierPieceIdentitePdf',
+  },
+  {
+    label: "Pièce d'identité Verso",
+    key: 'fichierPieceIdentitePdfVerso',
   },
   {
     label: 'Justificatif de domicile',
@@ -30,6 +34,10 @@ const documents = [
   {
     label: 'Attestation Ameli',
     key: 'fichierAmeli',
+  },
+  {
+    label: 'Autre Fichier',
+    key: 'autreFichier',
   },
 ]
 

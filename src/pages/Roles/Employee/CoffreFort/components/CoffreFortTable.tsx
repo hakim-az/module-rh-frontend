@@ -162,7 +162,7 @@ export default function CoffreFortTable() {
                 <NotFoundTable
                   columns={columns.length}
                   title="Coffre fort introuvable"
-                  content="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, incidunt."
+                  content="Aucun coffre-fort correspondant n'a été trouvé."
                 />
               )}
             </TableBody>
