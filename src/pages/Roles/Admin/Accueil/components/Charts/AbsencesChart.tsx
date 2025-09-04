@@ -45,6 +45,10 @@ export default function AbsencesChart() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [absencesStatus, setAbsencesStatus] = useState<IStatus>()
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const chartData = useMemo(
     () => [
       {
@@ -87,7 +91,12 @@ export default function AbsencesChart() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/totals-by-status`
+        `${import.meta.env.VITE_API_BASE_URL}/absences/totals-by-status`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       setAbsencesStatus(response.data)
       setIsLoading(false)
@@ -95,7 +104,7 @@ export default function AbsencesChart() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [])
+  }, [token])
 
   useEffect(() => {
     fetchAbsences()

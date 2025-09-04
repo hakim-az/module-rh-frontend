@@ -131,16 +131,103 @@ export default function Update() {
                   control={control}
                   rules={{ required: true }}
                   items={[
-                    { label: 'Congé payé', value: 'conges_payes' },
-                    { label: 'Congé maladie', value: 'conge_maladie' },
+                    { label: 'Congés payés (CP)', value: 'conges_payes' },
+                    { label: 'Congés sans solde', value: 'conges_sans_solde' },
+                    { label: 'Congé maternité', value: 'conge_maternite' },
                     {
-                      label: 'Congé maternité/paternité',
-                      value: 'conge_maternite_paternite',
+                      label: 'Congé paternité / second parent',
+                      value: 'conge_paternite',
                     },
-                    { label: 'Congé sans solde', value: 'conge_sans_solde' },
-                    { label: 'RTT', value: 'rtt' },
-                    { label: 'Formation', value: 'formation' },
-                    { label: 'Autre', value: 'autre' },
+                    {
+                      label: `Congé parental d'éducation`,
+                      value: 'conge_parental',
+                    },
+                    { label: 'Congé adoption', value: 'conge_adoption' },
+                    {
+                      label: 'Congé maladie / arrêt maladie',
+                      value: 'conge_maladie',
+                    },
+                    {
+                      label: 'Congé longue maladie / longue durée',
+                      value: 'conge_longue_maladie',
+                    },
+                    {
+                      label: 'Accident du travail / maladie professionnelle',
+                      value: 'accident_travail',
+                    },
+                    {
+                      label:
+                        'Congé de formation (CIF, CPF de transition, etc.)',
+                      value: 'conge_formation',
+                    },
+                    {
+                      label: 'Congé pour événements familiaux',
+                      value: 'conge_evenement_familial',
+                    },
+                    { label: 'Congé sabbatique', value: 'conge_sabbatique' },
+                    {
+                      label: 'Congé de solidarité familiale',
+                      value: 'conge_solidarite_familiale',
+                    },
+                    {
+                      label: `Congé pour création d'entreprise`,
+                      value: 'conge_creation_entreprise',
+                    },
+                    {
+                      label: 'Congé de proche aidant',
+                      value: 'conge_proche_aidant',
+                    },
+                    {
+                      label: 'Repos compensateur de remplacement (RC)',
+                      value: 'repos_compensateur',
+                    },
+                    {
+                      label: 'Jours RTT (Réduction du Temps de Travail)',
+                      value: 'jours_rtt',
+                    },
+                    {
+                      label: 'Absence injustifiée / non autorisée',
+                      value: 'absence_injustifiee',
+                    },
+                    { label: 'Retard', value: 'retard' },
+                    {
+                      label: 'Repos hebdomadaire / jours fériés',
+                      value: 'repos_hebdomadaire',
+                    },
+                    {
+                      label: 'Absence partielle (ex : demi-journée)',
+                      value: 'absence_partielle',
+                    },
+                    {
+                      label: 'Télétravail (absence du bureau)',
+                      value: 'teletravail',
+                    },
+                    {
+                      label:
+                        'Congés exceptionnels supplémentaires (convention collective)',
+                      value: 'conges_exceptionnels',
+                    },
+                    {
+                      label: `Jour de pont offert par l'employeur`,
+                      value: 'jour_pont',
+                    },
+                    {
+                      label: 'Absence pour mission / déplacement professionnel',
+                      value: 'absence_deplacement',
+                    },
+                    {
+                      label: 'Absence pour rendez-vous médical',
+                      value: 'absence_medicale',
+                    },
+                    {
+                      label: 'Absence syndicale / délégation du personnel',
+                      value: 'absence_syndicale',
+                    },
+                    { label: 'Absence pour grève', value: 'absence_greve' },
+                    {
+                      label: 'Absence pour don de jours',
+                      value: 'absence_don_jours',
+                    },
                   ]}
                   error={errors.type}
                   selectDefaultValue=""

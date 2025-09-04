@@ -31,10 +31,19 @@ export default function Accueil() {
 
   // fetch Dashboard
   const fetchDashboard = useCallback(async () => {
+    // token
+    const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+    const token = authUser?.token
+
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/dashboard/${userDetails?.id}`
+        `${import.meta.env.VITE_API_BASE_URL}/dashboard/${userDetails?.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       console.log(response)
       seteDashboardData(response.data.data)

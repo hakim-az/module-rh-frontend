@@ -21,6 +21,10 @@ export default function UploadAvatarModal({
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   // react hook form
   const methods = useForm<IFormData>({
     mode: 'onBlur',
@@ -45,6 +49,7 @@ export default function UploadAvatarModal({
         {
           headers: {
             'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
           },
         }
       )

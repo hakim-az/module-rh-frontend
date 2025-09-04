@@ -26,8 +26,17 @@ export interface DashboardData {
 
 // ✅ Fetcher function
 const fetchDashboard = async (): Promise<DashboardData> => {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const response = await axios.get(
-    `${import.meta.env.VITE_API_BASE_URL}/dashboard`
+    `${import.meta.env.VITE_API_BASE_URL}/dashboard`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   )
   return response.data.data
 }

@@ -47,7 +47,7 @@ export default function ActionsCell({ fileName }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {!fileName && (
+          {fileName && (
             <DropdownMenuItem
               className="cursor-pointer group flex items-center gap-2 py-2"
               onClick={() => {
@@ -60,7 +60,7 @@ export default function ActionsCell({ fileName }: ActionsCellProps) {
               </span>
             </DropdownMenuItem>
           )}
-          {!fileName && (
+          {fileName && (
             <DropdownMenuItem
               className="cursor-pointer group flex items-center gap-2 py-2"
               disabled={isLoadingFile}

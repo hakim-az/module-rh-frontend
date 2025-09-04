@@ -190,7 +190,7 @@ export default function Update() {
               label="Complément d'adresse "
               placeholder="Entrer un complément d'adresse "
               register={register}
-              rules={{ required: true }}
+              rules={{ required: false }}
               error={errors.complement_adresse}
               inputType="text"
               inputDefaultValue={userDetails?.adresse?.complementAdresse}

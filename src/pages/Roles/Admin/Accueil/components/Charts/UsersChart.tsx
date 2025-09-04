@@ -59,6 +59,10 @@ interface IStatus {
 export default function UsersChart() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [absencesStatus, setAbsencesStatus] = useState<IStatus>()
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const chartData = [
     {
@@ -115,7 +119,12 @@ export default function UsersChart() {
     try {
       setIsLoading(true)
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/users/totals-by-status`
+        `${import.meta.env.VITE_API_BASE_URL}/users/totals-by-status`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       console.log(response)
       setAbsencesStatus(response.data)
@@ -125,7 +134,7 @@ export default function UsersChart() {
       setIsLoading(false)
       console.log(error)
     }
-  }, [])
+  }, [token])
 
   useEffect(() => {
     fetchAbsences()
