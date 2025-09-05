@@ -1,6 +1,7 @@
 import { createContext } from 'react'
 
 export interface EmployeePersonalInformations {
+  id: string
   civilite: string
   prenom: string
   nom_de_naissance: string
@@ -31,6 +32,18 @@ export interface EmployeeProfesionalInformations {
   tel: string
 }
 
+export interface IContractInfo {
+  poste: string
+  type_de_contrat: string
+  date_de_début: Date
+  date_de_fin: Date
+  matricule: string
+  etablisment_de_sante: string
+  service_de_sante: string
+  salaire: number
+  contrat: File
+}
+
 export interface IntegrationFormContextType {
   employeePersonalInfo: EmployeePersonalInformations
   setEmployeePersonalInfo: React.Dispatch<
@@ -54,6 +67,12 @@ export interface IntegrationFormContextType {
   setPieceIdentiteVerso: React.Dispatch<React.SetStateAction<File | null>>
   autreFichier: File | null
   setAutreFichier: React.Dispatch<React.SetStateAction<File | null>>
+  contractInfo: IContractInfo | undefined
+  setContractInfo: React.Dispatch<
+    React.SetStateAction<IContractInfo | undefined>
+  >
+  contrat: File | undefined
+  setContrat: React.Dispatch<React.SetStateAction<File | undefined>>
 }
 
 export const IntegrationFormContext = createContext<

@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { IntegrationFormContext } from './IntegrationFormContext'
+import type { IContractInfo } from './IntegrationFormContext'
 
 type Props = {
   children: React.ReactNode
@@ -8,6 +9,7 @@ type Props = {
 export default function IntegrationFormProvider({ children }: Props) {
   // employee personal informations
   const [employeePersonalInfo, setEmployeePersonalInfo] = useState({
+    id: '',
     civilite: '',
     prenom: '',
     nom_de_naissance: '',
@@ -31,7 +33,7 @@ export default function IntegrationFormProvider({ children }: Props) {
     fiscalement_hors_france: false,
   })
 
-  // employee personal informations
+  // employee pro informations
   const [employeeProfesionalInfo, setEmployeeProfesionalInfo] = useState({
     iban: '',
     bic: '',
@@ -40,7 +42,7 @@ export default function IntegrationFormProvider({ children }: Props) {
     tel: '',
   })
 
-  // employee personal informations
+  // employee justificatif
   const [carteVitale, setCarteVitale] = useState<File | null>(null)
   const [rib, setRib] = useState<File | null>(null)
   const [pieceIdentite, setPieceIdentite] = useState<File | null>(null)
@@ -52,6 +54,10 @@ export default function IntegrationFormProvider({ children }: Props) {
     null
   )
   const [autreFichier, setAutreFichier] = useState<File | null>(null)
+
+  // employee contract
+  const [contractInfo, setContractInfo] = useState<IContractInfo>()
+  const [contrat, setContrat] = useState<File | undefined>(undefined)
 
   const contextValue = useMemo(
     () => ({
@@ -73,17 +79,23 @@ export default function IntegrationFormProvider({ children }: Props) {
       setPieceIdentiteVerso,
       autreFichier,
       setAutreFichier,
+      contractInfo,
+      setContractInfo,
+      contrat,
+      setContrat,
     }),
     [
-      ameli,
-      autreFichier,
-      carteVitale,
       employeePersonalInfo,
       employeeProfesionalInfo,
-      justificatifDomicile,
-      pieceIdentite,
-      pieceIdentiteVerso,
+      carteVitale,
       rib,
+      pieceIdentite,
+      justificatifDomicile,
+      ameli,
+      pieceIdentiteVerso,
+      autreFichier,
+      contractInfo,
+      contrat,
     ]
   )
 
