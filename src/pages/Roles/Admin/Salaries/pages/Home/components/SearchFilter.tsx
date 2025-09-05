@@ -12,12 +12,16 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
 } from '@/components/ui/dropdown-menu'
+import { CircleFadingPlus } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useNavigate } from 'react-router-dom'
 
 interface SearchFilterProps<T> {
   table: Table<T>
 }
 
 export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {
+  const navigate = useNavigate()
   return (
     <div className="flex flex-wrap items-center gap-4 py-4 mb-5">
       <div className="w-full lg:min-w-[250px] lg:w-[250px] flex flex-col gap-2">
@@ -79,6 +83,15 @@ export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {
             })}
         </DropdownMenuContent>
       </DropdownMenu>
+      {/* deamnder une absence */}
+      <Button
+        type="button"
+        variant="default"
+        size={'lg'}
+        onClick={() => navigate('ajouter-salarié')}
+        className="ml-auto bg-[#1B86CB] w-full mt-5 lg:mt-0 lg:min-w-[200px] lg:w-[200px] gap-3">
+        Ajouter un salarié <CircleFadingPlus />
+      </Button>
     </div>
   )
 }
