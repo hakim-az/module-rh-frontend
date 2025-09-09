@@ -7,7 +7,8 @@ export const downloadFile = async (fileName: string) => {
   }
 
   try {
-    const encodedFileName = encodeURIComponent(fileName)
+    // const encodedFileName = encodeURIComponent(fileName)
+    const encodedFileName = decodeURIComponent(fileName)
 
     // token
     const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')

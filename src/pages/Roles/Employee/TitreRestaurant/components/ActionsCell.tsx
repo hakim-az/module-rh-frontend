@@ -47,33 +47,31 @@ export default function ActionsCell({ fileName }: ActionsCellProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          {!fileName && (
-            <DropdownMenuItem
-              className="cursor-pointer group flex items-center gap-2 py-2"
-              onClick={() => {
-                setOpenPdfModal(true)
-                setFileUrl(fileName)
-              }}>
-              <Eye className="w-4 h-4 group-hover:text-blue-500" />
-              <span className="group-hover:text-blue-500">
-                Détails du justificatif
-              </span>
-            </DropdownMenuItem>
-          )}
 
-          {!fileName && (
-            <DropdownMenuItem
-              className="cursor-pointer group flex items-center gap-2 py-2"
-              disabled={isLoadingFile}
-              onClick={() => {
-                handleDownload(fileName)
-              }}>
-              <Download className="w-4 h-4 group-hover:text-blue-500" />
-              <span className="group-hover:text-blue-500">
-                Télécharger le justificatif
-              </span>
-            </DropdownMenuItem>
-          )}
+          <DropdownMenuItem
+            className="cursor-pointer group flex items-center gap-2 py-2"
+            disabled={fileName === 'undefined'}
+            onClick={() => {
+              setOpenPdfModal(true)
+              setFileUrl(fileName)
+            }}>
+            <Eye className="w-4 h-4 group-hover:text-blue-500" />
+            <span className="group-hover:text-blue-500">
+              Détails du justificatif
+            </span>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            className="cursor-pointer group flex items-center gap-2 py-2"
+            disabled={isLoadingFile || fileName === 'undefined'}
+            onClick={() => {
+              handleDownload(fileName)
+            }}>
+            <Download className="w-4 h-4 group-hover:text-blue-500" />
+            <span className="group-hover:text-blue-500">
+              Télécharger le justificatif
+            </span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
