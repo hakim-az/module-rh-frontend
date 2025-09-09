@@ -54,7 +54,7 @@ export default function InfosPro({
         className="w-full mx-auto gap-10 flex flex-col "
         onSubmit={handleSubmit(onSubmit)}>
         {/* Informations bancaire : */}
-        <div className="grid grid-cols-1 items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
+        <div className="grid grid-cols-1 items-start bg-white lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
           <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
             Informations bancaire :
           </span>
@@ -82,7 +82,7 @@ export default function InfosPro({
           />
         </div>
         {/* Contact d'urgence */}
-        <div className="grid grid-cols-1 items-start lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
+        <div className="grid grid-cols-1 items-start bg-white lg:grid-cols-2 p-7 gap-x-8 gap-y-4 rounded-md border border-gray-200 shadow-md w-full">
           <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
             Contact d'urgence :
           </span>

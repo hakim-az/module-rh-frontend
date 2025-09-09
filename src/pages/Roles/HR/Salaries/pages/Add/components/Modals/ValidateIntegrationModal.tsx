@@ -41,7 +41,7 @@ export default function ValidateIntegrationModal({
     try {
       const formData = new FormData()
       // Add basic user fields
-      formData.append('id', '1234567890')
+      formData.append('id', employeePersonalInfo.id)
       formData.append('role', 'employee')
       formData.append('statut', 'user-approuved')
       formData.append('civilite', employeePersonalInfo.civilite)
@@ -218,7 +218,7 @@ export default function ValidateIntegrationModal({
       console.log(response)
 
       notify({
-        message: `Formulair d'integration envoyer avec success`,
+        message: `Salarié ajouter avec success`,
         type: 'success',
       })
 
