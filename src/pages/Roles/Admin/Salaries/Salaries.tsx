@@ -5,6 +5,7 @@ import Details from './pages/Details/Details'
 import SalarieDetailsProvider from '@/contexts/SalarieDetails/SalarieDetailsProvider'
 import IntegrationFormProvider from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormProvider'
 import Add from './pages/Add/Add'
+import Coffre from './pages/Coffre/Coffre'
 
 export default function Salaries() {
   return (
@@ -18,6 +19,7 @@ export default function Salaries() {
           </SalarieDetailsProvider>
         }
       />
+      <Route path={`coffre/:idSalarie`} element={<Coffre />} />
       <Route
         path="ajouter-salarié"
         element={

@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { MoreHorizontal, InfoIcon, Ban } from 'lucide-react'
+import { MoreHorizontal, InfoIcon, Ban, Lock } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
 import { useMutation } from '@tanstack/react-query'
@@ -92,6 +92,13 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
                 </span>
               </DropdownMenuItem>
             ))}
+          <DropdownMenuItem
+            disabled={statut === 'user-registred'}
+            className="group cursor-pointer"
+            onClick={() => navigate(`coffre/${id}`)}>
+            <Lock className="group-hover:text-blue-500 " />
+            <span className="group-hover:text-blue-500">Coffre salarié</span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
