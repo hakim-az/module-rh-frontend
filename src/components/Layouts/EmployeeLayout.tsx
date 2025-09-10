@@ -75,7 +75,7 @@ export default function EmployeeLayout({ children }: IPramasEmployeeLayout) {
       />
       <main className="flex-1">
         <MarginWidthWrapper>
-          <Header nameRoute={nameRoute} />
+          <Header />
           <HeaderMobile navlinkMobile={navlinks} nameRoute={nameRoute} />
           <PageWrapper>{children}</PageWrapper>
         </MarginWidthWrapper>

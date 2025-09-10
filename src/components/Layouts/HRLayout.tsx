@@ -58,7 +58,7 @@ export default function HrLayout({ children }: IPramasHrLayout) {
       <SideNavBarInfluencer navlinkSidebar={navlinks} />
       <main className="flex-1">
         <MarginWidthWrapper>
-          <Header nameRoute={nameRoute} />
+          <Header />
           <HeaderMobile navlinkMobile={navlinks} nameRoute={nameRoute} />
           <PageWrapper>{children}</PageWrapper>
         </MarginWidthWrapper>

@@ -11,7 +11,7 @@ export default function Salaries() {
     <Routes>
       <Route index element={<Home />} />
       <Route
-        path="details/:idSalarie"
+        path={`details/:idSalarie`}
         element={
           <SalarieDetailsProvider>
             <Details />

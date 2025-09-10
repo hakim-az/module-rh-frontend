@@ -16,10 +16,6 @@ import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
 // import { useQuery, useQueryClient } from '@tanstack/react-query'
 // import axios from 'axios'
 
-interface PropsType {
-  nameRoute: string
-}
-
 // interface Notification {
 //   id: string
 //   title: string
@@ -27,7 +23,7 @@ interface PropsType {
 //   read?: boolean
 // }
 
-function Header({ nameRoute }: PropsType) {
+function Header() {
   const { userDetails } = useDashboardContext()
   const { logout } = useAuth()
   const scrolled = useScroll(5)
@@ -84,10 +80,6 @@ function Header({ nameRoute }: PropsType) {
   // const unreadCount = notifications.filter((n) => !n.read).length
 
   const selectedLayout = location.pathname.split('/')[1]
-  const locationArr = location.pathname.split('/')
-  const beforeLocation = locationArr[locationArr.length - 2]
-    .split('-')
-    .join(' ')
 
   return (
     <div
@@ -108,10 +100,29 @@ function Header({ nameRoute }: PropsType) {
         </div>
 
         <div className="items-center justify-between hidden w-full lg:flex">
-          <span className="text-xl font-semibold capitalize text-primaryBlue">
+          {/* <span className="text-xl font-semibold capitalize text-primaryBlue">
             {!Number.isInteger(parseInt(nameRoute, 10))
               ? decodeURIComponent(nameRoute).split('-').join(' ')
               : beforeLocation}
+          </span> */}
+
+          <span className="text-xl font-semibold capitalize text-primaryBlue">
+            {(() => {
+              const parts = location.pathname.split('/')
+              const lastPart = parts[parts.length - 1]
+              const beforeLastPart = parts[parts.length - 2]
+
+              // Detect if last part looks like an ID (UUID or number)
+              const isId =
+                /^[0-9a-fA-F-]{36}$/.test(lastPart) || // UUID v4 regex
+                !isNaN(Number(lastPart)) // numeric id
+
+              return decodeURIComponent(
+                isId
+                  ? beforeLastPart.replace(/-/g, ' ')
+                  : lastPart.replace(/-/g, ' ')
+              )
+            })()}
           </span>
 
           {/* Notifications Dropdown */}

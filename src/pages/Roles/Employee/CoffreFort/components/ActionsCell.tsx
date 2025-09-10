@@ -1,6 +1,5 @@
-import { downloadFile } from '@/lib/downloadFile'
 import { Download, Eye, MoreHorizontal } from 'lucide-react'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { usePdfModal } from './PdfModalContext'
 import {
   DropdownMenu,
@@ -18,23 +17,29 @@ interface ActionsCellProps {
 export default function ActionsCell({ fileName }: ActionsCellProps) {
   const { setOpenPdfModal, setFileUrl } = usePdfModal()
 
-  const [isLoadingFile, setIsLoadingFile] = useState(false)
+  // download file
+  const [downloadingKey, setDownloadingKey] = useState<boolean>(false)
 
-  const handleDownload = useCallback(async (fileName: string | undefined) => {
-    setIsLoadingFile(true)
-    if (!fileName) return
+  const forceDownload = async (url: string | undefined, filename?: string) => {
+    if (!url) return // ⬅️ guard against undefined
 
-    // Extract only the path starting from "uploads/"
-    const extractedPath = fileName.replace(/^.*\/uploads\//, 'uploads/')
-
+    setDownloadingKey(true)
     try {
-      await downloadFile(extractedPath)
-      setIsLoadingFile(false)
-    } catch (error) {
-      console.error('Download failed:', error)
-      setIsLoadingFile(false)
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = filename || url.split('/').pop() || 'file.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(link.href)
+    } catch (err) {
+      console.error('Download failed:', err)
+    } finally {
+      setDownloadingKey(false)
     }
-  }, [])
+  }
 
   return (
     <div className="flex items-center justify-center">
@@ -63,10 +68,8 @@ export default function ActionsCell({ fileName }: ActionsCellProps) {
           {fileName && (
             <DropdownMenuItem
               className="cursor-pointer group flex items-center gap-2 py-2"
-              disabled={isLoadingFile}
-              onClick={() => {
-                handleDownload(fileName)
-              }}>
+              disabled={downloadingKey || fileName === 'undefined'}
+              onClick={() => forceDownload(fileName)}>
               <Download className="w-4 h-4 group-hover:text-blue-500" />
               <span className="group-hover:text-blue-500">
                 Télécharger le justificatif

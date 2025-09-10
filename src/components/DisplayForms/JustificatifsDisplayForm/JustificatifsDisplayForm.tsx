@@ -1,7 +1,6 @@
 import type { User } from '@/types/user.types'
 import { Download, Eye } from 'lucide-react'
-import { useCallback, useState } from 'react'
-import { downloadFile } from '@/lib/downloadFile'
+import { useState } from 'react'
 import PdfIcon from '@/assets/icons/pdf-icon.png'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
 
@@ -11,60 +10,38 @@ interface IProps {
 }
 
 const documents = [
-  {
-    label: 'Carte vitale',
-    key: 'fichierCarteVitalePdf',
-  },
-  {
-    label: 'RIB',
-    key: 'fichierRibPdf',
-  },
-  {
-    label: "Pièce d'identité Recto",
-    key: 'fichierPieceIdentitePdf',
-  },
-  {
-    label: "Pièce d'identité Verso",
-    key: 'fichierPieceIdentitePdfVerso',
-  },
-  {
-    label: 'Justificatif de domicile',
-    key: 'fichierJustificatifDomicilePdf',
-  },
-  {
-    label: 'Attestation Ameli',
-    key: 'fichierAmeli',
-  },
-  {
-    label: 'Autre Fichier',
-    key: 'autreFichier',
-  },
+  { label: 'Carte vitale', key: 'fichierCarteVitalePdf' },
+  { label: 'RIB', key: 'fichierRibPdf' },
+  { label: "Pièce d'identité Recto", key: 'fichierPieceIdentitePdf' },
+  { label: "Pièce d'identité Verso", key: 'fichierPieceIdentitePdfVerso' },
+  { label: 'Justificatif de domicile', key: 'fichierJustificatifDomicilePdf' },
+  { label: 'Attestation Ameli', key: 'fichierAmeli' },
+  { label: 'Autre Fichier', key: 'autreFichier' },
 ]
 
 export default function JustificatifsDisplayForm({ details, loading }: IProps) {
   const [downloadingKey, setDownloadingKey] = useState<string | null>(null)
-
   const [openPdfModal, setOpenPdfModal] = useState(false)
   const [fileUrl, setFileUrl] = useState<string | undefined>('')
 
-  const handleDownload = useCallback(
-    async (fileName: string | undefined, key: string) => {
-      if (!fileName) return
-
-      // Extract only the path starting from "uploads/"
-      const extractedPath = fileName.replace(/^.*\/uploads\//, 'uploads/')
-
-      setDownloadingKey(key)
-      try {
-        await downloadFile(extractedPath)
-      } catch (error) {
-        console.error('Download failed:', error)
-      } finally {
-        setDownloadingKey(null)
-      }
-    },
-    []
-  )
+  const forceDownload = async (url: string, key: string, filename?: string) => {
+    setDownloadingKey(key)
+    try {
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = filename || url.split('/').pop() || 'file.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(link.href)
+    } catch (err) {
+      console.error('Download failed:', err)
+    } finally {
+      setDownloadingKey(null)
+    }
+  }
 
   const renderCard = (label: string, fileKey: string) => {
     const fileUrl = details?.justificatif?.[
@@ -94,10 +71,7 @@ export default function JustificatifsDisplayForm({ details, loading }: IProps) {
               </span>
             ) : fileUrl ? (
               <Download
-                onClick={() =>
-                  typeof fileUrl === 'string' &&
-                  handleDownload(fileUrl, fileKey)
-                }
+                onClick={() => forceDownload(fileUrl, fileKey)}
                 className="hover:text-blue-600 cursor-pointer"
               />
             ) : (
@@ -108,6 +82,7 @@ export default function JustificatifsDisplayForm({ details, loading }: IProps) {
       </div>
     )
   }
+
   return (
     <>
       {loading ? (

@@ -9,7 +9,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import UpdateCoffreModal from './componsnts/UpdateCoffreModal'
 import axios from 'axios'
-import { downloadFile } from '@/lib/downloadFile'
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import { Download } from 'lucide-react'
 import PDFIcon from '@/assets/icons/pdf-icon.png'
@@ -104,19 +103,30 @@ export default function Add() {
     }
   }, [idCoffre, token])
 
-  // donload file
-  const handleDownload = useCallback(async () => {
-    if (!coffreDetails?.fichierJustificatifPdf) return
+  // download file
+  const [downloadingKey, setDownloadingKey] = useState<string | null>(null)
 
-    setIsLoading(true)
+  const forceDownload = async (url: string | undefined, filename?: string) => {
+    if (!url) return // ⬅️ guard against undefined
+
+    const key = 'justificatifAbsence'
+    setDownloadingKey(key)
     try {
-      await downloadFile(coffreDetails.fichierJustificatifPdf)
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = filename || url.split('/').pop() || 'file.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(link.href)
     } catch (err) {
-      console.log(err)
+      console.error('Download failed:', err)
     } finally {
-      setIsLoading(false)
+      setDownloadingKey(null)
     }
-  }, [coffreDetails])
+  }
 
   useEffect(() => {
     if (coffreDetails) {
@@ -244,11 +254,19 @@ export default function Add() {
                 </div>
                 <div className="flex items-center justify-between w-full p-4">
                   <span className="font-semibold">Justificatif</span>
-                  <Download
-                    onClick={() => handleDownload()}
-                    className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
-                    size={32}
-                  />
+                  {downloadingKey ? (
+                    <span className="text-xs text-gray-400 animate-pulse">
+                      Téléchargement...
+                    </span>
+                  ) : (
+                    <Download
+                      onClick={() =>
+                        forceDownload(coffreDetails?.fichierJustificatifPdf)
+                      }
+                      className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
+                      size={32}
+                    />
+                  )}
                 </div>
               </div>
               <FileUploader

@@ -8,9 +8,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ControlledInput } from '@/components/FormFeilds/ControlledInput/ControlledInput'
-
 import axios from 'axios'
-import { downloadFile } from '@/lib/downloadFile'
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
 import { Download } from 'lucide-react'
 import PDFIcon from '@/assets/icons/pdf-icon.png'
@@ -81,7 +79,6 @@ export default function Add() {
   const { idTitre } = useParams()
 
   const [isLoadingFetch, setIsLoadingFetch] = useState<boolean>(false)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [titreRestauDetails, setTitreRestauDetails] = useState<ITitreRestau>()
 
   // fetch designs
@@ -105,19 +102,30 @@ export default function Add() {
     }
   }, [idTitre, token])
 
-  // donload file
-  const handleDownload = useCallback(async () => {
-    if (!titreRestauDetails?.fichierJustificatifPdf) return
+  // download file
+  const [downloadingKey, setDownloadingKey] = useState<string | null>(null)
 
-    setIsLoading(true)
+  const forceDownload = async (url: string | undefined, filename?: string) => {
+    if (!url) return // ⬅️ guard against undefined
+
+    const key = 'justificatifAbsence'
+    setDownloadingKey(key)
     try {
-      await downloadFile(titreRestauDetails.fichierJustificatifPdf)
+      const response = await fetch(url)
+      const blob = await response.blob()
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = filename || url.split('/').pop() || 'file.pdf'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      window.URL.revokeObjectURL(link.href)
     } catch (err) {
-      console.log(err)
+      console.error('Download failed:', err)
     } finally {
-      setIsLoading(false)
+      setDownloadingKey(null)
     }
-  }, [titreRestauDetails])
+  }
 
   useEffect(() => {
     if (titreRestauDetails) {
@@ -219,11 +227,17 @@ export default function Add() {
                 </div>
                 <div className="flex items-center justify-between w-full p-4">
                   <span className="font-semibold">Justificatif</span>
-                  {isLoading ? (
-                    <>Loading...</>
+                  {downloadingKey ? (
+                    <span className="text-xs text-gray-400 animate-pulse">
+                      Téléchargement...
+                    </span>
                   ) : (
                     <Download
-                      onClick={() => handleDownload()}
+                      onClick={() =>
+                        forceDownload(
+                          titreRestauDetails?.fichierJustificatifPdf
+                        )
+                      }
                       className="hover:text-blue-500 cursor-pointer transition-all ease-in-out delay-75"
                       size={32}
                     />
