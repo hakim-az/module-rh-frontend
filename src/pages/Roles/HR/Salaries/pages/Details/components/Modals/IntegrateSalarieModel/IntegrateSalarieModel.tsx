@@ -47,6 +47,10 @@ export default function IntegrateSalarieModel({
       value: 'a1808de1-597f-43ef-9e35-de2073aabd78',
       label: 'Prospection Admin',
     },
+    {
+      value: 'a02931c8-9bfb-49ab-bd20-ed2416a0e8ea',
+      label: 'Prospection Directeur',
+    },
     // rh
     {
       value: 'd662844e-7cfc-44df-aec1-9db763b0f324',

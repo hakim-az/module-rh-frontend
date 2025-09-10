@@ -77,10 +77,9 @@ export default function SendSignedContractModal({
           Envoyer fichier du contrat signer
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi
-          veniam quibusdam error deserunt fugit eaque molestias, ipsum officia
-          rem officiis culpa placeat, accusantium iusto quo quam sit
-          repudiandae.
+          Merci de téléverser ici une copie du contrat signé afin de finaliser
+          la procédure. Assurez-vous que le document soit lisible et au format
+          PDF ou image pour validation.
         </p>
       </div>
       {/* buttons */}

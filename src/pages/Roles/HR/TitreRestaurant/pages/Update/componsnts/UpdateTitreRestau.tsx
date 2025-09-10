@@ -78,10 +78,9 @@ export default function UpdateTitreRestau({
           Modifier Titre Restaurant
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa impedit
-          nemo, libero molestias deserunt adipisci, molestiae necessitatibus,
-          sapiente porro accusantium doloremque temporibus quis voluptates nisi.
-          Possimus placeat omnis amet odio.
+          Utilisez cette section pour mettre à jour le nom de votre restaurant.
+          Assurez-vous que le titre soit correct et représentatif, afin qu'il
+          s'affiche correctement dans votre interface et auprès de vos clients.
         </p>
       </div>
       {/* buttons */}

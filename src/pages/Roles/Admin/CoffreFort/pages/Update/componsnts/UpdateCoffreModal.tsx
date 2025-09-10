@@ -75,11 +75,9 @@ export default function UpdateCoffreModal({
           Modifier coffre fort
         </h2>
         <p className="w-full md:w-3/4 text-gray-400 lg:w-4/5 mx-auto font-normal text-sm leading-[1.3rem] sm:text-base lg:text-lg text-subColor text-center">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae
-          sapiente a hic quo tempore aliquid consequuntur, dolore officia ullam
-          repellendus optio voluptatem voluptatibus, voluptates nam voluptatum
-          tempora! Facilis culpa veritatis laudantium expedita soluta,
-          doloremque tenetur?
+          Ici, vous pouvez mettre à jour les informations ou paramètres de votre
+          coffre-fort afin de garantir la sécurité et l'accessibilité de vos
+          documents importants.
         </p>
       </div>
       {/* buttons */}

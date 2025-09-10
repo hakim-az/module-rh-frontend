@@ -56,6 +56,30 @@ export default function Dashboard() {
   const [userRole, setUserRole] = useState<UserRole>(null)
   const [isLoadingUser, setIsLoadingUser] = useState(true)
 
+  // Inactivity timeout (30s)
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(() => {
+        sessionStorage.removeItem('auth_user')
+        window.location.reload()
+      }, 600_000) // ⏳ 10 minutes
+    }
+
+    // Écoute des événements d'activité
+    const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
+    events.forEach((event) => window.addEventListener(event, resetTimer))
+
+    resetTimer() // démarre au montage
+
+    return () => {
+      clearTimeout(timeoutId)
+      events.forEach((event) => window.removeEventListener(event, resetTimer))
+    }
+  }, [])
+
   useEffect(() => {
     const role = getRoleFromSession()
     setUserRole(role)
