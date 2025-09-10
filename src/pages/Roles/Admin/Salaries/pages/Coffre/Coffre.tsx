@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState, useMemo } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import {
-  Search,
   Filter,
   Calendar,
   FileText,
@@ -13,6 +12,8 @@ import {
   FolderOpen,
   X,
   Eye,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 import PagePath from '@/components/PagePath/PagePath'
 import DisplayPdf from '@/components/DisplayPdf/DisplayPdf'
@@ -52,6 +53,10 @@ export default function Coffre() {
   const [selectedMois, setSelectedMois] = useState<string>('')
   const [selectedAnnee, setSelectedAnnee] = useState<string>('')
   const [showFilters, setShowFilters] = useState<boolean>(false)
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const itemsPerPage = 12
 
   // download file
   const [downloadingKey, setDownloadingKey] = useState<boolean>(false)
@@ -132,11 +137,23 @@ export default function Coffre() {
     })
   }, [coffres, searchTerm, selectedType, selectedMois, selectedAnnee])
 
+  // Pagination calculations
+  const totalPages = Math.ceil(filteredCoffres.length / itemsPerPage)
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const endIndex = startIndex + itemsPerPage
+  const currentCoffres = filteredCoffres.slice(startIndex, endIndex)
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm, selectedType, selectedMois, selectedAnnee])
+
   const clearFilters = () => {
     setSearchTerm('')
     setSelectedType('')
     setSelectedMois('')
     setSelectedAnnee('')
+    setCurrentPage(1)
   }
 
   const formatDate = (dateString: string) => {
@@ -188,18 +205,6 @@ export default function Coffre() {
 
           {/* Search and Filters */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-            {/* Search Bar */}
-            <div className="relative mb-6">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Rechercher dans les documents..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-              />
-            </div>
-
             {/* Filter Toggle */}
             <div className="flex items-center justify-between mb-4">
               <button
@@ -283,11 +288,25 @@ export default function Coffre() {
 
           {/* Results Summary */}
           <div className="mb-6">
-            <p className="text-gray-600">
-              {filteredCoffres.length} document
-              {filteredCoffres.length !== 1 ? 's' : ''} trouvé
-              {filteredCoffres.length !== 1 ? 's' : ''}
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-gray-600">
+                {filteredCoffres.length} document
+                {filteredCoffres.length !== 1 ? 's' : ''} trouvé
+                {filteredCoffres.length !== 1 ? 's' : ''}
+                {filteredCoffres.length > itemsPerPage && (
+                  <span className="ml-2 text-sm">
+                    (Page {currentPage} sur {totalPages})
+                  </span>
+                )}
+              </p>
+              {filteredCoffres.length > itemsPerPage && (
+                <div className="text-sm text-gray-500">
+                  Affichage de {startIndex + 1} à{' '}
+                  {Math.min(endIndex, filteredCoffres.length)} sur{' '}
+                  {filteredCoffres.length}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Documents Grid */}
@@ -316,7 +335,7 @@ export default function Coffre() {
             </div>
           ) : (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {filteredCoffres.map((coffre) => (
+              {currentCoffres.map((coffre) => (
                 <div
                   key={coffre.id}
                   className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
@@ -398,6 +417,80 @@ export default function Coffre() {
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+        </div>
+        <div>
+          {/* Pagination */}
+          {filteredCoffres.length > itemsPerPage && (
+            <div className="mt-8 flex items-center justify-center">
+              <div className="flex items-center gap-2">
+                {/* Previous Button */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-500 transition-colors">
+                  <ChevronLeft className="h-4 w-4" />
+                  Précédent
+                </button>
+
+                {/* Page Numbers */}
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (page) => {
+                      // Show first page, last page, current page, and pages around current page
+                      const showPage =
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 1 && page <= currentPage + 1)
+
+                      // Show ellipsis
+                      const showEllipsisBefore =
+                        page === currentPage - 2 && currentPage > 3
+                      const showEllipsisAfter =
+                        page === currentPage + 2 && currentPage < totalPages - 2
+
+                      return (
+                        <div key={page} className="flex items-center">
+                          {showEllipsisBefore && (
+                            <span className="px-2 py-1 text-gray-500">...</span>
+                          )}
+                          {showPage && (
+                            <button
+                              type="button"
+                              onClick={() => setCurrentPage(page)}
+                              className={`px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                                currentPage === page
+                                  ? 'bg-blue-600 text-white'
+                                  : 'text-gray-700 bg-white border border-gray-300 hover:bg-gray-50'
+                              }`}>
+                              {page}
+                            </button>
+                          )}
+                          {showEllipsisAfter && (
+                            <span className="px-2 py-1 text-gray-500">...</span>
+                          )}
+                        </div>
+                      )
+                    }
+                  )}
+                </div>
+
+                {/* Next Button */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:text-gray-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-gray-500 transition-colors">
+                  Suivant
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           )}
         </div>
