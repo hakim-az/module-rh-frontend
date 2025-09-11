@@ -4,7 +4,7 @@ import NavlinksContainer from './components/NavlinksContainer'
 import ToggleSidebarButton from './components/ToggleSidebarButton'
 import LogoutCard from './components/LogoutCard'
 
-type UserRole = 'employee' | 'hr' | 'admin'
+type UserRole = 'employee' | 'hr' | 'assistant' | 'gestionnaire' | 'admin'
 
 export interface NavLinkType {
   name: string
@@ -33,6 +33,10 @@ export default function SideNavbar({
         return '#4141D2'
       case 'employee':
         return '#09090B'
+      case 'assistant':
+        return '#2A9D8F'
+      case 'gestionnaire':
+        return '#C2185B'
       default:
         return undefined
     }

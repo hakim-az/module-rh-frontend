@@ -1,5 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
+import Assistant from '../Roles/Assistant/Assistant'
+import Gestionnaire from '../Roles/Gestionnaire/Gestionnaire'
 
 // Lazy load role components
 const Employee = React.lazy(() => import('../Roles/Employee/Employee'))
@@ -10,7 +12,14 @@ const CompleteProfile = React.lazy(
 )
 
 // Define the user role type
-type UserRole = 'complete-profile' | 'employee' | 'hr' | 'admin' | null
+type UserRole =
+  | 'complete-profile'
+  | 'employee'
+  | 'hr'
+  | 'admin'
+  | 'assistant'
+  | 'gestionnaire'
+  | null
 
 // Helper: Determine role from session storage
 function getRoleFromSession(): UserRole {
@@ -37,12 +46,15 @@ function getRoleFromSession(): UserRole {
       return 'employee'
     }
     if (user.groups?.includes('RH-Manager')) return 'hr'
+    if (user.groups?.includes('RH-Assistant')) return 'assistant'
+    if (user.groups?.includes('RH-Gestionnaire')) return 'gestionnaire'
     if (user.groups?.includes('RH-Admin')) return 'admin'
 
     // Fallback: check realmAccess roles
     const roles: string[] = user.realmAccess?.roles || []
     if (roles.includes('admin')) return 'admin'
     if (roles.includes('hr')) return 'hr'
+    if (roles.includes('assistant')) return 'assistant'
     if (roles.includes('employee')) return 'employee'
 
     return null
@@ -91,6 +103,8 @@ export default function Dashboard() {
     'complete-profile': <CompleteProfile />,
     employee: <Employee />,
     hr: <HR />,
+    assistant: <Assistant />,
+    gestionnaire: <Gestionnaire />,
     admin: <Admin />,
   }
 
