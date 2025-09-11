@@ -110,6 +110,8 @@ export const columns: ColumnDef<User>[] = [
             return '#EC4899'
           case 'user-approuved':
             return '#10B981'
+          case 'user-banned':
+            return '#f00'
           default:
             return '#000000'
         }
@@ -129,6 +131,8 @@ export const columns: ColumnDef<User>[] = [
             return 'Contrat signé'
           case 'user-approuved':
             return 'Accès validé'
+          case 'user-banned':
+            return 'Désactiver'
           default:
             return '-'
         }

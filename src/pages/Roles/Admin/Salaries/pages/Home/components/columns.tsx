@@ -154,7 +154,7 @@ export const columns: ColumnDef<User>[] = [
           case 'user-approuved':
             return 'Accès validé'
           case 'user-banned':
-            return 'Banner'
+            return 'Désactiver'
           default:
             return '-'
         }

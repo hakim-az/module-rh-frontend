@@ -65,6 +65,15 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
             <span className="group-hover:text-blue-500">Détails salarié</span>
           </DropdownMenuItem>
 
+          {/* Action coffre fort */}
+          <DropdownMenuItem
+            disabled={statut === 'user-registred'}
+            className="group cursor-pointer"
+            onClick={() => navigate(`coffre/${id}`)}>
+            <Lock className="group-hover:text-blue-500 " />
+            <span className="group-hover:text-blue-500">Coffre salarié</span>
+          </DropdownMenuItem>
+
           {/* Bannir / Réactiver seulement si approuvé ou banni */}
           {(statut === 'user-approuved' || statut === 'user-banned') &&
             (statut === 'user-banned' ? (
@@ -92,13 +101,6 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
                 </span>
               </DropdownMenuItem>
             ))}
-          <DropdownMenuItem
-            disabled={statut === 'user-registred'}
-            className="group cursor-pointer"
-            onClick={() => navigate(`coffre/${id}`)}>
-            <Lock className="group-hover:text-blue-500 " />
-            <span className="group-hover:text-blue-500">Coffre salarié</span>
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
