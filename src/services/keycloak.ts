@@ -9,22 +9,16 @@ class KeycloakService {
   private adminToken: string | null = null
 
   async login(username: string, password: string): Promise<AuthResponse> {
-    const response = await fetch(
-      `${KEYCLOAK_BASE_URL}/realms/${REALM}/protocol/openid-connect/token`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          client_id: CLIENT_ID,
-          client_secret: CLIENT_SECRET,
-          grant_type: 'password',
-          username,
-          password,
-        }),
-      }
-    )
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        username,
+        password,
+      }),
+    })
 
     if (!response.ok) {
       const error = await response
