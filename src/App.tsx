@@ -8,7 +8,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import NotFound from './pages/NotFound/NotFound'
 import ToastNotification from '@/lib/ToastNotification'
-import NotificationListener from './lib/NotificationListenner'
+// import NotificationListener from './lib/NotificationListenner'
 
 function AppContent() {
   const { user, isLoading } = useAuth()
@@ -27,6 +27,7 @@ function AppContent() {
   return user ? (
     <>
       <ScrollToTop />
+
       <Routes>
         <Route path="/" element={<Navigate to="/accueil" replace />} />
         <Route
@@ -43,9 +44,6 @@ function AppContent() {
       </Routes>
       {/* le container pour les toasts */}
       <ToastNotification />
-
-      {/* le listener websocket */}
-      <NotificationListener />
     </>
   ) : (
     <AuthPage />

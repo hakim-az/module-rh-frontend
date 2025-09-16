@@ -11,73 +11,13 @@ import {
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import { CircleUserRound } from 'lucide-react'
 import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
-// import { useEffect } from 'react'
-// import { io, Socket } from 'socket.io-client'
-// import { useQuery, useQueryClient } from '@tanstack/react-query'
-// import axios from 'axios'
-
-// interface Notification {
-//   id: string
-//   title: string
-//   message: string
-//   read?: boolean
-// }
+import NotificationBell from '../NotificationBell/NotificationBell'
 
 function Header() {
   const { userDetails } = useDashboardContext()
   const { logout } = useAuth()
   const scrolled = useScroll(5)
   const location = useLocation()
-  // const queryClient = useQueryClient()
-
-  // Fetch notifications using React Query
-  // const { data: notifications = [] } = useQuery<Notification[]>({
-  //   queryKey: ['notifications', userDetails?.id],
-  //   queryFn: async () => {
-  //     if (!userDetails?.id) return []
-  //     const res = await axios.get(
-  //       `${import.meta.env.VITE_API_BASE_URL}/notifications/${userDetails.id}`
-  //     )
-  //     return res.data
-  //   },
-  //   enabled: !!userDetails?.id,
-  // })
-
-  // useEffect(() => {
-  //   if (!userDetails?.id) return
-
-  //   const socket: Socket = io('${import.meta.env.VITE_API_BASE_URL}')
-
-  //   socket.on('connect', () => {
-  //     console.log('Connected to notifications socket')
-  //     socket.emit('join', userDetails.id) // join user-specific room
-  //   })
-
-  //   socket.on('notification', (notif: Notification) => {
-  //     console.log('New notification received', notif)
-  //     queryClient.setQueryData<Notification[]>(
-  //       ['notifications', userDetails.id],
-  //       (old = []) => [notif, ...old]
-  //     )
-  //   })
-
-  //   return () => {
-  //     socket.disconnect()
-  //   }
-  // }, [queryClient, userDetails?.id])
-
-  // Mark a notification as read
-  // const markAsRead = async (id: string) => {
-  //   await axios.patch(
-  //     `${import.meta.env.VITE_API_BASE_URL}/notifications/${id}/read`
-  //   )
-  //   queryClient.setQueryData<Notification[]>(
-  //     ['notifications', userDetails?.id],
-  //     (old = []) => old.map((n) => (n.id === id ? { ...n, read: true } : n))
-  //   )
-  // }
-
-  // const unreadCount = notifications.filter((n) => !n.read).length
 
   const selectedLayout = location.pathname.split('/')[1]
 
@@ -100,22 +40,14 @@ function Header() {
         </div>
 
         <div className="items-center justify-between hidden w-full lg:flex">
-          {/* <span className="text-xl font-semibold capitalize text-primaryBlue">
-            {!Number.isInteger(parseInt(nameRoute, 10))
-              ? decodeURIComponent(nameRoute).split('-').join(' ')
-              : beforeLocation}
-          </span> */}
-
           <span className="text-xl font-semibold capitalize text-primaryBlue">
             {(() => {
               const parts = location.pathname.split('/')
               const lastPart = parts[parts.length - 1]
               const beforeLastPart = parts[parts.length - 2]
 
-              // Detect if last part looks like an ID (UUID or number)
               const isId =
-                /^[0-9a-fA-F-]{36}$/.test(lastPart) || // UUID v4 regex
-                !isNaN(Number(lastPart)) // numeric id
+                /^[0-9a-fA-F-]{36}$/.test(lastPart) || !isNaN(Number(lastPart))
 
               return decodeURIComponent(
                 isId
@@ -125,38 +57,9 @@ function Header() {
             })()}
           </span>
 
-          {/* Notifications Dropdown */}
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger>
-              <div className="relative">
-                <Bell className="text-red-600" />
-                {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-4 h-4 text-[10px] flex items-center justify-center rounded-full bg-red-600 text-white">
-                    {unreadCount}
-                  </span>
-                )}
-              </div>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-80 p-2 mt-2">
-              {notifications.length === 0 ? (
-                <span className="text-sm text-gray-500">No notifications</span>
-              ) : (
-                notifications.map((n) => (
-                  <DropdownMenuItem
-                    key={n.id}
-                    className={cn('flex flex-col gap-1 p-2 cursor-pointer', {
-                      'bg-gray-100': !n.read,
-                    })}
-                    onClick={() => markAsRead(n.id)}>
-                    <span className="font-medium">{n.title}</span>
-                    <span className="text-sm text-gray-600">{n.message}</span>
-                  </DropdownMenuItem>
-                ))
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu> */}
-
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-5">
+            {/* Notifications Dropdown */}
+            <NotificationBell />
             {/* User Avatar Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -170,7 +73,7 @@ function Header() {
                   />
                 )}
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="p-3 mt-2 mr-6">
+              <DropdownMenuContent className="p-3 mt-2 -mr-28">
                 <DropdownMenuItem
                   onClick={logout}
                   className="flex items-center cursor-pointer gap-x-5 font-robotoMedium text-primaryblack">
@@ -178,6 +81,15 @@ function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            {/* info */}
+            <div className="flex flex-col">
+              <span className="font-medium capitalize">
+                {userDetails?.role}{' '}
+              </span>
+              <span className="text-sm">
+                {userDetails?.nomDeNaissance} {userDetails?.prenom}
+              </span>
+            </div>
           </div>
         </div>
       </div>
