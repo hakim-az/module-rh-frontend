@@ -107,7 +107,6 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
 
           {/* Action détails */}
           <DropdownMenuItem
-            disabled={statut === 'user-registred'}
             className="group cursor-pointer"
             onClick={() => deleteUserMutation.mutate()}>
             <Trash className="group-hover:text-red-500 " />
