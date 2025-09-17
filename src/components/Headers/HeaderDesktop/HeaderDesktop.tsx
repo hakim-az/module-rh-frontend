@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
@@ -20,6 +21,23 @@ function Header() {
   const location = useLocation()
 
   const selectedLayout = location.pathname.split('/')[1]
+
+  const renderRole = (role: string | undefined) => {
+    switch (role) {
+      case 'admin':
+        return 'Administrateur'
+      case 'hr':
+        return 'Ressource humaine'
+      case 'assistant':
+        return 'Asisstant RH'
+      case 'gestionnaire':
+        return 'Gestionnaire RH'
+      case 'employee':
+        return 'Employé'
+      default:
+        return 'Utilisateur'
+    }
+  }
 
   return (
     <div
@@ -57,14 +75,19 @@ function Header() {
             })()}
           </span>
 
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3">
             {/* Notifications Dropdown */}
             <NotificationBell />
             {/* User Avatar Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {userDetails?.avatar === '' ? (
-                  <CircleUserRound width={40} height={40} />
+                  <CircleUserRound
+                    width={44}
+                    height={44}
+                    strokeWidth={1.2}
+                    className="hover:bg-blue-100 rounded-full"
+                  />
                 ) : (
                   <img
                     src={userDetails?.avatar}
@@ -73,7 +96,20 @@ function Header() {
                   />
                 )}
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="p-3 mt-2 -mr-28">
+              <DropdownMenuContent className="w-[200px] mr-4 p-3 mt-2 shadow-lg rounded-xl bg-white border border-gray-200">
+                {/* info */}
+                <div className="flex flex-col pb-5">
+                  <span className="font-bold mb-4 text-sm inline text-center capitalize">
+                    {renderRole(userDetails?.role)}
+                  </span>
+                  <span className="font-medium text-sm lowercase">
+                    {userDetails?.nomDeNaissance} {userDetails?.prenom}
+                  </span>
+                  <span className="text-xs text-gray-500">
+                    {userDetails?.emailPersonnel}
+                  </span>
+                </div>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={logout}
                   className="flex items-center cursor-pointer gap-x-5 font-robotoMedium text-primaryblack">
@@ -81,15 +117,6 @@ function Header() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            {/* info */}
-            <div className="flex flex-col">
-              <span className="font-medium capitalize">
-                {userDetails?.role}{' '}
-              </span>
-              <span className="text-sm">
-                {userDetails?.nomDeNaissance} {userDetails?.prenom}
-              </span>
-            </div>
           </div>
         </div>
       </div>
