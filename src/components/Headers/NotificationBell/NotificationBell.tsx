@@ -127,7 +127,7 @@ export default function NotificationBell() {
         </div>
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-80 max-h-[300px] p-3 mt-2 shadow-lg rounded-xl bg-white border border-gray-200">
+      <DropdownMenuContent className="w-[350px] max-h-[300px] p-3 mt-2 shadow-lg rounded-xl bg-white border border-gray-200">
         {notifications.length === 0 ? (
           <span className="text-sm text-gray-500">Aucune notification</span>
         ) : (

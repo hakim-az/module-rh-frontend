@@ -43,11 +43,12 @@ export default function RefuserAbsenceModal({
       formData.append('motifDeRefus', data.note)
 
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}`,
-        formData,
+        `${import.meta.env.VITE_API_BASE_URL}/absences/${absenceId}/refuser`,
+        {
+          motifDeRefus: data.note,
+        },
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
         }

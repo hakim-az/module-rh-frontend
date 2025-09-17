@@ -7,8 +7,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
-import { useMutation } from '@tanstack/react-query'
-import { MoreHorizontal, InfoIcon, Lock, Ban } from 'lucide-react'
+import { notify } from '@/lib/ToastNotification'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import axios from 'axios'
+import { MoreHorizontal, InfoIcon, Lock, Ban, Trash } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 interface ActionsCellProps {
@@ -45,6 +47,44 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
     },
   })
 
+  const queryClient = useQueryClient()
+
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
+  // Mutation pour supprimer un utilisateur
+  const deleteUserMutation = useMutation({
+    mutationFn: async () => {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_BASE_URL}/users/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      return response.data
+    },
+    onSuccess: () => {
+      notify({
+        message: 'Salarié supprimé avec succès',
+        type: 'success',
+      })
+      queryClient.invalidateQueries({ queryKey: ['users'] }) // Invalidate users list
+      setTimeout(() => {
+        navigate(0) // Refresh page
+      }, 200)
+    },
+    onError: (error) => {
+      console.error(error)
+      notify({
+        message: 'Échec de la suppression du salarié',
+        type: 'error',
+      })
+    },
+  })
+
   return (
     <div className="flex items-center justify-center">
       <DropdownMenu>
@@ -63,6 +103,15 @@ export default function ActionsCell({ id, statut }: ActionsCellProps) {
             onClick={() => navigate(`details/${id}`)}>
             <InfoIcon className="group-hover:text-blue-500 " />
             <span className="group-hover:text-blue-500">Détails salarié</span>
+          </DropdownMenuItem>
+
+          {/* Action détails */}
+          <DropdownMenuItem
+            disabled={statut === 'user-registred'}
+            className="group cursor-pointer"
+            onClick={() => deleteUserMutation.mutate()}>
+            <Trash className="group-hover:text-red-500 " />
+            <span className="group-hover:text-red-500">Supprimer salarié</span>
           </DropdownMenuItem>
 
           {/* Action coffre fort */}
