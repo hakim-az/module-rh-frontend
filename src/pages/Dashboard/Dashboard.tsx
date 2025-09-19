@@ -32,6 +32,13 @@ function getRoleFromSession(): UserRole {
     // Check groups or realmAccess.roles to determine role
     if (user.groups?.includes('Users')) return 'employee'
     if (
+      // salariés
+      user.groups?.includes('Comptabilité') ||
+      user.groups?.includes('Formation') ||
+      user.groups?.includes('Gestion') ||
+      user.groups?.includes('IT') ||
+      user.groups?.includes('Marketing-Communication') ||
+      user.groups?.includes('Ressources-Humaines') ||
       // prospection
       user.groups?.includes('Prospection-Admin') ||
       user.groups?.includes('Prospection-Commercial') ||

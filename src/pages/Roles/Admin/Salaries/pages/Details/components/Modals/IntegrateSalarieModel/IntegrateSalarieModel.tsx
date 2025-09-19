@@ -29,6 +29,31 @@ export default function IntegrateSalarieModel({
   const REALM = 'master'
 
   const GROUP_OPTIONS: GroupOption[] = [
+    // salariés
+    {
+      value: '7d5af3a8-ffab-4b46-b608-ea7d90c1056b',
+      label: 'Comptabilité',
+    },
+    {
+      value: '96facf48-f97e-4b43-907b-16b7dbffebc4',
+      label: 'Formation',
+    },
+    {
+      value: '9e799fc2-ee4b-463b-b72f-222e7a2fdba9',
+      label: 'Gestion',
+    },
+    {
+      value: '74736260-b0c9-4002-96b7-fcaac4af7bbf',
+      label: 'IT',
+    },
+    {
+      value: '801ac0f7-fa6b-4ed8-a6fa-a5a416e6f851',
+      label: 'Marketing / Communication',
+    },
+    {
+      value: 'bd2b18c3-5335-4d1d-b9f7-7091f147b0b2',
+      label: 'Ressources Humaines',
+    },
     // prospection
     {
       value: '0f3c0500-aee8-4548-af3e-1109392cfc77',
@@ -45,6 +70,10 @@ export default function IntegrateSalarieModel({
     {
       value: 'a1808de1-597f-43ef-9e35-de2073aabd78',
       label: 'Prospection Admin',
+    },
+    {
+      value: 'a02931c8-9bfb-49ab-bd20-ed2416a0e8ea',
+      label: 'Prospection Directeur',
     },
     // rh
     {
