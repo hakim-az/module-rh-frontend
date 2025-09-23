@@ -8,6 +8,7 @@ import type { EmployeePersonalInformations } from '@/contexts/CompleteProfile/In
 import { countriesData } from '@/components/__mock__/Countries'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
+import { useEffect } from 'react'
 
 // types
 interface PropsType {
@@ -17,6 +18,43 @@ interface PropsType {
   ) => void
   setCurrentStepIndex: (setCurrentStepIndex: number) => void
   labels: string[]
+}
+
+// Helper function to check if data should be cleared (older than 3 hours)
+const shouldClearExpiredData = (timestamp: number): boolean => {
+  const THREE_HOURS_IN_MS = 3 * 60 * 60 * 1000 // 3 hours in milliseconds
+  const currentTime = new Date().getTime()
+  return currentTime - timestamp > THREE_HOURS_IN_MS
+}
+
+// Helper function to get valid stored data or null if expired
+const getValidStoredData = (): EmployeePersonalInformations | null => {
+  try {
+    const storedData = localStorage.getItem('employeePersonalInfo')
+    if (!storedData) return null
+
+    const parsedData = JSON.parse(storedData)
+
+    // Check if data has timestamp (new format)
+    if (parsedData.savedAt && typeof parsedData.savedAt === 'number') {
+      if (shouldClearExpiredData(parsedData.savedAt)) {
+        // Data is expired, clear it
+        localStorage.removeItem('employeePersonalInfo')
+        return null
+      }
+      return parsedData.data
+    }
+
+    // Old format without timestamp - assume it's expired and clear it
+    localStorage.removeItem('employeePersonalInfo')
+    return null
+  } catch (error) {
+    console.log('Error parsing stored data:', error)
+
+    // Invalid data format, clear it
+    localStorage.removeItem('employeePersonalInfo')
+    return null
+  }
 }
 
 export default function InfosPerso({
@@ -30,16 +68,23 @@ export default function InfosPerso({
     useIntegrationFormDataContext()
   const { userDetails } = useDashboardContext()
 
+  // Au montage, récupérer les données du localStorage si elles existent et ne sont pas expirées
+  useEffect(() => {
+    const validStoredData = getValidStoredData()
+    if (validStoredData) {
+      setEmployeePersonalInfo(validStoredData)
+    }
+  }, [setEmployeePersonalInfo])
+
   // react hook form
+  const validStoredData = getValidStoredData()
+  const defaultValues: EmployeePersonalInformations = validStoredData || {
+    ...employeePersonalInfo,
+  }
+
   const methods = useForm<EmployeePersonalInformations>({
     mode: 'onBlur',
-    defaultValues: {
-      civilite: employeePersonalInfo.civilite,
-      situation_familiale: employeePersonalInfo.situation_familiale,
-      pays_de_naissance: employeePersonalInfo.pays_de_naissance,
-      pays_de_nationalite: employeePersonalInfo.pays_de_nationalite,
-      pays: employeePersonalInfo.pays,
-    },
+    defaultValues, // <- must be synchronous
   })
 
   const {
@@ -51,7 +96,13 @@ export default function InfosPerso({
 
   // handle form submit
   const onSubmit = (data: EmployeePersonalInformations) => {
+    const payload = {
+      data,
+      savedAt: new Date().getTime(), // timestamp in ms
+    }
+    localStorage.setItem('employeePersonalInfo', JSON.stringify(payload))
     setEmployeePersonalInfo(data)
+
     if (currentStepIndex === labels.length - 1) {
       setActiveValidateIntegrationModal(true)
     } else {
