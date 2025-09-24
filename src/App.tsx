@@ -1,6 +1,5 @@
 import { AuthProvider } from './contexts/KeyCloakContext/AuthProvider'
 import { useAuth } from './contexts/KeyCloakContext/AuthContext'
-import { AuthPage } from './pages/KeyCloakAuth/Pages/AuthPage'
 import Dashboard from './pages/Dashboard/Dashboard'
 import { ProtectedRoute } from './pages/KeyCloakAuth/ProtectedRoute'
 import DashboardProvider from './contexts/DashboardContext/DashboardProvider'
@@ -8,7 +7,8 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import NotFound from './pages/NotFound/NotFound'
 import ToastNotification from '@/lib/ToastNotification'
-// import NotificationListener from './lib/NotificationListenner'
+import LoginForm from './pages/KeyCloakAuth/Pages/LoginForm'
+import SignupForm from './pages/KeyCloakAuth/Pages/SignupForm'
 
 function AppContent() {
   const { user, isLoading } = useAuth()
@@ -46,7 +46,11 @@ function AppContent() {
       <ToastNotification />
     </>
   ) : (
-    <AuthPage />
+    <Routes>
+      <Route path="/" element={<LoginForm />} />
+      <Route path="/signup" element={<SignupForm />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }
 

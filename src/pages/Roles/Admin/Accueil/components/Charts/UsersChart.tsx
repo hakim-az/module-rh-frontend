@@ -126,7 +126,6 @@ export default function UsersChart() {
           },
         }
       )
-      console.log(response)
       setAbsencesStatus(response.data)
 
       setIsLoading(false)
