@@ -53,6 +53,9 @@ export default function SignContractModal({
         case 'commercial':
           endpoint = '/signature-commercial'
           break
+        case 'cdi-wc':
+          endpoint = '/signature-cdi/wc'
+          break
         default:
           endpoint = ''
       }

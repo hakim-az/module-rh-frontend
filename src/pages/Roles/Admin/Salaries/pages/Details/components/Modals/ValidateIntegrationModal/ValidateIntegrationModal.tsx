@@ -38,10 +38,34 @@ export default function ValidateIntegrationModal({
         formData.append('serviceDeSante', data.service_de_sante)
         formData.append('salaire', data.salaire.toString())
         formData.append('matricule', data.matricule)
+        if (
+          data.type_de_contrat === 'stage' ||
+          data.type_de_contrat === 'alternance'
+        ) {
+          formData.append('fichierContratNonSignerPdf', data.justificatif)
+          formData.append('fichierContratSignerPdf', data.justificatif)
+        }
+      }
+
+      // 🔹 Choose endpoint based on type_contrat
+      let endpoint = ''
+      switch (data?.type_de_contrat) {
+        case 'Commercial':
+          endpoint = '/contrats-commercial'
+          break
+        case 'cdi-wc':
+          endpoint = '/contrats-cdi/wc'
+          break
+        case 'stage':
+        case 'alternance':
+          endpoint = '/contrats-non-cdi'
+          break
+        default:
+          endpoint = ''
       }
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/contrats-commercial`,
+        `${import.meta.env.VITE_API_BASE_URL}${endpoint}`,
         formData,
         {
           headers: {
@@ -54,7 +78,7 @@ export default function ValidateIntegrationModal({
       console.log(response)
 
       notify({
-        message: 'Contrat envoyer avec success',
+        message: 'Contrat envoyé avec succès',
         type: 'success',
       })
 
@@ -67,13 +91,14 @@ export default function ValidateIntegrationModal({
       console.error(error)
 
       notify({
-        message: 'Echec',
+        message: 'Échec',
         type: 'error',
       })
 
       setIsLoading(false)
     }
   }
+
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full section-email">
       {/* Hero icon */}

@@ -3,9 +3,10 @@ import { ControlledSelect } from '@/components/FormFeilds/ControlledSelect/Contr
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import ValidateIntegrationModal from '../../components/Modals/ValidateIntegrationModal/ValidateIntegrationModal'
+import FileUploader from '@/components/FileUploader/FileUploader'
 
 export interface IContractInfo {
   poste: string
@@ -16,6 +17,7 @@ export interface IContractInfo {
   etablisment_de_sante: string
   service_de_sante: string
   salaire: number
+  justificatif: File
 }
 
 interface PropsType {
@@ -33,6 +35,7 @@ export default function Contrat({
   const [ContractInfo, setContractInfo] = useState<IContractInfo>()
   const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
     useState<boolean>(false)
+  const [justificatif, setJustificatif] = useState<File | null>(null)
 
   // react hook form
   const methods = useForm<IContractInfo>({
@@ -44,7 +47,18 @@ export default function Contrat({
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
+    watch,
+    unregister,
   } = methods
+
+  const typeAbsence = watch('type_de_contrat')
+
+  // ✅ Types d'absences où le justificatif n'est pas obligatoire
+  const typesJustificatifNonObligatoire = ['stage', 'alternance']
+
+  const isJustificatifRequired =
+    typesJustificatifNonObligatoire.includes(typeAbsence)
 
   // handle go back
   const goBack = () => {
@@ -58,6 +72,35 @@ export default function Contrat({
     setContractInfo(data)
     setActiveValidateIntegrationModal(true)
   }
+
+  useEffect(() => {
+    // ✅ Validation conditionnelle du justificatif selon le type d'absence
+    if (isJustificatifRequired) {
+      register('justificatif', {
+        required: 'Ce champ est requis',
+        validate: {
+          size: (file: File) =>
+            file && file.size <= 10 * 1024 * 1024
+              ? true
+              : 'Le fichier doit faire moins de 10 Mo',
+        },
+      })
+    } else {
+      // Si le justificatif n'est pas requis, on l'enregistre sans validation obligatoire
+      unregister('justificatif')
+      register('justificatif', {
+        required: false,
+        validate: {
+          size: (file: File) =>
+            !file || file.size <= 10 * 1024 * 1024
+              ? true
+              : 'Le fichier doit faire moins de 10 Mo',
+        },
+      })
+    }
+
+    if (justificatif) setValue('justificatif', justificatif)
+  }, [justificatif, register, setValue, unregister, isJustificatifRequired])
 
   return (
     <FormProvider {...methods}>
@@ -86,7 +129,12 @@ export default function Contrat({
             placeholder="Type de contrat"
             control={control}
             rules={{ required: true }}
-            items={[{ label: 'Commercial', value: 'commercial' }]}
+            items={[
+              { label: 'Commercial', value: 'commercial' },
+              { label: 'CDI Winvest Capital', value: 'cdi-wc' },
+              { label: 'Stage', value: 'stage' },
+              { label: 'Alternance', value: 'alternance' },
+            ]}
             error={errors.type_de_contrat}
             selectDefaultValue=""
           />
@@ -165,6 +213,39 @@ export default function Contrat({
             inputDefaultValue=""
           />
         </div>
+
+        {/* justificatif */}
+        {(typeAbsence === 'stage' || typeAbsence === 'alternance') && (
+          <div className="grid grid-cols-1 bg-white lg:grid-cols-2 p-7 gap-10 rounded-md border border-gray-200 shadow-md w-full">
+            <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
+              Fichier du contrat :
+            </span>
+
+            {/* Mode de salaire de base */}
+            <div className="col-span-1 lg:col-span-2">
+              <FileUploader
+                title="Pièce justificatif"
+                name="justificatif"
+                setValue={setValue}
+                onFileSelect={setJustificatif}
+                error={
+                  typeof errors.justificatif?.message === 'string'
+                    ? errors.justificatif.message
+                    : undefined
+                }
+                defaultFile={justificatif ?? undefined}
+                required={isJustificatifRequired} // ✅ Dynamique selon le type d'absence
+              />
+
+              {/* ✅ Message informatif pour les types non obligatoires */}
+              {!isJustificatifRequired && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Le justificatif est optionnel pour ce type d'absence
+                </p>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="w-full mt-20 flex gap-16 justify-center">
           <Button onClick={goBack} type="button" variant="outline" size="lg">
