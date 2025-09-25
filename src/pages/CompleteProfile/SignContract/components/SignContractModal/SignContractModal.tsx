@@ -47,8 +47,18 @@ export default function SignContractModal({
         pdfUrl: userDetails.contrat.fichierContratNonSignerPdf,
       }
 
+      // 🔹 Define endpoint by role/post
+      let endpoint = '/signature' // default
+      switch (userDetails.contrat.typeContrat) {
+        case 'commercial':
+          endpoint = '/signature-commercial'
+          break
+        default:
+          endpoint = ''
+      }
+
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/signature`,
+        `${import.meta.env.VITE_API_BASE_URL}${endpoint}`,
         payload,
         {
           headers: {

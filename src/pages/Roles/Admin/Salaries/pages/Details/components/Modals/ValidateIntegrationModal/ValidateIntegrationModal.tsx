@@ -38,11 +38,10 @@ export default function ValidateIntegrationModal({
         formData.append('serviceDeSante', data.service_de_sante)
         formData.append('salaire', data.salaire.toString())
         formData.append('matricule', data.matricule)
-        formData.append('fichierContratNonSignerPdf', data.contrat)
       }
 
       const response = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/contrats`,
+        `${import.meta.env.VITE_API_BASE_URL}/contrats-commercial`,
         formData,
         {
           headers: {
@@ -61,7 +60,7 @@ export default function ValidateIntegrationModal({
 
       setTimeout(() => {
         setActiveValidateIntegrationModal(false)
-        navigate('/accueil/salariés')
+        navigate(0)
         setIsLoading(false)
       }, 200)
     } catch (error) {

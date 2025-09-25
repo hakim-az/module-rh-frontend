@@ -1,11 +1,10 @@
-import FileUploader from '@/components/FileUploader/FileUploader'
 import { ControlledInput } from '@/components/FormFeilds/ControlledInput/ControlledInput'
 import { ControlledSelect } from '@/components/FormFeilds/ControlledSelect/ControlledSelect'
 import CustomModal from '@/components/Headers/CustomModal/CustomModal'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { Controller, FormProvider, useForm } from 'react-hook-form'
+import { useState } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
 import ValidateIntegrationModal from '../../components/Modals/ValidateIntegrationModal/ValidateIntegrationModal'
 
 export interface IContractInfo {
@@ -17,7 +16,6 @@ export interface IContractInfo {
   etablisment_de_sante: string
   service_de_sante: string
   salaire: number
-  contrat: File
 }
 
 interface PropsType {
@@ -35,7 +33,7 @@ export default function Contrat({
   const [ContractInfo, setContractInfo] = useState<IContractInfo>()
   const [activeValidateIntegrationModal, setActiveValidateIntegrationModal] =
     useState<boolean>(false)
-  const [contrat, setContrat] = useState<File>()
+
   // react hook form
   const methods = useForm<IContractInfo>({
     mode: 'onBlur',
@@ -46,7 +44,6 @@ export default function Contrat({
     handleSubmit,
     formState: { errors },
     control,
-    setValue,
   } = methods
 
   // handle go back
@@ -61,20 +58,6 @@ export default function Contrat({
     setContractInfo(data)
     setActiveValidateIntegrationModal(true)
   }
-
-  useEffect(() => {
-    register('contrat', {
-      required: 'Ce champ est requis',
-      validate: {
-        size: (file: File) =>
-          file && file.size <= 10 * 1024 * 1024
-            ? true
-            : 'Le fichier doit faire moins de 10 Mo',
-      },
-    })
-
-    if (contrat) setValue('contrat', contrat)
-  }, [contrat, register, setValue])
 
   return (
     <FormProvider {...methods}>
@@ -103,12 +86,7 @@ export default function Contrat({
             placeholder="Type de contrat"
             control={control}
             rules={{ required: true }}
-            items={[
-              { label: 'Satge', value: 'stage' },
-              { label: 'Alternance', value: 'alternance' },
-              { label: 'CDD', value: 'cdd' },
-              { label: 'CDI', value: 'cdi' },
-            ]}
+            items={[{ label: 'Commercial', value: 'commercial' }]}
             error={errors.type_de_contrat}
             selectDefaultValue=""
           />
@@ -185,34 +163,6 @@ export default function Contrat({
             error={errors.salaire}
             inputType="number"
             inputDefaultValue=""
-          />
-        </div>
-        <div className="p-6 border border-gray-300 shadow bg-white rounded-md">
-          <span className="text-xl mb-5 col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
-            Contrat d'intégration :
-          </span>
-          <Controller
-            name="contrat"
-            control={control}
-            rules={{ required: 'Veuillez ajouter un fichier' }}
-            render={({ field }) => (
-              <FileUploader
-                title="Contrat de travail"
-                name="contrat"
-                setValue={setValue}
-                onFileSelect={(file) => {
-                  setContrat(file)
-                  setValue('contrat', file, { shouldValidate: true })
-                  field.onChange(file)
-                }}
-                error={
-                  typeof errors.contrat?.message === 'string'
-                    ? errors.contrat.message
-                    : undefined
-                }
-                defaultFile={contrat}
-              />
-            )}
           />
         </div>
 
