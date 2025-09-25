@@ -2,6 +2,7 @@ import React, { Suspense, useEffect, useState } from 'react'
 import LoadingSpinner from '@/components/LoadingSpinner/LoadingSpinner'
 import Assistant from '../Roles/Assistant/Assistant'
 import Gestionnaire from '../Roles/Gestionnaire/Gestionnaire'
+import { useNavigate } from 'react-router-dom'
 // import isTokenExpired from '@/services/isTokenExpired'
 
 // Lazy load role components
@@ -76,6 +77,8 @@ export default function Dashboard() {
   const [userRole, setUserRole] = useState<UserRole>(null)
   const [isLoadingUser, setIsLoadingUser] = useState(true)
 
+  const navigate = useNavigate()
+
   // Inactivity timeout
   useEffect(() => {
     let timeoutId: NodeJS.Timeout
@@ -84,6 +87,7 @@ export default function Dashboard() {
       clearTimeout(timeoutId)
       timeoutId = setTimeout(() => {
         sessionStorage.removeItem('auth_user')
+        navigate('/')
         window.location.reload()
       }, 600_000) // ⏳ 10 minutes
     }
@@ -98,7 +102,7 @@ export default function Dashboard() {
       clearTimeout(timeoutId)
       events.forEach((event) => window.removeEventListener(event, resetTimer))
     }
-  }, [])
+  }, [navigate])
 
   // useEffect(() => {
   //   let timeoutId: NodeJS.Timeout
