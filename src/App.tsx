@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound/NotFound'
 import ToastNotification from '@/lib/ToastNotification'
 import LoginForm from './pages/KeyCloakAuth/Pages/LoginForm'
 import SignupForm from './pages/KeyCloakAuth/Pages/SignupForm'
+import EmailVerification from './pages/KeyCloakAuth/Pages/EmailVerification'
 
 function AppContent() {
   const { user, isLoading } = useAuth()
@@ -49,17 +50,16 @@ function AppContent() {
     <Routes>
       <Route path="/" element={<LoginForm />} />
       <Route path="/signup" element={<SignupForm />} />
+      <Route path="/email-verification" element={<EmailVerification />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
 
-function App() {
+export default function App() {
   return (
     <AuthProvider>
       <AppContent />
     </AuthProvider>
   )
 }
-
-export default App

@@ -10,6 +10,7 @@ import type { AuthUser } from '@/types/auth'
 import { keycloakService } from '@/services/keycloak'
 import { jwtDecode } from 'jwt-decode'
 import { AuthContext } from './AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 interface AuthProviderProps {
   children: ReactNode
@@ -28,6 +29,7 @@ interface DecodedToken {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const navigate = useNavigate()
 
   const refreshTimeoutId = useRef<ReturnType<typeof setTimeout> | null>(null)
   const refreshUserTokenRef = useRef<
@@ -45,8 +47,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null)
     sessionStorage.removeItem('auth_user')
     clearRefreshTimeout()
-    window.location.href = '/'
-  }, [])
+    navigate('/') // ✅ client-side navigation, no reload
+  }, [navigate])
 
   const scheduleTokenRefresh = useCallback(
     (expiresInSeconds: number, refreshToken: string) => {
