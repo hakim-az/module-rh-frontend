@@ -38,6 +38,7 @@ export default function ValidateIntegrationModal({
         formData.append('serviceDeSante', data.service_de_sante)
         formData.append('salaire', data.salaire.toString())
         formData.append('matricule', data.matricule)
+        formData.append('missions', data.mission)
         if (
           data.type_de_contrat === 'stage' ||
           data.type_de_contrat === 'alternance'
@@ -50,7 +51,7 @@ export default function ValidateIntegrationModal({
       // 🔹 Choose endpoint based on type_contrat
       let endpoint = ''
       switch (data?.type_de_contrat) {
-        case 'Commercial':
+        case 'commercial':
           endpoint = '/contrats-commercial'
           break
         case 'cdi-wc':

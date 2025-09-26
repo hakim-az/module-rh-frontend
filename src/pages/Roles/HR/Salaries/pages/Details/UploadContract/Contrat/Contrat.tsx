@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import ValidateIntegrationModal from '../../components/Modals/ValidateIntegrationModal/ValidateIntegrationModal'
 import FileUploader from '@/components/FileUploader/FileUploader'
+import { ControlledTextarea } from '@/components/FormFeilds/ControlledTextarea/ControlledTextarea '
 
 export interface IContractInfo {
   poste: string
@@ -18,6 +19,7 @@ export interface IContractInfo {
   service_de_sante: string
   salaire: number
   justificatif: File
+  mission: string
 }
 
 interface PropsType {
@@ -100,7 +102,23 @@ export default function Contrat({
     }
 
     if (justificatif) setValue('justificatif', justificatif)
-  }, [justificatif, register, setValue, unregister, isJustificatifRequired])
+
+    // ✅ Conditional validation for "mission"
+    const isMissionRequired = ['commercial', 'cdi-wc'].includes(typeAbsence)
+    if (isMissionRequired) {
+      register('mission', { required: 'Ce champ est requis' })
+    } else {
+      unregister('mission')
+      register('mission', { required: false })
+    }
+  }, [
+    justificatif,
+    register,
+    setValue,
+    unregister,
+    isJustificatifRequired,
+    typeAbsence,
+  ])
 
   return (
     <FormProvider {...methods}>
@@ -212,6 +230,22 @@ export default function Contrat({
             inputType="number"
             inputDefaultValue=""
           />
+        </div>
+
+        <div className="grid grid-cols-1  bg-white lg:grid-cols-2 p-7 gap-10 rounded-md border border-gray-200 shadow-md w-full">
+          <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
+            Missions :
+          </span>
+          {/* missions */}
+          <div className="col-span-1 lg:col-span-2">
+            <ControlledTextarea
+              name="mission"
+              label="Missions"
+              placeholder="Entrez les missions ici"
+              register={register}
+              error={errors.mission}
+            />
+          </div>
         </div>
 
         {/* justificatif */}
