@@ -148,7 +148,8 @@ export default function Contrat({
             control={control}
             rules={{ required: true }}
             items={[
-              { label: 'Commercial', value: 'commercial' },
+              { label: 'CDI Commercial', value: 'commercial' },
+              { label: 'CDI Téléconseiller', value: 'teleconseiller' },
               { label: 'CDI Winvest Capital', value: 'cdi-wc' },
               { label: 'Stage', value: 'stage' },
               { label: 'Alternance', value: 'alternance' },

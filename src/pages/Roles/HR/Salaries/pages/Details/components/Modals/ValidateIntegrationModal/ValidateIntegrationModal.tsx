@@ -55,6 +55,9 @@ export default function ValidateIntegrationModal({
         case 'commercial':
           endpoint = '/contrats-commercial'
           break
+        case 'teleconseiller':
+          endpoint = '/contrats-cdi/fr-teleconseiller'
+          break
         case 'cdi-wc':
           endpoint = '/contrats-cdi/wc'
           break

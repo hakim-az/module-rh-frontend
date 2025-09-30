@@ -41,7 +41,8 @@ export default function ValidateIntegrationModal({
         formData.append('missions', data.mission)
         if (
           data.type_de_contrat === 'stage' ||
-          data.type_de_contrat === 'alternance'
+          data.type_de_contrat === 'alternance' ||
+          data.type_de_contrat === 'signer'
         ) {
           formData.append('fichierContratNonSignerPdf', data.justificatif)
           formData.append('fichierContratSignerPdf', data.justificatif)
@@ -53,6 +54,9 @@ export default function ValidateIntegrationModal({
       switch (data?.type_de_contrat) {
         case 'commercial':
           endpoint = '/contrats-commercial'
+          break
+        case 'teleconseiller':
+          endpoint = '/contrats-cdi/fr-teleconseiller'
           break
         case 'cdi-wc':
           endpoint = '/contrats-cdi/wc'
