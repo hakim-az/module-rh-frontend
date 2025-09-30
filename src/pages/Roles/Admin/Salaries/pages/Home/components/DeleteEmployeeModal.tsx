@@ -45,7 +45,7 @@ export default function ApprouverAbsenceModal({
       })
 
       setTimeout(() => {
-        navigate('/accueil/absences')
+        navigate(0)
       }, 200)
     },
     onError: (error) => {

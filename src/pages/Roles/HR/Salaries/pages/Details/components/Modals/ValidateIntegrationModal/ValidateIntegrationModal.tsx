@@ -41,7 +41,8 @@ export default function ValidateIntegrationModal({
         formData.append('missions', data.mission)
         if (
           data.type_de_contrat === 'stage' ||
-          data.type_de_contrat === 'alternance'
+          data.type_de_contrat === 'alternance' ||
+          data.type_de_contrat === 'signer'
         ) {
           formData.append('fichierContratNonSignerPdf', data.justificatif)
           formData.append('fichierContratSignerPdf', data.justificatif)
@@ -59,6 +60,7 @@ export default function ValidateIntegrationModal({
           break
         case 'stage':
         case 'alternance':
+        case 'signer':
           endpoint = '/contrats-non-cdi'
           break
         default:

@@ -59,6 +59,7 @@ export default function ValidateIntegrationModal({
           break
         case 'stage':
         case 'alternance':
+        case 'signer':
           endpoint = '/contrats-non-cdi'
           break
         default:

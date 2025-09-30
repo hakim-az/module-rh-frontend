@@ -57,7 +57,7 @@ export default function Contrat({
   const typeAbsence = watch('type_de_contrat')
 
   // ✅ Types d'absences où le justificatif n'est pas obligatoire
-  const typesJustificatifNonObligatoire = ['stage', 'alternance']
+  const typesJustificatifNonObligatoire = ['stage', 'alternance', 'signer']
 
   const isJustificatifRequired =
     typesJustificatifNonObligatoire.includes(typeAbsence)
@@ -152,6 +152,7 @@ export default function Contrat({
               { label: 'CDI Winvest Capital', value: 'cdi-wc' },
               { label: 'Stage', value: 'stage' },
               { label: 'Alternance', value: 'alternance' },
+              { label: 'Déjà signer', value: 'signer' },
             ]}
             error={errors.type_de_contrat}
             selectDefaultValue=""
@@ -249,7 +250,9 @@ export default function Contrat({
         </div>
 
         {/* justificatif */}
-        {(typeAbsence === 'stage' || typeAbsence === 'alternance') && (
+        {(typeAbsence === 'stage' ||
+          typeAbsence === 'alternance' ||
+          typeAbsence === 'signer') && (
           <div className="grid grid-cols-1 bg-white lg:grid-cols-2 p-7 gap-10 rounded-md border border-gray-200 shadow-md w-full">
             <span className="text-xl col-span-1 lg:col-span-2 w-full basis-2 font-medium inline-block text-blue-600">
               Fichier du contrat :
