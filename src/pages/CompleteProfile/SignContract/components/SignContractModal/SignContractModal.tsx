@@ -59,6 +59,9 @@ export default function SignContractModal({
         case 'teleconseiller':
           endpoint = '/signature-cdi/fr-teleconseiller'
           break
+        case 'cdi-ft':
+          endpoint = '/signature-cdi/fr'
+          break
         default:
           endpoint = ''
       }

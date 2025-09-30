@@ -151,6 +151,7 @@ export default function Contrat({
               { label: 'CDI Commercial', value: 'commercial' },
               { label: 'CDI Téléconseiller', value: 'teleconseiller' },
               { label: 'CDI Winvest Capital', value: 'cdi-wc' },
+              { label: 'CDI France Téléphone', value: 'cdi-ft' },
               { label: 'Stage', value: 'stage' },
               { label: 'Alternance', value: 'alternance' },
               { label: 'Déjà signer', value: 'signer' },
