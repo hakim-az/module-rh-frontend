@@ -49,7 +49,7 @@ function AppContent() {
   ) : (
     <Routes>
       <Route path="/" element={<LoginForm />} />
-      <Route path="/signup" element={<SignupForm />} />
+      <Route path="/inscription" element={<SignupForm />} />
       <Route path="/email-verification" element={<EmailVerification />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

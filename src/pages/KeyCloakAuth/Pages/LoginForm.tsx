@@ -95,7 +95,7 @@ export default function LoginForm() {
                   <button
                     type="button"
                     onClick={() => {
-                      navigate('/signup')
+                      navigate('/inscription')
                     }}
                     className="text-blue-600 hover:text-blue-500 font-medium transition-colors">
                     S'inscrire
