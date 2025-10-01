@@ -65,6 +65,9 @@ export default function SignContractModal({
         case 'cdi-ap':
           endpoint = '/signature-cdi/ap'
           break
+        case 'cdi-mt':
+          endpoint = '/signature-cdi/mt'
+          break
         default:
           endpoint = ''
       }

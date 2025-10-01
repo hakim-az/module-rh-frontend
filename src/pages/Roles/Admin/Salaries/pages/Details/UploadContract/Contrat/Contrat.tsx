@@ -153,6 +153,7 @@ export default function Contrat({
               { label: 'CDI Winvest Capital', value: 'cdi-wc' },
               { label: 'CDI France Téléphone', value: 'cdi-ft' },
               { label: 'CDI Action Prevoyance', value: 'cdi-ap' },
+              { label: 'CDI Mondial TV', value: 'cdi-mt' },
               { label: 'Stage', value: 'stage' },
               { label: 'Alternance', value: 'alternance' },
               { label: 'Déjà signer', value: 'signer' },
