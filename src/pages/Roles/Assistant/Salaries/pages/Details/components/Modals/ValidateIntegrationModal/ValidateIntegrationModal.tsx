@@ -64,6 +64,9 @@ export default function ValidateIntegrationModal({
         case 'cdi-ft':
           endpoint = '/contrats-cdi/fr'
           break
+        case 'cdi-ap':
+          endpoint = '/contrats-cdi/ap'
+          break
         case 'stage':
         case 'alternance':
         case 'signer':
