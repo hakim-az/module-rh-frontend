@@ -33,7 +33,11 @@ export default function ValidateIntegrationModal({
         formData.append('poste', data.poste)
         formData.append('typeContrat', data.type_de_contrat)
         formData.append('dateDebut', data.date_de_début.toString())
-        formData.append('dateFin', data.date_de_fin.toString())
+        if (data.date_de_fin) {
+          formData.append('dateFin', data.date_de_fin.toString())
+        } else {
+          formData.append('dateFin', new Date('2099-12-31').toISOString())
+        }
         formData.append('etablissementDeSante', data.etablisment_de_sante)
         formData.append('serviceDeSante', data.service_de_sante)
         formData.append('salaire', data.salaire.toString())

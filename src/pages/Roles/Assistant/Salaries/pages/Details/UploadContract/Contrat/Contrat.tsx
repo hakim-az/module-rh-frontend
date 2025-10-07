@@ -75,6 +75,9 @@ export default function Contrat({
     setActiveValidateIntegrationModal(true)
   }
 
+  // Ajouter en haut du composant
+  const [showDateFin, setShowDateFin] = useState<boolean>(true)
+
   useEffect(() => {
     // ✅ Validation conditionnelle du justificatif selon le type d'absence
     if (isJustificatifRequired) {
@@ -111,6 +114,26 @@ export default function Contrat({
       unregister('mission')
       register('mission', { required: false })
     }
+
+    // ✅ Validation conditionnelle pour "date_de_fin"
+    const cdiTypes = [
+      'commercial',
+      'teleconseiller',
+      'cdi-wc',
+      'cdi-ft',
+      'cdi-ap',
+      'cdi-mt',
+    ]
+    const isCDI = cdiTypes.includes(typeAbsence)
+
+    // Mettre à jour l'affichage du champ date_de_fin
+    setShowDateFin(!isCDI)
+
+    // Réinitialiser la validation
+    unregister('date_de_fin')
+    register('date_de_fin', {
+      required: !isCDI ? 'Ce champ est requis' : false,
+    })
   }, [
     justificatif,
     register,
@@ -172,17 +195,20 @@ export default function Contrat({
             inputType="date"
             inputDefaultValue=""
           />
-          {/* Date de fin */}
-          <ControlledInput
-            name="date_de_fin"
-            label="Date de fin"
-            placeholder=""
-            register={register}
-            rules={{ required: true }}
-            error={errors.date_de_début}
-            inputType="date"
-            inputDefaultValue=""
-          />
+          {/* Date de fin (affichée seulement si requise) */}
+          {showDateFin && (
+            <ControlledInput
+              name="date_de_fin"
+              label="Date de fin"
+              placeholder=""
+              register={register}
+              rules={{ required: true }}
+              error={errors.date_de_fin}
+              inputType="date"
+              inputDefaultValue=""
+            />
+          )}
+
           {/* Matricule */}
           <ControlledInput
             name="matricule"

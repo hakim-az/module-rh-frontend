@@ -1,11 +1,12 @@
-import FileViewer from './components/FileViewer/FileViewer'
+import FileViewer from './components/FileViewer'
 import { useState } from 'react'
-import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
-import { IframeSignatureModal } from './components/SignContractModal/IframeSignatureModal'
+import { IframeSignatureModal } from './components/IframeSignatureModal'
+import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
+import PagePath from '@/components/PagePath/PagePath'
 
-export default function SignContract() {
+export default function IframeSignature() {
   // dashbaord context
-  const { userDetails } = useDashboardContext()
+  const { salarieDetails } = useSalarieDetailsContext()
 
   const [signatureUrl, setSignatureUrl] = useState<string | null>(null)
   const [signatureRequestId, setSignatureRequestId] = useState<string | null>(
@@ -37,24 +38,24 @@ export default function SignContract() {
 
     // 🔹 Define endpoint by role/post
     let endpoint = '/signature-cdi-iframe' // default
-    switch (userDetails?.contrat.typeContrat) {
+    switch (salarieDetails?.contrat.typeContrat) {
       case 'commercial':
-        endpoint = '/signature-cdi-iframe/commercial/salarie'
+        endpoint = '/signature-cdi-iframe/commercial/rh'
         break
       case 'cdi-wc':
-        endpoint = '/signature-cdi-iframe/wc/salarie'
+        endpoint = '/signature-cdi-iframe/wc/rh'
         break
       case 'teleconseiller':
-        endpoint = '/signature-cdi-iframe/fr-teleconseiller/salarie'
+        endpoint = '/signature-cdi-iframe/fr-teleconseiller/rh'
         break
       case 'cdi-ft':
-        endpoint = '/signature-cdi-iframe/fr/salarie'
+        endpoint = '/signature-cdi-iframe/fr/rh'
         break
       case 'cdi-ap':
-        endpoint = '/signature-cdi-iframe/ap/salarie'
+        endpoint = '/signature-cdi-iframe/ap/rh'
         break
       case 'cdi-mt':
-        endpoint = '/signature-cdi-iframe/mt/salarie'
+        endpoint = '/signature-cdi-iframe/mt/rh'
         break
       default:
         endpoint = ''
@@ -70,12 +71,12 @@ export default function SignContract() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            idUser: userDetails?.id,
-            idContrat: userDetails?.contrat.id,
-            firstName: userDetails?.prenom,
-            lastName: userDetails?.nomDeNaissance,
-            email: userDetails?.emailPersonnel,
-            pdfUrl: userDetails?.contrat.fichierContratNonSignerPdf,
+            idUser: salarieDetails?.id,
+            idContrat: salarieDetails?.contrat.id,
+            firstName: salarieDetails?.prenom,
+            lastName: salarieDetails?.nomDeNaissance,
+            email: salarieDetails?.emailPersonnel,
+            pdfUrl: salarieDetails?.contrat.fichierContratSignerPdf,
           }),
         }
       )
@@ -139,8 +140,8 @@ export default function SignContract() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            idUser: userDetails?.id,
-            idContrat: userDetails?.contrat.id,
+            idUser: salarieDetails?.id,
+            idContrat: salarieDetails?.contrat.id,
             signatureRequestId,
             documentId,
           }),
@@ -191,17 +192,14 @@ export default function SignContract() {
 
   return (
     <>
-      {userDetails?.statut === 'contract-uploaded' && (
-        <>
-          <FileViewer initiateSignature={initiateSignature} status={status} />
-          {signatureUrl && status === 'signing' && (
-            <IframeSignatureModal
-              signatureUrl={signatureUrl}
-              onClose={handleClose}
-              onComplete={handleSignatureResult}
-            />
-          )}
-        </>
+      <PagePath />
+      <FileViewer initiateSignature={initiateSignature} status={status} />
+      {signatureUrl && status === 'signing' && (
+        <IframeSignatureModal
+          signatureUrl={signatureUrl}
+          onClose={handleClose}
+          onComplete={handleSignatureResult}
+        />
       )}
     </>
   )

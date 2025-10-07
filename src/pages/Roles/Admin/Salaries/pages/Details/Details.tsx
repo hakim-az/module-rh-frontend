@@ -5,7 +5,7 @@ import WaitSignature from './WaitSignature/WaitSignature'
 import SalarieValidation from './SalarieValidation/SalarieValidation'
 import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
 import { useEffect } from 'react'
-import ContractView from './ContractView/ContractView'
+import IframeSignature from './IframeSignature/IframeSignature'
 
 export default function Details() {
   const { idSalarie } = useParams()
@@ -86,7 +86,7 @@ export default function Details() {
   }
   // Contrat signer
   if (salarieDetails?.statut === 'contract-signed') {
-    return <ContractView statusLabel={getStepLabel(salarieDetails?.statut)} />
+    return <IframeSignature />
   }
   // Salarie validation
   if (salarieDetails?.statut === 'user-approuved') {
