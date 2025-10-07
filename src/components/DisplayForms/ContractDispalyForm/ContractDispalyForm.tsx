@@ -129,6 +129,67 @@ export default function ContractDispalyForm({ details, loading }: IProps) {
           />
         </Document>
       </div>
+      {/* donload contract */}
+      {(details?.contrat?.fichierContratSignerPdf ||
+        details?.contrat?.fichierContratNonSignerPdf) && (
+        <div className="flex justify-center mt-8">
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                const fileUrl = [
+                  'contract-signed',
+                  'user-approuved',
+                  'user-banned',
+                ].includes(details?.statut ?? '')
+                  ? details?.contrat?.fichierContratSignerPdf
+                  : details?.contrat?.fichierContratNonSignerPdf
+
+                if (!fileUrl) {
+                  alert('Aucun fichier à télécharger.')
+                  return
+                }
+
+                // Création du nom de fichier : contrat-prenom-nom.pdf
+                const prenom = (details?.prenom ?? '')
+                  .trim()
+                  .replace(/\s+/g, '_')
+                const nom = (details?.nomDeNaissance ?? '')
+                  .trim()
+                  .replace(/\s+/g, '_')
+                const filename = `contrat-${prenom}-${nom}.pdf`
+
+                // Téléchargement du fichier
+                const response = await fetch(fileUrl)
+                if (!response.ok) throw new Error('Erreur réseau')
+
+                const blob = await response.blob()
+                const blobUrl = window.URL.createObjectURL(blob)
+
+                // Création d’un lien temporaire pour forcer le téléchargement
+                const a = document.createElement('a')
+                a.href = blobUrl
+                a.download = filename
+                document.body.appendChild(a)
+                a.click()
+                a.remove()
+
+                // Nettoyage
+                window.URL.revokeObjectURL(blobUrl)
+              } catch (error) {
+                console.error(
+                  'Erreur lors du téléchargement du contrat :',
+                  error
+                )
+                alert('Erreur lors du téléchargement du contrat.')
+              }
+            }}
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md shadow transition-colors">
+            Télécharger le contrat
+          </button>
+        </div>
+      )}
+
       {/* pagination */}
       <div className="flex justify-center gap-5 flex-wrap mt-8">
         <button
