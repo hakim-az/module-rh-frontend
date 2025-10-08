@@ -123,6 +123,10 @@ export default function Add() {
                   label: 'Bulletin de régularisation',
                   value: 'bulletin_regularisation',
                 },
+                {
+                  label: 'Avenant',
+                  value: 'avenant',
+                },
               ]}
               error={errors.type}
               selectDefaultValue=""

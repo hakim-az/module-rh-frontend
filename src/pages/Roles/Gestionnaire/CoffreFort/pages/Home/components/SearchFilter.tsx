@@ -43,6 +43,10 @@ const typeBulletinItems = [
     label: 'Bulletin de régularisation',
     value: 'bulletin_regularisation',
   },
+  {
+    label: 'Avenant',
+    value: 'avenant',
+  },
 ]
 
 export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {
