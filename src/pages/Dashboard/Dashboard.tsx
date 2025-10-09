@@ -9,7 +9,7 @@ const Employee = React.lazy(() => import('../Roles/Employee/Employee'))
 const HR = React.lazy(() => import('../Roles/HR/HR'))
 const Admin = React.lazy(() => import('../Roles/Admin/Admin'))
 const CompleteProfile = React.lazy(
-  () => import('../../pages/CompleteProfile/CompleteProfile')
+  () => import('../CompleteProfile/CompleteProfile')
 )
 
 // Define the user role type
@@ -29,27 +29,30 @@ function getRoleFromSession(): UserRole {
     if (!storedUser) return null
 
     const user = JSON.parse(storedUser)
+    // Ensure realm roles are available before any checks that use them
+    const roles: string[] = user.realmAccess?.roles || []
 
     // Check groups or realmAccess.roles to determine role
     if (user.groups?.includes('Users')) return 'employee'
     if (
       // salariés
-      user.groups?.includes('Comptabilité') ||
-      user.groups?.includes('Formation') ||
-      user.groups?.includes('Gestion') ||
-      user.groups?.includes('IT') ||
-      user.groups?.includes('Marketing-Communication') ||
-      user.groups?.includes('Ressources-Humaines') ||
-      // prospection
-      user.groups?.includes('Prospection-Admin') ||
-      user.groups?.includes('Prospection-Commercial') ||
-      user.groups?.includes('Prospection-Directeur') ||
-      user.groups?.includes('Prospection-Gestionnaire') ||
-      user.groups?.includes('Prospection-Manager') ||
-      // vente
-      user.groups?.includes('Vente-Admin') ||
-      user.groups?.includes('Vente-Commercial') ||
-      user.groups?.includes('Vente-Manager')
+      (user.groups?.includes('Comptabilité') ||
+        user.groups?.includes('Formation') ||
+        user.groups?.includes('Gestion') ||
+        user.groups?.includes('IT') ||
+        user.groups?.includes('Marketing-Communication') ||
+        user.groups?.includes('Ressources-Humaines') ||
+        // prospection
+        user.groups?.includes('Prospection-Admin') ||
+        user.groups?.includes('Prospection-Commercial') ||
+        user.groups?.includes('Prospection-Directeur') ||
+        user.groups?.includes('Prospection-Gestionnaire') ||
+        user.groups?.includes('Prospection-Manager') ||
+        // vente
+        user.groups?.includes('Vente-Admin') ||
+        user.groups?.includes('Vente-Commercial') ||
+        user.groups?.includes('Vente-Manager')) &&
+      roles.includes('employee')
     ) {
       return 'employee'
     }
@@ -59,7 +62,6 @@ function getRoleFromSession(): UserRole {
     if (user.groups?.includes('RH-Admin')) return 'admin'
 
     // Fallback: check realmAccess roles
-    const roles: string[] = user.realmAccess?.roles || []
     if (roles.includes('admin')) return 'admin'
     if (roles.includes('hr')) return 'hr'
     if (roles.includes('assistant')) return 'assistant'

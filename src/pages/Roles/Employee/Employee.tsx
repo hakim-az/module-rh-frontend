@@ -2,10 +2,10 @@ import React from 'react'
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
 import EmployeeLayout from '@/components/Layouts/EmployeeLayout'
 import CompleteProfileLayout from '@/components/Layouts/CompleteProfileLayout/CompleteProfileLayout'
-import CompleteProfile from '../../CompleteProfile/CompleteProfile'
+import CompleteProfile from '@/pages/CompleteProfile/CompleteProfile'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
 import IntegrationFormProvider from '@/contexts/CompleteProfile/IntegrationForm/IntegrationFormProvider'
-import IntegrationForm from '../../CompleteProfile/IntegrationForm/IntegrationForm'
+import IntegrationForm from '@/pages/CompleteProfile/IntegrationForm/IntegrationForm'
 
 /* ROUTES */
 const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))

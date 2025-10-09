@@ -7,10 +7,12 @@ const NotFound = React.lazy(() => import('@/pages/NotFound/NotFound'))
 
 const Accueil = React.lazy(() => import('./Accueil/Accueil'))
 const Salaries = React.lazy(() => import('./Salaries/Salaries'))
-const Absences = React.lazy(() => import('./Absences/Absences'))
-const CoffreFort = React.lazy(() => import('./CoffreFort/CoffreFort'))
+const Absences = React.lazy(() => import('../../CommonPages/Absences/Absences'))
+const CoffreFort = React.lazy(
+  () => import('../../CommonPages/CoffreFort/CoffreFort')
+)
 const TitreRestaurant = React.lazy(
-  () => import('./TitreRestaurant/TitreRestaurant')
+  () => import('../../CommonPages/TitreRestaurant/TitreRestaurant')
 )
 
 export default function Gestionnaire() {

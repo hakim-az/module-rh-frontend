@@ -1,15 +1,15 @@
 import { AuthProvider } from './contexts/KeyCloakContext/AuthProvider'
 import { useAuth } from './contexts/KeyCloakContext/AuthContext'
 import Dashboard from './pages/Dashboard/Dashboard'
-import { ProtectedRoute } from './pages/KeyCloakAuth/ProtectedRoute'
+import { ProtectedRoute } from './pages/Auth/ProtectedRoute'
 import DashboardProvider from './contexts/DashboardContext/DashboardProvider'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import NotFound from './pages/NotFound/NotFound'
 import ToastNotification from '@/lib/ToastNotification'
-import LoginForm from './pages/KeyCloakAuth/Pages/LoginForm'
-import SignupForm from './pages/KeyCloakAuth/Pages/SignupForm'
-import EmailVerification from './pages/KeyCloakAuth/Pages/EmailVerification'
+import LoginForm from './pages/Auth/Pages/LoginForm'
+import SignupForm from './pages/Auth/Pages/SignupForm'
+import EmailVerification from './pages/Auth/Pages/EmailVerification'
 
 function AppContent() {
   const { user, isLoading } = useAuth()
