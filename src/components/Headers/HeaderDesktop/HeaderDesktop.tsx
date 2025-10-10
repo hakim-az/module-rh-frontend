@@ -1,16 +1,13 @@
 import { Link, useLocation } from 'react-router-dom'
 import useScroll from '@/hooks/useScroll/useScroll'
 import { cn } from '@/lib/utils'
-import { ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/outline'
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContext'
-import { CircleUserRound } from 'lucide-react'
+import { CircleUserRound, LogOut } from 'lucide-react'
 import { useAuth } from '@/contexts/KeyCloakContext/useAuth'
 import NotificationBell from '../NotificationBell/NotificationBell'
 
@@ -75,19 +72,16 @@ function Header() {
             })()}
           </span>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-6">
             {/* Notifications Dropdown */}
             <NotificationBell />
             {/* User Avatar Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger>
                 {userDetails?.avatar === '' ? (
-                  <CircleUserRound
-                    width={44}
-                    height={44}
-                    strokeWidth={1.2}
-                    className="hover:bg-blue-100 rounded-full"
-                  />
+                  <div className="relative flex items-center justify-center size-11 rounded-xl bg-gradient-to-br from-slate-100 to-slate-100 hover:from-blue-50 hover:to-indigo-50 border border-slate-200 hover:border-blue-300 shadow-sm hover:shadow-md transition-all duration-200">
+                    <CircleUserRound className="w-7 h-7 text-slate-700 group-hover:text-blue-600 transition-colors" />
+                  </div>
                 ) : (
                   <img
                     src={userDetails?.avatar}
@@ -96,25 +90,51 @@ function Header() {
                   />
                 )}
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-[200px] mr-4 p-3 mt-2 shadow-lg rounded-xl bg-white border border-gray-200">
-                {/* info */}
-                <div className="flex flex-col pb-5">
-                  <span className="font-bold mb-4 text-sm inline text-center capitalize">
-                    {renderRole(userDetails?.role)}
-                  </span>
-                  <span className="font-medium text-sm lowercase">
-                    {userDetails?.nomDeNaissance} {userDetails?.prenom}
-                  </span>
-                  <span className="text-xs text-gray-500">
-                    {userDetails?.emailPersonnel}
-                  </span>
+              <DropdownMenuContent className="p-0 rounded-2xl mr-4 mt-5">
+                <div className="w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4">
+                    <div className="flex items-center gap-4">
+                      {!userDetails?.avatar || userDetails.avatar === '' ? (
+                        <div className="flex items-center justify-center size-16 rounded-xl bg-white/20 backdrop-blur-sm">
+                          <CircleUserRound className="w-10 h-10 text-white" />
+                        </div>
+                      ) : (
+                        <img
+                          src={userDetails.avatar}
+                          alt="Avatar utilisateur"
+                          className="w-16 h-16 object-cover rounded-xl border-2 border-white/30 shadow-lg"
+                        />
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-semibold text-lg capitalize truncate">
+                          {userDetails?.nomDeNaissance} {userDetails?.prenom}
+                        </p>
+                        <p className="text-blue-100 text-sm truncate lowercase">
+                          {userDetails?.emailPersonnel}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="p-4">
+                    <div className="mb-4 px-3 py-2 bg-slate-50 rounded-lg">
+                      <span className="text-xs text-slate-500 uppercase tracking-wide font-medium">
+                        Rôle
+                      </span>
+                      <p className="text-sm font-semibold text-slate-900 capitalize mt-0.5">
+                        {renderRole(userDetails?.role)}
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={logout}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-xl transition-colors">
+                      <LogOut className="w-5 h-5" />
+                      Se déconnecter
+                    </button>
+                  </div>
                 </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={logout}
-                  className="flex items-center cursor-pointer gap-x-5 font-robotoMedium text-primaryblack">
-                  <ArrowLeftEndOnRectangleIcon className="w-5" /> Se déconnecter
-                </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>

@@ -257,16 +257,17 @@ export default function ValidateIntegrationModal({
       <div className="flex flex-col items-center justify-around w-full gap-4 mt-10 mb-6 md:flex-row md:justify-center md:gap-10">
         <button
           type="button"
+          disabled={isLoading}
           onClick={() => setActiveValidateIntegrationModal(false)}
-          className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
+          className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
           Annuler
         </button>
         <button
           type="button"
           disabled={isLoading}
           onClick={sendIntegrationForm}
-          className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
-          {isLoading ? 'Loading...' : 'Valider'}
+          className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
+          {isLoading ? 'Chargement...' : 'Valider'}
         </button>
       </div>
       <ToastNotification />
