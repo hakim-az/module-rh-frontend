@@ -197,6 +197,26 @@ export default function Add() {
                     label: 'Bulletin de régularisation',
                     value: 'bulletin_regularisation',
                   },
+                  {
+                    label: 'Avenant',
+                    value: 'avenant',
+                  },
+                  {
+                    label: 'Calandrier de formation',
+                    value: 'calandrier_de_formation',
+                  },
+                  {
+                    label: 'Programme de formation',
+                    value: 'programme_de_formation',
+                  },
+                  {
+                    label: 'Convention',
+                    value: 'convention',
+                  },
+                  {
+                    label: 'Autre',
+                    value: 'autre',
+                  },
                 ]}
                 error={errors.type}
                 selectDefaultValue=""

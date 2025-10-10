@@ -48,6 +48,22 @@ const typeBulletinItems = [
     label: 'Avenant',
     value: 'avenant',
   },
+  {
+    label: 'Calandrier de formation',
+    value: 'calandrier_de_formation',
+  },
+  {
+    label: 'Programme de formation',
+    value: 'programme_de_formation',
+  },
+  {
+    label: 'Convention',
+    value: 'convention',
+  },
+  {
+    label: 'Autre',
+    value: 'autre',
+  },
 ]
 
 export default function SearchFilter<T>({ table }: SearchFilterProps<T>) {

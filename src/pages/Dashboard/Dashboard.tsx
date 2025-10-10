@@ -36,23 +36,22 @@ function getRoleFromSession(): UserRole {
     if (user.groups?.includes('Users')) return 'employee'
     if (
       // salariés
-      (user.groups?.includes('Comptabilité') ||
-        user.groups?.includes('Formation') ||
-        user.groups?.includes('Gestion') ||
-        user.groups?.includes('IT') ||
-        user.groups?.includes('Marketing-Communication') ||
-        user.groups?.includes('Ressources-Humaines') ||
-        // prospection
-        user.groups?.includes('Prospection-Admin') ||
-        user.groups?.includes('Prospection-Commercial') ||
-        user.groups?.includes('Prospection-Directeur') ||
-        user.groups?.includes('Prospection-Gestionnaire') ||
-        user.groups?.includes('Prospection-Manager') ||
-        // vente
-        user.groups?.includes('Vente-Admin') ||
-        user.groups?.includes('Vente-Commercial') ||
-        user.groups?.includes('Vente-Manager')) &&
-      roles.includes('employee')
+      user.groups?.includes('Comptabilité') ||
+      user.groups?.includes('Formation') ||
+      user.groups?.includes('Gestion') ||
+      user.groups?.includes('IT') ||
+      user.groups?.includes('Marketing-Communication') ||
+      user.groups?.includes('Ressources-Humaines') ||
+      // prospection
+      user.groups?.includes('Prospection-Admin') ||
+      user.groups?.includes('Prospection-Commercial') ||
+      user.groups?.includes('Prospection-Directeur') ||
+      user.groups?.includes('Prospection-Gestionnaire') ||
+      user.groups?.includes('Prospection-Manager') ||
+      // vente
+      user.groups?.includes('Vente-Admin') ||
+      user.groups?.includes('Vente-Commercial') ||
+      user.groups?.includes('Vente-Manager')
     ) {
       return 'employee'
     }

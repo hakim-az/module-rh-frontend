@@ -103,13 +103,13 @@ export default function RefuserAbsenceModal({
             type="button"
             disabled={isPending}
             onClick={() => setActiveRefuserAbsenceModal(false)}
-            className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
+            className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
             Annuler
           </button>
           <button
             type="submit"
             disabled={isPending}
-            className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-red-500 bg-red-500">
+            className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-red-500 bg-red-500">
             {isPending ? 'Chargement...' : 'Valider'}
           </button>
         </div>

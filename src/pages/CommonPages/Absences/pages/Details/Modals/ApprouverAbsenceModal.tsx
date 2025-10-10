@@ -84,14 +84,14 @@ export default function ApprouverAbsenceModal({
           type="button"
           disabled={isPending}
           onClick={() => setActiveApprouverAbsenceModal(false)}
-          className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
+          className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
           Annuler
         </button>
         <button
           type="button"
           disabled={isPending}
           onClick={() => approveAbsence()}
-          className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
+          className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
           {isPending ? 'Chargement...' : 'Valider'}
         </button>
       </div>

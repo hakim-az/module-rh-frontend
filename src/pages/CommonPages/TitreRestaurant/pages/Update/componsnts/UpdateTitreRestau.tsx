@@ -89,7 +89,7 @@ export default function UpdateTitreRestau({
           type="button"
           disabled={isLoading}
           onClick={() => setActiveUpdateTitreRestau(false)}
-          className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
+          className="w-2/3 py-2 disabled:cursor-not-allowed disabled:opacity-30 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
           Annuler
         </button>
         <button
@@ -98,8 +98,8 @@ export default function UpdateTitreRestau({
           onClick={() => {
             AddCoffre()
           }}
-          className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
-          {isLoading ? 'Loading...' : 'Valider'}
+          className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
+          {isLoading ? 'Chargement...' : 'Valider'}
         </button>
       </div>
       <ToastNotification />

@@ -86,7 +86,7 @@ export default function UpdateCoffreModal({
           type="button"
           disabled={mutation.isPending}
           onClick={() => setActiveUpdateCoffreModal(false)}
-          className="w-2/3 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
+          className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm border rounded md:w-1/3 lg:w-48 md:text-base text-primarygray border-primarygray">
           Annuler
         </button>
         <button
@@ -95,8 +95,8 @@ export default function UpdateCoffreModal({
           onClick={() => {
             if (data) mutation.mutate(data)
           }}
-          className="w-2/3 disabled:cursor-not-allowed py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
-          {mutation.isPending ? 'Loading...' : 'Valider'}
+          className="w-2/3 disabled:cursor-not-allowed disabled:opacity-30 py-2 text-sm text-white border rounded md:w-1/3 lg:w-48 md:text-base border-green-500 bg-green-500">
+          {mutation.isPending ? 'Chargement...' : 'Valider'}
         </button>
       </div>
       <ToastNotification />
