@@ -72,8 +72,8 @@ export default function SignContract() {
           body: JSON.stringify({
             idUser: userDetails?.id,
             idContrat: userDetails?.contrat.id,
-            firstName: userDetails?.prenom,
-            lastName: userDetails?.nomDeNaissance,
+            firstName: userDetails?.prenom.trim(),
+            lastName: userDetails?.nomDeNaissance.trim(),
             email: userDetails?.emailPersonnel,
             pdfUrl: userDetails?.contrat.fichierContratNonSignerPdf,
           }),
