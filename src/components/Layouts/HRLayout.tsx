@@ -1,6 +1,6 @@
 // compoenets
 import { useLocation } from 'react-router-dom'
-import { Home, Users, CalendarOff, Lock, CreditCard } from 'lucide-react'
+import { Home, Users, CalendarOff, Lock, CreditCard, Mail } from 'lucide-react'
 
 import Header from '../Headers/HeaderDesktop/HeaderDesktop'
 import HeaderMobile from '../Headers/HeaderMobile/HeaderMobile'
@@ -50,6 +50,11 @@ export default function HrLayout({ children }: IPramasHrLayout) {
       name: 'Titre restaurant',
       path: '/accueil/titre-restaurant',
       icon: CreditCard,
+    },
+    {
+      name: 'Accès et extranets',
+      path: '/accueil/acces-et-extranets',
+      icon: Mail,
     },
   ]
 

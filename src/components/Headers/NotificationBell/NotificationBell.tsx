@@ -7,8 +7,6 @@ import { useDashboardContext } from '@/contexts/DashboardContext/DashboardContex
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { Bell, Check, CheckCheck, Trash2 } from 'lucide-react'
-import { useEffect } from 'react'
-import { io, Socket } from 'socket.io-client'
 
 interface Notification {
   id: string
@@ -74,33 +72,6 @@ export default function NotificationBell() {
     return ''
   }
 
-  useEffect(() => {
-    if (!userDetails?.id || !token) return
-
-    const socket: Socket = io(import.meta.env.VITE_API_BASE_URL as string, {
-      extraHeaders: { Authorization: `Bearer ${token}` },
-    })
-
-    socket.on('connect', () => {
-      console.log('Connected to notifications socket')
-      socket.emit('join', userDetails.id)
-    })
-
-    socket.on('notification', (notif: Notification) => {
-      console.log('New notification received', notif)
-      queryClient.setQueryData<Notification[]>(
-        ['notifications', userDetails.id],
-        (old = []) => {
-          const exists = old.find((n) => n.id === notif.id)
-          return exists ? old : [notif, ...old]
-        }
-      )
-    })
-
-    return () => {
-      socket.disconnect()
-    }
-  }, [queryClient, userDetails?.id, token])
   // Mark a single notification as read
   const markAsRead = async (id: string) => {
     await axios.patch(
