@@ -4,15 +4,16 @@ import MTV from '@/assets/icons//MTV.png'
 import NEO from '@/assets/icons/NEO.png'
 import OHM from '@/assets/icons/OHM.png'
 import PLN from '@/assets/icons/PLN.png'
+import WINLEAD from '@/assets/icons/winlead.png'
 
 const apps = [
   { name: 'Microsoft 365', value: 'MS365', logo: MS365 },
-  { name: 'Plénitude', value: 'PLN', logo: PLN },
-  { name: 'OHM Energie', value: 'OHM', logo: OHM },
-  { name: 'Winlead', value: 'WLD', logo: OHM },
+  { name: 'Winlead', value: 'WLD', logo: WINLEAD },
   { name: 'ECA', value: 'ECA', logo: ECA },
   { name: 'Neoliane', value: 'NEO', logo: NEO },
   { name: 'Mondial TV', value: 'MTV', logo: MTV },
+  { name: 'Plénitude', value: 'PLN', logo: PLN },
+  { name: 'OHM Energie', value: 'OHM', logo: OHM },
   { name: 'Génération de badges', value: 'BADGES', logo: ECA },
 ]
 

@@ -1,3 +1,5 @@
+// }
+
 import { useEffect, useRef, useState, useCallback } from 'react'
 import axios from 'axios'
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
@@ -14,12 +16,14 @@ import {
   RefreshCw,
   AlertCircle,
 } from 'lucide-react'
-import { usePasswordVisibility } from '@/hooks/usePasswordVisibility'
 import { useToast } from '@/hooks/useToast'
+import { usePasswordVisibilityWinlead } from '@/hooks/usePasswordVisibilityWinlead'
+import { useNavigate } from 'react-router-dom'
 
 export default function DisplayAccountInfo() {
   const { salarieDetails } = useSalarieDetailsContext()
   const { showToast } = useToast()
+  const navigate = useNavigate()
 
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -27,9 +31,12 @@ export default function DisplayAccountInfo() {
   const [loading, setLoading] = useState(false)
   const [copySuccess, setCopySuccess] = useState(false)
 
-  const userId = salarieDetails?.userEmails?.[0]?.userId
-  const userEmail = salarieDetails?.userEmails?.[0]?.upn
-  const displayName = salarieDetails?.userEmails?.[0]?.displayName
+  const winleadAccess = salarieDetails?.acces?.find(
+    (access) => access.productCode === 'WINLEAD'
+  )
+
+  const userId = winleadAccess?.userId
+  const userEmail = winleadAccess?.email
 
   const {
     isVisible: showPassword,
@@ -39,9 +46,10 @@ export default function DisplayAccountInfo() {
     progress,
     show: handleViewPassword,
     hide: handleHidePassword,
-  } = usePasswordVisibility({
+  } = usePasswordVisibilityWinlead({
     userId,
     duration: 30,
+    productCode: 'WINLEAD',
     onError: (error) => showToast(error, 'error'),
   })
 
@@ -70,9 +78,9 @@ export default function DisplayAccountInfo() {
 
     try {
       setLoading(true)
-      await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/user-emails/reset-password`,
-        { userId, newPassword }
+      await axios.put(
+        `${import.meta.env.VITE_API_BASE_URL}/acces/reset-password-winlead`,
+        { userId, email: userEmail, newPassword }
       )
       showToast('Mot de passe mis à jour avec succès', 'success')
       setNewPassword('')
@@ -94,10 +102,15 @@ export default function DisplayAccountInfo() {
     try {
       setLoading(true)
       await axios.delete(
-        `${import.meta.env.VITE_API_BASE_URL}/user-emails/${userId}`
+        `${import.meta.env.VITE_API_BASE_URL}/acces/delete-account-winlead`,
+        { data: { userId, email: userEmail } }
       )
       showToast('Compte supprimé avec succès', 'success')
-      setIsDeleteModalOpen(false)
+
+      setTimeout(() => {
+        navigate(0)
+        setIsDeleteModalOpen(false)
+      }, 200)
     } catch (err) {
       console.error(err)
       showToast('Erreur lors de la suppression du compte', 'error')
@@ -119,7 +132,7 @@ export default function DisplayAccountInfo() {
         <div className="flex items-start justify-between gap-4 border-b border-gray-100 pb-4">
           <div>
             <h3 className="text-xl font-semibold text-gray-900">
-              Compte Office 365
+              Compte Winlead
             </h3>
             <p className="text-sm text-gray-500 mt-1">
               Gérez les informations et la sécurité du compte
@@ -138,9 +151,20 @@ export default function DisplayAccountInfo() {
         </div>
 
         <div className="space-y-5">
-          <DisplayInput label="Nom complet" value={displayName || ''} />
+          <DisplayInput
+            label="Nom complet"
+            value={`${salarieDetails?.nomDeNaissance} ${salarieDetails?.prenom}`}
+          />
 
-          <DisplayInput label="Email professionnel" value={userEmail || ''} />
+          <DisplayInput
+            label="Email professionnel"
+            value={winleadAccess?.email || ''}
+          />
+
+          <DisplayInput
+            label="Login"
+            value={`${salarieDetails?.nomDeNaissance.trim()}.${salarieDetails?.prenom.trim()}`}
+          />
 
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between">

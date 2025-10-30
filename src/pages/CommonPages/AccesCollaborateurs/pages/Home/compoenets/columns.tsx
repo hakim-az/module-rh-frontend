@@ -123,45 +123,7 @@ export const columns: ColumnDef<User>[] = [
   // Micrososft
   {
     accessorKey: 'statut',
-    header: 'Microsoft',
-    cell: ({ row }) => {
-      const statut = row.getValue('statut') as string
-
-      return (
-        <div className="capitalize">
-          <span
-            style={{ backgroundColor: renderStatusBg(statut) }}
-            className="text-white px-3 inline-block text-center py-1.5 rounded text-[10px]">
-            {getShortStatusFR(statut)}
-          </span>
-        </div>
-      )
-    },
-  },
-
-  // Plénitude
-  {
-    accessorKey: 'statut',
-    header: 'Plénitude',
-    cell: ({ row }) => {
-      const statut = row.getValue('statut') as string
-
-      return (
-        <div className="capitalize">
-          <span
-            style={{ backgroundColor: renderStatusBg(statut) }}
-            className="text-white px-3 inline-block text-center py-1.5 rounded text-[10px]">
-            {getShortStatusFR(statut)}
-          </span>
-        </div>
-      )
-    },
-  },
-
-  // OHM Energie
-  {
-    accessorKey: 'OHM Energie',
-    header: 'Statut',
+    header: 'MS365',
     cell: ({ row }) => {
       const statut = row.getValue('statut') as string
 
@@ -180,7 +142,64 @@ export const columns: ColumnDef<User>[] = [
   // Winlead
   {
     accessorKey: 'statut',
-    header: 'Winlead',
+    header: 'WLD',
+    cell: ({ row }) => {
+      const statut = row.getValue('statut') as string
+
+      return (
+        <div className="capitalize">
+          <span
+            style={{ backgroundColor: renderStatusBg(statut) }}
+            className="text-white px-3 inline-block text-center py-1.5 rounded text-[10px]">
+            {getShortStatusFR(statut)}
+          </span>
+        </div>
+      )
+    },
+  },
+
+  // Mondial TV
+  {
+    accessorKey: 'statut',
+    header: 'MTV',
+    cell: ({ row }) => {
+      const statut = row.getValue('statut') as string
+
+      return (
+        <div className="capitalize">
+          <span
+            style={{ backgroundColor: renderStatusBg(statut) }}
+            className="text-white px-3 inline-block text-center py-1.5 rounded text-[10px]">
+            {getShortStatusFR(statut)}
+          </span>
+        </div>
+      )
+    },
+  },
+
+  // Plénitude
+  {
+    accessorKey: 'statut',
+    header: 'PLN',
+    cell: ({ row }) => {
+      const statut = row.getValue('statut') as string
+
+      return (
+        <div className="capitalize">
+          <span
+            style={{ backgroundColor: renderStatusBg(statut) }}
+            className="text-white px-3 inline-block text-center py-1.5 rounded text-[10px]">
+            {getShortStatusFR(statut)}
+          </span>
+        </div>
+      )
+    },
+  },
+
+  // OHM Energie
+  {
+    accessorKey: 'statut',
+    header: 'OHM',
     cell: ({ row }) => {
       const statut = row.getValue('statut') as string
 
@@ -218,26 +237,7 @@ export const columns: ColumnDef<User>[] = [
   // Neoliane
   {
     accessorKey: 'statut',
-    header: 'Neoliane',
-    cell: ({ row }) => {
-      const statut = row.getValue('statut') as string
-
-      return (
-        <div className="capitalize">
-          <span
-            style={{ backgroundColor: renderStatusBg(statut) }}
-            className="text-white px-3 inline-block text-center py-1.5 rounded text-[10px]">
-            {getShortStatusFR(statut)}
-          </span>
-        </div>
-      )
-    },
-  },
-
-  // Mondial TV
-  {
-    accessorKey: 'statut',
-    header: 'Mondial TV',
+    header: 'NEO',
     cell: ({ row }) => {
       const statut = row.getValue('statut') as string
 

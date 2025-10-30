@@ -11,7 +11,7 @@ export default function Microsoft() {
         title="Microsoft Exchange 365"
         description={
           <>
-            <p className="mb-2">
+            <p>
               Cette page permet de gérer la création et l'administration des
               comptes email professionnels des collaborateurs (VRP,
               téléconseillers).

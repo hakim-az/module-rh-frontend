@@ -66,6 +66,17 @@ export interface UserEmail {
   userId: string
 }
 
+export interface Acces {
+  id: string
+  userId: string
+  status: string
+  productCode: string
+  password: string
+  email: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface User {
   id: string
   role: string
@@ -90,6 +101,7 @@ export interface User {
   justificatif: Justificatif
   contrat: Contrat
   userEmails: UserEmail[]
+  acces: Acces[]
 }
 
 export interface Absence {
