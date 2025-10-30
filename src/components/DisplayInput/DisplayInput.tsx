@@ -1,5 +1,3 @@
-import { Label } from '../ui/label'
-
 interface IProps {
   label: string
   value: string
@@ -7,13 +5,11 @@ interface IProps {
 
 export default function DisplayInput({ label, value }: IProps) {
   return (
-    <div className="flex flex-col">
-      <Label className="mb-2">
-        {label} <span className="text-transparent text-lg">*</span>
-      </Label>
-      <span className="border border-gray-300 flex items-center justify-start min-h-10 text-black px-3 rounded">
-        {value}
-      </span>
+    <div className="flex flex-col gap-2">
+      <label className="text-sm font-medium text-gray-700">{label}</label>
+      <div className="bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-lg">
+        <p className="text-sm text-gray-900">{value || '-'}</p>
+      </div>
     </div>
   )
 }

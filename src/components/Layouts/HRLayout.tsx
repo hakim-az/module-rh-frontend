@@ -52,8 +52,8 @@ export default function HrLayout({ children }: IPramasHrLayout) {
       icon: CreditCard,
     },
     {
-      name: 'Accès et extranets',
-      path: '/accueil/acces-et-extranets',
+      name: 'Accès collaborateurs',
+      path: '/accueil/accès-collaborateurs',
       icon: Mail,
     },
   ]

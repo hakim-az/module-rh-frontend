@@ -14,8 +14,8 @@ const CoffreFort = React.lazy(
 const TitreRestaurant = React.lazy(
   () => import('../../CommonPages/TitreRestaurant/TitreRestaurant')
 )
-const AccesExtarnets = React.lazy(
-  () => import('../../CommonPages/AccesExtarnets/AccesExtarnets')
+const AccesCollaborateurs = React.lazy(
+  () => import('../../CommonPages/AccesCollaborateurs/AccesCollaborateurs')
 )
 
 export default function HR() {
@@ -32,7 +32,10 @@ export default function HR() {
         <Route path="salariés/*" element={<Salaries />} />
         <Route path="coffre-fort/*" element={<CoffreFort />} />
         <Route path="titre-restaurant/*" element={<TitreRestaurant />} />
-        <Route path="acces-et-extranets/*" element={<AccesExtarnets />} />
+        <Route
+          path="accès-collaborateurs/*"
+          element={<AccesCollaborateurs />}
+        />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

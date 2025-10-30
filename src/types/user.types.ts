@@ -51,6 +51,21 @@ export interface Contrat {
   updatedAt: string
 }
 
+export interface UserEmail {
+  alias: string
+  createdAt: string
+  deletedAt: string
+  displayName: string
+  id: string
+  isDeleted: boolean
+  isEnabled: boolean
+  licenseSku: string
+  password: string
+  updatedAt: string
+  upn: string
+  userId: string
+}
+
 export interface User {
   id: string
   role: string
@@ -74,6 +89,7 @@ export interface User {
   urgence: Urgence
   justificatif: Justificatif
   contrat: Contrat
+  userEmails: UserEmail[]
 }
 
 export interface Absence {

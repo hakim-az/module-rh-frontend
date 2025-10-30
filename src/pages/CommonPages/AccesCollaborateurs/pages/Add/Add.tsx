@@ -1,6 +1,6 @@
 import PagePath from '@/components/PagePath/PagePath'
 import ItemList from './components/ItemList'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Microsoft from './sections/Microsoft/Microsoft'
 import Badges from './sections/Badges/Badges'
 import Eca from './sections/Eca/Eca'
@@ -9,9 +9,21 @@ import Neoliane from './sections/Neoliane/Neoliane'
 import Ohm from './sections/Ohm/Ohm'
 import Plenitude from './sections/Plenitude/Plenitude'
 import Winlead from './sections/Winlead/Winlead'
+import { useParams } from 'react-router-dom'
+import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
 
 export default function Add() {
   const [currentItem, setCurrentItem] = useState('MS365')
+
+  const { collaborateurId } = useParams()
+
+  const { setUserId } = useSalarieDetailsContext()
+
+  useEffect(() => {
+    if (collaborateurId) {
+      setUserId(collaborateurId)
+    }
+  }, [collaborateurId, setUserId])
 
   const renderSection = (currentItem: string) => {
     switch (currentItem) {
@@ -40,7 +52,7 @@ export default function Add() {
       <PagePath />
       <section className="w-11/12 max-w-[1280px] mx-auto pb-20 pt-8 flex items-start justify-between gap-5 md:gap-8 lg:gap-16">
         <ItemList setCurrentItem={setCurrentItem} currentItem={currentItem} />
-        <div className="flex flex-col gap-20 flex-1">
+        <div className="flex flex-col gap-16 flex-1">
           {renderSection(currentItem)}
         </div>
       </section>
