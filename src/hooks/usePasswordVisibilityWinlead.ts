@@ -14,6 +14,10 @@ export function usePasswordVisibilityWinlead({
   productCode,
   onError,
 }: UsePasswordVisibilityOptions) {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const [isVisible, setIsVisible] = useState(false)
   const [password, setPassword] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -48,6 +52,9 @@ export function usePasswordVisibilityWinlead({
             userId,
             productCode,
           },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       )
       const fetchedPassword = res.data?.password
@@ -77,7 +84,7 @@ export function usePasswordVisibilityWinlead({
     } finally {
       setIsLoading(false)
     }
-  }, [userId, isVisible, onError, productCode, duration, cleanup])
+  }, [userId, isVisible, onError, productCode, token, duration, cleanup])
 
   const hide = useCallback(() => {
     cleanup()

@@ -1,3 +1,5 @@
+// }
+
 import { useEffect, useRef, useState, useCallback } from 'react'
 import axios from 'axios'
 import DisplayInput from '@/components/DisplayInput/DisplayInput'
@@ -14,8 +16,8 @@ import {
   RefreshCw,
   AlertCircle,
 } from 'lucide-react'
-import { usePasswordVisibility } from '@/hooks/usePasswordVisibility'
 import { useToast } from '@/hooks/useToast'
+import { usePasswordVisibilityWinlead } from '@/hooks/usePasswordVisibilityWinlead'
 import { useNavigate } from 'react-router-dom'
 
 export default function DisplayAccountInfo() {
@@ -25,7 +27,6 @@ export default function DisplayAccountInfo() {
 
   const { salarieDetails } = useSalarieDetailsContext()
   const { showToast } = useToast()
-
   const navigate = useNavigate()
 
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
@@ -34,9 +35,12 @@ export default function DisplayAccountInfo() {
   const [loading, setLoading] = useState(false)
   const [copySuccess, setCopySuccess] = useState(false)
 
-  const userId = salarieDetails?.userEmails?.[0]?.userId
-  const userEmail = salarieDetails?.userEmails?.[0]?.upn
-  const displayName = salarieDetails?.userEmails?.[0]?.displayName
+  const EcaAccess = salarieDetails?.acces?.find(
+    (access) => access.productCode === 'ECA'
+  )
+
+  const userId = EcaAccess?.userId
+  const userEmail = EcaAccess?.email
 
   const {
     isVisible: showPassword,
@@ -46,9 +50,10 @@ export default function DisplayAccountInfo() {
     progress,
     show: handleViewPassword,
     hide: handleHidePassword,
-  } = usePasswordVisibility({
+  } = usePasswordVisibilityWinlead({
     userId,
     duration: 30,
+    productCode: 'ECA',
     onError: (error) => showToast(error, 'error'),
   })
 
@@ -77,9 +82,9 @@ export default function DisplayAccountInfo() {
 
     try {
       setLoading(true)
-      await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/user-emails/reset-password`,
-        { userId, newPassword },
+      await axios.patch(
+        `${import.meta.env.VITE_API_BASE_URL}/acces/${EcaAccess.id}/reset-password`,
+        { newPassword },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -106,9 +111,10 @@ export default function DisplayAccountInfo() {
     try {
       setLoading(true)
       await axios.delete(
-        `${import.meta.env.VITE_API_BASE_URL}/user-emails/${userId}`,
+        `${import.meta.env.VITE_API_BASE_URL}/acces/${EcaAccess.id}`,
         {
           headers: {
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
         }
@@ -139,9 +145,7 @@ export default function DisplayAccountInfo() {
       <div className="flex flex-col gap-6 w-full bg-white p-8 rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200">
         <div className="flex items-start justify-between gap-4 border-b border-gray-100 pb-4">
           <div>
-            <h3 className="text-xl font-semibold text-gray-900">
-              Compte Office 365
-            </h3>
+            <h3 className="text-xl font-semibold text-gray-900">Compte ECA</h3>
             <p className="text-sm text-gray-500 mt-1">
               Gérez les informations et la sécurité du compte
             </p>
@@ -159,7 +163,10 @@ export default function DisplayAccountInfo() {
         </div>
 
         <div className="space-y-5">
-          <DisplayInput label="Nom complet" value={displayName || ''} />
+          <DisplayInput
+            label="Nom complet"
+            value={`${salarieDetails?.nomDeNaissance} ${salarieDetails?.prenom}`}
+          />
 
           <DisplayInput label="Email professionnel" value={userEmail || ''} />
 

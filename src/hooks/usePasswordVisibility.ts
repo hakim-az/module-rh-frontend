@@ -12,6 +12,10 @@ export function usePasswordVisibility({
   duration = 30,
   onError,
 }: UsePasswordVisibilityOptions) {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const [isVisible, setIsVisible] = useState(false)
   const [password, setPassword] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -40,7 +44,13 @@ export function usePasswordVisibility({
     try {
       setIsLoading(true)
       const res = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/user-emails/user/${userId}`
+        `${import.meta.env.VITE_API_BASE_URL}/user-emails/user/${userId}`,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       const fetchedPassword = res.data?.password
 
@@ -69,7 +79,7 @@ export function usePasswordVisibility({
     } finally {
       setIsLoading(false)
     }
-  }, [userId, isVisible, duration, onError, cleanup])
+  }, [userId, isVisible, onError, token, duration, cleanup])
 
   const hide = useCallback(() => {
     cleanup()

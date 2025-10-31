@@ -1,26 +1,30 @@
+import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
 import SectionHeader from '../../components/SectionHeader'
+import DisplayAccountInfo from './components/DisplayAccountInfo'
+import NeolianeDemande from './components/NeolianeDemande'
+import type { Acces } from '@/types/user.types'
+import NeolianeCreation from './components/NeolianeCreation'
 
-export default function Neoliane() {
+export default function Eca() {
+  const { salarieDetails } = useSalarieDetailsContext()
+
+  const NeolianeAcces: Acces | undefined = salarieDetails?.acces?.find(
+    (access) => access.productCode === 'Neoliane'
+  )
+
+  const hasAccess = !!NeolianeAcces
+  const isPending = NeolianeAcces?.status === 'encours' // only true when access exists without password
+
   return (
     <>
       <SectionHeader
         title="Neoliane"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo culpa laudantium mollitia doloremque dolor, at expedita accusamus repellendus excepturi recusandae labore aut quod optio odit incidunt sed deserunt maiores a debitis ad, harum corporis consectetur distinctio error. Tempore, a cum saepe dolore quas odit iste quos dolorum, tempora, ipsam consectetur?"
+        description="Lorem ipsum dolor sit amet consectetur adipisicing elit..."
       />
-      <iframe
-        src="https://www.monneoliane.fr/"
-        width="100%"
-        height="600"
-        sandbox="allow-forms allow-scripts"
-        title="Espace Client ECA Assurances"></iframe>
 
-      <a
-        href="https://www.monneoliane.fr/"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline">
-        Ouvrir Mon Néoliane
-      </a>
+      {!hasAccess && <NeolianeDemande />}
+      {hasAccess && isPending && <NeolianeCreation id={NeolianeAcces.id} />}
+      {hasAccess && !isPending && <DisplayAccountInfo />}
     </>
   )
 }

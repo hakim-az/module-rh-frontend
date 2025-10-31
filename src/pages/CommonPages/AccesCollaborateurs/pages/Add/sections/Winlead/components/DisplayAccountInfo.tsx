@@ -21,6 +21,10 @@ import { usePasswordVisibilityWinlead } from '@/hooks/usePasswordVisibilityWinle
 import { useNavigate } from 'react-router-dom'
 
 export default function DisplayAccountInfo() {
+  // token
+  const authUser = JSON.parse(sessionStorage.getItem('auth_user') || '{}')
+  const token = authUser?.token
+
   const { salarieDetails } = useSalarieDetailsContext()
   const { showToast } = useToast()
   const navigate = useNavigate()
@@ -80,7 +84,12 @@ export default function DisplayAccountInfo() {
       setLoading(true)
       await axios.put(
         `${import.meta.env.VITE_API_BASE_URL}/acces/reset-password-winlead`,
-        { userId, email: userEmail, newPassword }
+        { userId, email: userEmail, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       showToast('Mot de passe mis à jour avec succès', 'success')
       setNewPassword('')
@@ -99,11 +108,24 @@ export default function DisplayAccountInfo() {
       return
     }
 
+    if (!winleadAccess?.email) {
+      showToast('Login Winlead introuvable', 'error')
+      return
+    }
+
     try {
       setLoading(true)
       await axios.delete(
         `${import.meta.env.VITE_API_BASE_URL}/acces/delete-account-winlead`,
-        { data: { userId, email: userEmail } }
+        {
+          data: {
+            userIdLocal: userId,
+            email: winleadAccess.email,
+          },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       showToast('Compte supprimé avec succès', 'success')
 

@@ -1,28 +1,30 @@
+import { useSalarieDetailsContext } from '@/contexts/SalarieDetails/SalariDetailsContext'
 import SectionHeader from '../../components/SectionHeader'
+import DisplayAccountInfo from './components/DisplayAccountInfo'
+import EcaDemande from './components/EcaDemande'
+import type { Acces } from '@/types/user.types'
+import EcaCreation from './components/EcaCreation'
 
 export default function Eca() {
+  const { salarieDetails } = useSalarieDetailsContext()
+
+  const EcaAccess: Acces | undefined = salarieDetails?.acces?.find(
+    (access) => access.productCode === 'ECA'
+  )
+
+  const hasAccess = !!EcaAccess
+  const isPending = EcaAccess?.status === 'encours' // only true when access exists without password
+
   return (
     <>
       <SectionHeader
         title="ECA"
-        description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo culpa laudantium mollitia doloremque dolor, at expedita accusamus repellendus excepturi recusandae labore aut quod optio odit incidunt sed deserunt maiores a debitis ad, harum corporis consectetur distinctio error. Tempore, a cum saepe dolore quas odit iste quos dolorum, tempora, ipsam consectetur?"
+        description="Lorem ipsum dolor sit amet consectetur adipisicing elit..."
       />
 
-      <iframe
-        src="https://espace-client.eca-assurances.com/login"
-        width="100%"
-        height="600"
-        sandbox="allow-forms allow-scripts"
-        title="Espace Client ECA Assurances"
-      />
-
-      <a
-        href="https://espace-client.eca-assurances.com/login"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-blue-600 underline">
-        Ouvrir Mon ECA
-      </a>
+      {!hasAccess && <EcaDemande />}
+      {hasAccess && isPending && <EcaCreation id={EcaAccess.id} />}
+      {hasAccess && !isPending && <DisplayAccountInfo />}
     </>
   )
 }
